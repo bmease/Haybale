@@ -114,7 +114,7 @@ STATE: {Default} ~~ {
 				DoExpr {setpvar[HBStuckDistanceThreshold, ifthen[testpvar[HBStuckDistanceThreshold], `@HBStuckDistanceThreshold`, `20`]]}
 
 				~~ Leader to announce things to. Defaults to first character in @HBCharacterList and will update when follow commands are issued
-				DoExpr {setpvar[HBLeader, ifthen[testpvar[HBLeader], `@HBLeader`, `listgetitem[@HBCharacterList, 0]`]]}
+				DoExpr {setpvar[HBLeader, ifthen[testpvar[HBLeader], `@HBLeader`, `ifthen[listcount[@HBCharacterList]>0, \`listgetitem[@HBCharacterList, 0]\`, \`false\`]`]]}
 
 				~~ Distance to use the nearest Portal
 				DoExpr {setpvar[HBPortalThreshold, ifthen[testpvar[HBPortalThreshold], `@HBPortalThreshold`, `30`]]}
@@ -511,7 +511,7 @@ STATE: {Setup} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[listmap[netclients[], `dictgetitem[$1, PlayerId]`], wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]]]}
 		DO: DoAll
-				DoExpr {ifthen[testpvar[HBLeader], `false`, `@HBLeader=listgetitem[@HBCharacterList, 0]`]}
+				DoExpr {ifthen[testpvar[HBLeader]==false||@HBLeader==false, `@HBLeader=listgetitem[@HBCharacterList, 0]`, `false`]}
 				Chat {/vt meta load Haybale}
 
 	~~ Handle `#addfellow` for any character in ub netclients and a fellow is not formed
