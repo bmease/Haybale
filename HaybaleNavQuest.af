@@ -48,7 +48,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-				DoExpr {setvar[metaname, `CheCommandNavQuest`]}
+				DoExpr {setvar[metaname, `HaybaleNavQuest`]}
 
 				DoExpr {setvar[QuestOriginalHBArguments, $HBArguments]}
 
@@ -247,7 +247,7 @@ STATE: {InitMoufP} ~~ {
 	~~ Navigate to Fiuns Outpost
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
@@ -268,7 +268,7 @@ STATE: {InitLiberationUziz} ~~ {
 	~~ Navigate to Al-Arqas
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
@@ -289,7 +289,7 @@ STATE: {InitPurgingCorruption} ~~ {
 	~~ Navigate to Candeth Keep
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavSubway`}
@@ -310,7 +310,7 @@ STATE: {InitDreamReaver} ~~ {
 	~~ Navigate to Khayyaban
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
@@ -331,7 +331,7 @@ STATE: {InitSerpentBurialGrounds} ~~ {
 	~~ Navigate to Stonehold
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
@@ -356,7 +356,7 @@ STATE: {InitHaltDericost} ~~ {
 	~~ Navigate to Frozen Valley
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavPortalspaceActivator`}
@@ -413,7 +413,7 @@ STATE: {InitNanjouStockade} ~~ {
 	~~ Navigate to Hoshino
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavPortalspaceActivator`}
@@ -580,10 +580,10 @@ STATE: {ToMenhirRings} ~~ {
 	~~ Navigate to Al-Arqas
 	IF: BlockE 7AE80000
 		DO: DoAll
-				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				ChatExpr {`/vt meta load CheCommandNavTownNetwork`}
+				ChatExpr {`/vt meta load HaybaleNavTownNetwork`}
 
 ~~ }
 

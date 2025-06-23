@@ -48,7 +48,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-				DoExpr {setvar[metaname, `CheCommandNavTownNetwork`]}
+				DoExpr {setvar[metaname, `HaybaleNavTownNetwork`]}
 				DoExpr {setvar[AphusLasselRecallSpell, 2931]}
 
 				DoExpr {setvar[ANNEX, `Annex`]}

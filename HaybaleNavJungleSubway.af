@@ -53,7 +53,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalNavPriorityBoost, vtgetsetting[NavPriorityBoost]]}
 				DoExpr {setvar[OriginalApproachDistance, vtgetsetting[ApproachDistance]]}
 
-				DoExpr {setvar[metaname, `CheCommandNavJungleSubway`]}
+				DoExpr {setvar[metaname, `HaybaleNavJungleSubway`]}
 				DoExpr {setvar[AphusLasselRecallSpell, 2931]}
 
 				DoExpr {setvar[ANNEX, `Annex`]}
