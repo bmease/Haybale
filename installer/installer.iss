@@ -34,32 +34,32 @@ UsePreviousAppDir=no
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Black Death Catacombs.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Bloodstone Investigation 3.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Catacombs of Torment.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Feeding Tube.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Forgotten Chasm.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Halt Dericost Mnemosynes.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Halt Dericost.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Massilor's Crypt.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Path of Rage.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-South Gate.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CC-Western Power Forge.nav"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommand.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandHandoffSort.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandKillTaskFlagFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandKillTaskFlagNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandKillTaskFlagRynthid.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavChair.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavHavenBuffs.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavJungleSubway.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavPortalspaceActivator.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavRecomp.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavSort.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavSubway.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavTownNetwork.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Black Death Catacombs.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Bloodstone Investigation 3.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Catacombs of Torment.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Feeding Tube.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Forgotten Chasm.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Halt Dericost Mnemosynes.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Halt Dericost.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Massilor's Crypt.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Path of Rage.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-South Gate.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Western Power Forge.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\Haybale.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleHandoffSort.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagRynthid.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavChair.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavHavenBuffs.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavJungleSubway.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavPortalspaceActivator.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavRecomp.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavSort.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavSubway.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavTownNetwork.met"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
