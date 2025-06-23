@@ -115,7 +115,7 @@ STATE: {Finished} ~~ {
 				DoExpr {echo[`Finished navigating to Sort de Che`, $COLOR_SYSTEM]}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 

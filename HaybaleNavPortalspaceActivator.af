@@ -52,7 +52,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[metaname, `CheCommandNavPortalspaceActivator`]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@CCDebug, `echo[\`[DEBUG] Che Nav Empyrean Portalspace Activator v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Empyrean Portalspace Activator v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	IF: Always
 		DO: SetState {ParseArguments}
@@ -66,25 +66,25 @@ STATE: {ParseArguments} ~~ {
 		DO:	SetState {Finished}
 
 	~~ Warn if arguments are not defined
-	IF: Expr {testvar[CCArguments]==false}
+	IF: Expr {testvar[HBArguments]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Arguments are not defined!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Arguments are not defined!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Warn if arguments are missing for this meta
-	IF: Expr {dicthaskey[$CCArguments, $metaname]==false}
+	IF: Expr {dicthaskey[$HBArguments, $metaname]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Arguments are missing for this meta!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Arguments are missing for this meta!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Get arguments for this meta
 	IF: Always
-		DO: DoExpr {$arguments=dictgetitem[$CCArguments, $metaname]}
+		DO: DoExpr {$arguments=dictgetitem[$HBArguments, $metaname]}
 
 	~~ Warn if destination argument is missing
 	IF: Expr {dicthaskey[$arguments, `destination`]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Destination is missing from arguments\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Destination is missing from arguments\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Get destination
@@ -146,7 +146,7 @@ STATE: {ToHaven} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
 
 	~~ Set EnableNav to navigate
 	IF: Always
@@ -170,7 +170,7 @@ STATE: {ToEmpyreanPortalspaceActivator} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Empyrean Portalspace Activator\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Empyrean Portalspace Activator\`, $COLOR_INFO]`, `false`]}
 
 	~~ Set EnableNav to navigate
 	IF: Always
@@ -195,7 +195,7 @@ STATE: {UseEmpyreanPortalspaceActivator} ~~ {
 
 	IF: Expr {testvar[using]==false}
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Using Empyrean Portalspace Activator\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Using Empyrean Portalspace Activator\`, $COLOR_INFO]`, `false`]}
 				DoExpr {$using=true}
 
 	IF: Always
@@ -212,7 +212,7 @@ STATE: {UseEmpyreanPortalspaceActivator} ~~ {
 	~~ Warn if out of item
 	IF: Expr {getitemcountininventorybyname[$item]==0}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Out of \`+$item, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Out of \`+$item, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Hand item to Empyrean Portalspace Activator
@@ -233,10 +233,10 @@ STATE: {UseEmpyreanPortalspaceActivator} ~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Finished navigating to destination\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Finished navigating to destination\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
-		DO: DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished navigating to \`+dictgetitem[$DESTINATION_NAME, $destination]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to \`+dictgetitem[$DESTINATION_NAME, $destination]]`, `false`]}
 
 	~~ Reset all options to what they originally were
 	IF: Always
@@ -247,7 +247,7 @@ STATE: {Finished} ~~ {
 		DO: DoExpr {listmap[listcreate[`item`, `using`, `metaname`, `arguments`, `destination`, `DESTINATION_LANDCELLS`, `DESTINATION_ITEMS` `DESTINATION_NAME`], `clearvar[$1]`]}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

@@ -50,16 +50,16 @@ STATE: {Default} ~~ {
 
 				DoExpr {setvar[metaname, `CheCommandNavQuest`]}
 
-				DoExpr {setvar[QuestOriginalCCArguments, $CCArguments]}
+				DoExpr {setvar[QuestOriginalHBArguments, $HBArguments]}
 
-	~~ Restore saved $CCReturnMeta
-	IF: Expr {testvar[QuestOriginalCCReturnMeta]==true}
+	~~ Restore saved $HBReturnMeta
+	IF: Expr {testvar[QuestOriginalHBReturnMeta]==true}
 		DO: DoAll
-				DoExpr {$CCReturnMeta=$QuestOriginalCCReturnMeta}
-				DoExpr {clearvar[QuestionOriginalCCReturnMeta]}
+				DoExpr {$HBReturnMeta=$QuestOriginalHBReturnMeta}
+				DoExpr {clearvar[QuestionOriginalHBReturnMeta]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@CCDebug, `echo[\`[DEBUG] Che Nav Quest v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Quest v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	IF: Always
 		DO: SetState {ParseArguments}
@@ -73,25 +73,25 @@ STATE: {ParseArguments} ~~ {
 		DO:	SetState {Finished}
 
 	~~ Warn if arguments are not defined
-	IF: Expr {testvar[CCArguments]==false}
+	IF: Expr {testvar[HBArguments]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Arguments are not defined!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Arguments are not defined!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Warn if arguments are missing for this meta
-	IF: Expr {dicthaskey[$CCArguments, $metaname]==false}
+	IF: Expr {dicthaskey[$HBArguments, $metaname]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Arguments are missing for this meta!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Arguments are missing for this meta!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Get arguments for this meta
 	IF: Always
-		DO: DoExpr {$arguments=dictgetitem[$CCArguments, $metaname]}
+		DO: DoExpr {$arguments=dictgetitem[$HBArguments, $metaname]}
 
 	~~ Warn if destination argument is missing
 	IF: Expr {dicthaskey[$arguments, `destination`]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Destination is missing from arguments\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Destination is missing from arguments\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Get destination
@@ -126,7 +126,7 @@ STATE: {Dispatch} ~~ {
 	~~ Warn if no state is found for destination
 	IF: Expr {dicthaskey[$DESTINATION_STATE, $destination]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] No state found for destination\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] No state found for destination\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Set vt settings to sane defaults
@@ -170,21 +170,21 @@ STATE: {HandleRecall} ~~ {
 		DO:	SetState {Idle}
 
 	~~ Return to Finished if the spell isn't known
-	IF: Not Expr {getisspellknown[$CCRecallSpell]}
+	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
 	IF: Expr {isportaling[]==false}
 		DO: DoAll
-				DoExpr {actiontrycastbyid[$CCRecallSpell]}
+				DoExpr {actiontrycastbyid[$HBRecallSpell]}
 				SetState {HandleRecall}
 
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
 				Return
 
 ~~}
@@ -197,7 +197,7 @@ STATE: {UseItem} ~~ {
 
 	IF: Expr {testvar[using]==false}
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Using \`+$item, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Using \`+$item, $COLOR_INFO]`, `false`]}
 				DoExpr {$using=true}
 
 	~~ Use item
@@ -247,9 +247,9 @@ STATE: {InitMoufP} ~~ {
 	~~ Navigate to Fiuns Outpost
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
 				SetState {CallMeta}
 
@@ -268,9 +268,9 @@ STATE: {InitLiberationUziz} ~~ {
 	~~ Navigate to Al-Arqas
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
 				SetState {CallMeta}
 
@@ -289,9 +289,9 @@ STATE: {InitPurgingCorruption} ~~ {
 	~~ Navigate to Candeth Keep
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavSubway`}
 				SetState {CallMeta}
 
@@ -310,9 +310,9 @@ STATE: {InitDreamReaver} ~~ {
 	~~ Navigate to Khayyaban
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
 				SetState {CallMeta}
 
@@ -331,9 +331,9 @@ STATE: {InitSerpentBurialGrounds} ~~ {
 	~~ Navigate to Stonehold
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
 				SetState {CallMeta}
 
@@ -356,9 +356,9 @@ STATE: {InitHaltDericost} ~~ {
 	~~ Navigate to Frozen Valley
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavPortalspaceActivator`}
 				SetState {CallMeta}
 
@@ -377,7 +377,7 @@ STATE: {InitFirstSister} ~~ {
 	~~ Navigate to Sanctuary
 	IF: Always
 		DO: DoAll
-				DoExpr {$CCRecallSpell=5541} ~~ Lost City of Neftet Recall
+				DoExpr {$HBRecallSpell=5541} ~~ Lost City of Neftet Recall
 				CallState {HandleRecall} {ToKaltus}
 
 ~~ }
@@ -395,7 +395,7 @@ STATE: {InitMhoireCastle} ~~ {
 	~~ Navigate to Graveyard
 	IF: Always
 		DO: DoAll
-				DoExpr {$CCRecallSpell=4128} ~~ Graveyard Recall
+				DoExpr {$HBRecallSpell=4128} ~~ Graveyard Recall
 				CallState {HandleRecall} {ToGuardianStatue}
 
 ~~ }
@@ -413,9 +413,9 @@ STATE: {InitNanjouStockade} ~~ {
 	~~ Navigate to Hoshino
 	IF: Always
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`ChecommandNavPortalspaceActivator`}
 				SetState {CallMeta}
 
@@ -430,7 +430,7 @@ STATE: {ToFrigidGrotto} ~~ {
 	~~ Navigate to Frigid Grotto
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Frigid Grotto\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Frigid Grotto\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToFrigidGrotto {ToFrigidGrotto}
 
 	~~ Finished using portal go to ToWing
@@ -450,7 +450,7 @@ STATE: {ToVirindiEdifice} ~~ {
 	~~ Navigate to Virindi Edifice
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Virindi Edifice\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Virindi Edifice\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToVirindiEdifice {ToToVirindiEdifice}
 
 	~~ Finished using portal go to Finished
@@ -470,7 +470,7 @@ STATE: {ToCuratorOfTormentsStudy} ~~ {
 	~~ Navigate to Curator of Torments Study
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Curator of Torments Study\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Curator of Torments Study\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToCuratorOfTormentsStudy {ToCuratorOfTormentsStudy}
 
 	~~ Finished using portal go to Finished
@@ -490,7 +490,7 @@ STATE: {ToMaskedPreface} ~~ {
 	~~ Navigate to Masked Preface
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Masked Preface\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Masked Preface\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToMaskedPreface {ToMaskedPreface}
 
 	~~ Finished using portal go to Finished
@@ -510,7 +510,7 @@ STATE: {ToKraytussNallah} ~~ {
 	~~ Navigate to Kraytuss Nallah
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Kraytuss Nallah\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Kraytuss Nallah\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToKraytussNallah {ToKraytussNallah}
 
 	~~ Finished navigation goto Finished
@@ -530,7 +530,7 @@ STATE: {ToSerpentBurialGrounds} ~~ {
 	~~ Navigate to Serpent Burial Grounds
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Serpent Burial Grounds\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Serpent Burial Grounds\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToSerpentBurialGrounds {ToSerpentBurialGrounds}
 
 	~~ Finished using portal go to Finished
@@ -550,7 +550,7 @@ STATE: {ToLadyDaenerah} ~~ {
 	~~ Navigate to Lady Daenerah
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Lady Daenerah\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Lady Daenerah\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToLadyDaenerah {ToLadyDaenerah}
 
 	~~ Finished navigation goto Finished
@@ -580,9 +580,9 @@ STATE: {ToMenhirRings} ~~ {
 	~~ Navigate to Al-Arqas
 	IF: BlockE 7AE80000
 		DO: DoAll
-				DoExpr {dictadditem[$CCArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
-				DoExpr {$QuestOriginalCCReturnMeta=$CCReturnMeta}
-				DoExpr {$CCReturnMeta=$metaname}
+				DoExpr {dictadditem[$HBArguments, `CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
 				ChatExpr {`/vt meta load CheCommandNavTownNetwork`}
 
 ~~ }
@@ -596,7 +596,7 @@ STATE: {ToKaltus} ~~ {
 	~~ Navigate to Kaltus
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Kaltus\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Kaltus\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToKaltus {ToKaltus}
 
 	~~ Finished navigation goto Finished
@@ -616,7 +616,7 @@ STATE: {ToTempleOfMornings} ~~ {
 	~~ Navigate to Temple of Mornings
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Temple of Mornings\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Temple of Mornings\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToTempleOfMornings {ToTempleOfMornings}
 
 	~~ Finished navigation goto Finished
@@ -634,7 +634,7 @@ STATE: {ToGuardianStatue} ~~ {
 	~~ Navigate to Gargoyle
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Guardian Statue\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Guardian Statue\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToGuardianStatue {ToGuardianStatue}
 
 	~~ Finished navigation and use Guardian Statue
@@ -674,7 +674,7 @@ STATE: {ToMhoireCastleNortheast} ~~ {
 	~~ Navigate to Mhoire Castle Northeast
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Mhoire Castle Northeast\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Mhoire Castle Northeast\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToMhoireCastleNortheast {ToMhoireCastleNortheast}
 
 	~~ Finished using portal go to Finished
@@ -694,7 +694,7 @@ STATE: {ToShorikan} ~~ {
 	~~ Navigate to Shorikan
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Shorikan\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Shorikan\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToShorikan {ToShorikan}
 
 	~~ Finished navigation and use Shorikan
@@ -709,7 +709,7 @@ STATE: {ToShorikan} ~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished navigating to \`+$destination]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to \`+$destination]`, `false`]}
 
 	~~ Return all vt settings to the original values
 	IF: Always
@@ -721,7 +721,7 @@ STATE: {Finished} ~~ {
 
 	~~ Return to the meta that called this one
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

@@ -65,12 +65,12 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalOpenDoors, vtgetsetting[OpenDoors]]}
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Frozen Valley v0.0.2 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -88,7 +88,7 @@ STATE: {Default} ~~ {
 	~~ Bail out if not Frozen Valley
 	IF:	Not BlockE 7AE80000
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Must be in Frozen Valley! Finishing!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Must be in Frozen Valley! Finishing!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 ~~ }
@@ -98,7 +98,7 @@ STATE: {UseNPC} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	Any
@@ -124,7 +124,7 @@ STATE: {ToGregoria} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -140,7 +140,7 @@ STATE: {ToHunter} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -156,7 +156,7 @@ STATE: {ToLeilah} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -172,7 +172,7 @@ STATE: {ToGeorge} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -188,7 +188,7 @@ STATE: {ToKumiko} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -204,7 +204,7 @@ STATE: {ToBoone} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -218,7 +218,7 @@ STATE: {ToBoone} ~~ {
 
 STATE: {Finished} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`Finished flagging at Frozen Valley`, $COLOR_INFO]}
 
@@ -232,7 +232,7 @@ STATE: {Finished} ~~ {
 				SetOpt {NavCloseStopRange} {$OriginalNavCloseStopRange}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

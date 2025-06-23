@@ -67,12 +67,12 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Viridian Rise v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -93,7 +93,7 @@ STATE: {Default} ~~ {
 	~~ Bail out if not Viridian Rise
 	IF:	Not CellE B3490034
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Not at VR. Attempting recall!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Not at VR. Attempting recall!\`, $COLOR_WARN]`, `false`]}
 				SetState {VrRecall}
 
 ~~ }
@@ -107,7 +107,7 @@ STATE: {VrRecall} ~~ {
 	~~ Return to Idle if the spell isn't known
 	IF: Not Expr {getisspellknown[$VrRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
@@ -119,7 +119,7 @@ STATE: {VrRecall} ~~ {
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
 				SetState {ToInsideVR}
 
 ~~}
@@ -128,7 +128,7 @@ STATE: {ToInsideVR} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -153,7 +153,7 @@ STATE: {UseVrPortal} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	All
@@ -173,7 +173,7 @@ STATE: {UseNPC} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	Any
@@ -195,7 +195,7 @@ STATE: {ToShalrionMarker} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -214,7 +214,7 @@ STATE: {ToBrellegiasMarker} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -233,7 +233,7 @@ STATE: {ToAangesilusMarker} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -252,7 +252,7 @@ STATE: {ToSwiftsMarker}
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -268,7 +268,7 @@ STATE: {ToSwiftsMarker}
 
 STATE: {Finished} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`Finished flagging at Viridian Rise`, $COLOR_INFO]}
 
@@ -280,7 +280,7 @@ STATE: {Finished} ~~ {
 				SetOpt {NavCloseStopRange} {$OriginalNavCloseStopRange}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

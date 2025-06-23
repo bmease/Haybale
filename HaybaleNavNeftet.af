@@ -61,7 +61,7 @@ STATE: {Default} ~~ {
 
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoAll
 				DoExpr {echo[`[DEBUG] Che Nav Neftet v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
@@ -78,7 +78,7 @@ STATE: {Default} ~~ {
 
 STATE: {ToNeftet} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Navigating to Neftet`, $COLOR_INFO]}
 
@@ -98,7 +98,7 @@ STATE: {ToNeftet} ~~ {
 
 
 STATE: {Finished} ~~ {
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Finished navigating to Neftet`, $COLOR_INFO]}
 
@@ -108,7 +108,7 @@ STATE: {Finished} ~~ {
 				SetOpt {EnableNav} {$OriginalEnableNav}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 

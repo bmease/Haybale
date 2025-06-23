@@ -65,12 +65,12 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalOpenDoors, vtgetsetting[OpenDoors]]}
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Rynthid v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -86,7 +86,7 @@ STATE: {Default} ~~ {
 	~~ Bail out if not Rynthid
 	IF:	Not BlockE 30320000
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Must be in Rynthid! Finishing!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Must be in Rynthid! Finishing!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 ~~ }
@@ -96,7 +96,7 @@ STATE: {UseNPC} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	Any
@@ -122,7 +122,7 @@ STATE: {ToHernd} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -138,7 +138,7 @@ STATE: {ToLohrn} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -154,7 +154,7 @@ STATE: {ToWido} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -170,7 +170,7 @@ STATE: {ToRhys} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -186,7 +186,7 @@ STATE: {ToRanulf} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -202,7 +202,7 @@ STATE: {ToSylvanus} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -218,7 +218,7 @@ STATE: {ToMarcus} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -234,7 +234,7 @@ STATE: {ToTilahan} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -248,7 +248,7 @@ STATE: {ToTilahan} ~~ {
 
 STATE: {Finished} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`Finished flagging at Rynthid`, $COLOR_INFO]}
 
@@ -262,7 +262,7 @@ STATE: {Finished} ~~ {
 				SetOpt {NavCloseStopRange} {$OriginalNavCloseStopRange}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

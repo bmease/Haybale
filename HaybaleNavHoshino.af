@@ -62,7 +62,7 @@ STATE: {Default} ~~ {
 
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoAll
 				DoExpr {echo[`[DEBUG] Che Nav Royal Tent v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
@@ -85,7 +85,7 @@ STATE: {ToAphusLassel} ~~ {
 	~~ Warn if Aphus Lassel Recall is not known
 	IF: Not Expr {getisspellknown[$AphusLasselRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know the Aphus Lassel Recall\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know the Aphus Lassel Recall\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
@@ -103,7 +103,7 @@ STATE: {ToAphusLassel} ~~ {
 
 STATE: {ToRoyalTent} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Navigating to Royal Tent`, $COLOR_INFO]}
 
@@ -122,7 +122,7 @@ STATE: {ToRoyalTent} ~~ {
 
 
 STATE: {Finished} ~~ {
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Finished navigating to Royal Tent`, $COLOR_INFO]}
 
@@ -132,7 +132,7 @@ STATE: {Finished} ~~ {
 				SetOpt {EnableNav} {$OriginalEnableNav}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 NAV: ToRoyalTent once ~~ {

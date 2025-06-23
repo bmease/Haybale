@@ -64,7 +64,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
 				DoExpr {setvar[OriginalOpenDoors, vtgetsetting[OpenDoors]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoAll
 				DoExpr {echo[`[DEBUG] Che Nav Neftet Flag v0.0.2 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
@@ -76,7 +76,7 @@ STATE: {Default} ~~ {
 	~~ Bail out if not Neftet
 	IF:	Not BlockE 87630000
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Must be in Neftet! Finishing!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Must be in Neftet! Finishing!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ If in Neftet start flagging
@@ -90,7 +90,7 @@ STATE: {UseNPC} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	Any
@@ -116,7 +116,7 @@ STATE: {ToHassim} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -132,7 +132,7 @@ STATE: {ToAdarl} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -148,7 +148,7 @@ STATE: {ToTularin} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -164,7 +164,7 @@ STATE: {ToIbreh} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -180,7 +180,7 @@ STATE: {ToUnell} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
@@ -196,7 +196,7 @@ STATE: {ReadContracts} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Expr {getitemcountininventorybynamerx[(Hunting\: Lost City of Neftet)]>0}
@@ -212,7 +212,7 @@ STATE: {ReadContracts} ~~ {
 
 STATE: {Finished} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Finished flagging at Frozen Valley`, $COLOR_INFO]}
 
@@ -223,7 +223,7 @@ STATE: {Finished} ~~ {
 				SetOpt {OpenDoors} {$OriginalOpenDoors}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 
