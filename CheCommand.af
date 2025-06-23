@@ -92,122 +92,122 @@ STATE: {Default} ~~ {
 
 				DoExpr {setvar[RYNTHID_WEAPONS_PORTAL, 52012]}
 
-	~~ Initialize CC variables
+	~~ Initialize HB variables
 	IF: Always
 		DO: DoAll
-				DoExpr {setvar[CCVersion, `0.9.0`]}
+				DoExpr {setvar[HBVersion, `0.9.0`]}
 
-				DoExpr {setpvar[CCDebug, ifthen[testpvar[CCDebug], `@CCDebug`, `$LEVEL_DEBUG`]]}
-				DoExpr {setpvar[CCConfirm, ifthen[testpvar[CCConfirm], `@CCConfirm`, `true`]]}
-				DoExpr {setpvar[CCFellowname, ifthen[testpvar[CCFellowname], `@CCFellowname`, `Not Set`]]}
-				DoExpr {setpvar[CCCharacterList, ifthen[testpvar[CCCharacterList], `@CCCharacterList`, `listcreate[]`]]}
+				DoExpr {setpvar[HBDebug, ifthen[testpvar[HBDebug], `@HBDebug`, `$LEVEL_DEBUG`]]}
+				DoExpr {setpvar[HBConfirm, ifthen[testpvar[HBConfirm], `@HBConfirm`, `true`]]}
+				DoExpr {setpvar[HBFellowname, ifthen[testpvar[HBFellowname], `@HBFellowname`, `Not Set`]]}
+				DoExpr {setpvar[HBCharacterList, ifthen[testpvar[HBCharacterList], `@HBCharacterList`, `listcreate[]`]]}
 
-				DoExpr {setpvar[CCChatCommand, ifthen[testpvar[CCChatCommand], `@CCChatCommand`, `Say`]]}
+				DoExpr {setpvar[HBChatCommand, ifthen[testpvar[HBChatCommand], `@HBChatCommand`, `Say`]]}
 
 				~~ Amount of seconds between checking stuck
-				DoExpr {setpvar[CCStuckAnnounceDelay, ifthen[testpvar[CCStuckAnnounceDelay], `@CCStuckAnnounceDelay`, `5`]]}
+				DoExpr {setpvar[HBStuckAnnounceDelay, ifthen[testpvar[HBStuckAnnounceDelay], `@HBStuckAnnounceDelay`, `5`]]}
 
 				~~ Maximum amount a character can move to determine stuck
-				DoExpr {setpvar[CCStuckThreshold, ifthen[testpvar[CCStuckThreshold], `@CCStuckThreshold`, `1`]]}
+				DoExpr {setpvar[HBStuckThreshold, ifthen[testpvar[HBStuckThreshold], `@HBStuckThreshold`, `1`]]}
 
 				~~ Distance away a character must be to announce stuck
-				DoExpr {setpvar[CCStuckDistanceThreshold, ifthen[testpvar[CCStuckDistanceThreshold], `@CCStuckDistanceThreshold`, `20`]]}
+				DoExpr {setpvar[HBStuckDistanceThreshold, ifthen[testpvar[HBStuckDistanceThreshold], `@HBStuckDistanceThreshold`, `20`]]}
 
-				~~ Leader to announce things to. Defaults to first character in @CCCharacterList and will update when follow commands are issued
-				DoExpr {setpvar[CCLeader, ifthen[testpvar[CCLeader], `@CCLeader`, `listgetitem[@CCCharacterList, 0]`]]}
+				~~ Leader to announce things to. Defaults to first character in @HBCharacterList and will update when follow commands are issued
+				DoExpr {setpvar[HBLeader, ifthen[testpvar[HBLeader], `@HBLeader`, `listgetitem[@HBCharacterList, 0]`]]}
 
 				~~ Distance to use the nearest Portal
-				DoExpr {setpvar[CCPortalThreshold, ifthen[testpvar[CCPortalThreshold], `@CCPortalThreshold`, `30`]]}
+				DoExpr {setpvar[HBPortalThreshold, ifthen[testpvar[HBPortalThreshold], `@HBPortalThreshold`, `30`]]}
 
 				~~ Distance to use the nearest NPC
-				DoExpr {setpvar[CCNPCThreshold, ifthen[testpvar[CCNPCThreshold], `@CCNPCThreshold`, `30`]]}
+				DoExpr {setpvar[HBNPCThreshold, ifthen[testpvar[HBNPCThreshold], `@HBNPCThreshold`, `30`]]}
 
 				~~ Distance the leader needs to be within to leave LeaderCheck
-				DoExpr {setpvar[CCLeaderCheckDistance, ifthen[testpvar[CCLeaderCheckDistance], `@CCLeaderCheckDistance`, `60`]]}
+				DoExpr {setpvar[HBLeaderCheckDistance, ifthen[testpvar[HBLeaderCheckDistance], `@HBLeaderCheckDistance`, `60`]]}
 
 				~~ Are vitals on or off
-				DoExpr {setpvar[CCVitals, ifthen[testpvar[CCVitals], `@CCVitals`, `true`]]}
+				DoExpr {setpvar[HBVitals, ifthen[testpvar[HBVitals], `@HBVitals`, `true`]]}
 
 				~~ Equip Item for handin
-				DoExpr {setpvar[CCEquipOnTurnin, ifthen[testpvar[CCEquipOnTurnin], `@CCEquipOnTurnin`, `false`]]}
+				DoExpr {setpvar[HBEquipOnTurnin, ifthen[testpvar[HBEquipOnTurnin], `@HBEquipOnTurnin`, `false`]]}
 
 				~~ Are the followers staying
-				DoExpr {setpvar[CCStay, ifthen[testpvar[CCStay], `@CCStay`, `true`]]}
+				DoExpr {setpvar[HBStay, ifthen[testpvar[HBStay], `@HBStay`, `true`]]}
 
 				~~ Announce VR Blue
-				DoExpr {setpvar[CCAnnounceVRBlue, ifthen[testpvar[CCAnnounceVRBlue], `@CCAnnounceVRBlue`, `true`]]}
+				DoExpr {setpvar[HBAnnounceVRBlue, ifthen[testpvar[HBAnnounceVRBlue], `@HBAnnounceVRBlue`, `true`]]}
 
 				~~ Use Rynthid Weapons Portal
-				DoExpr {setpvar[CCUseRynthidWeaponsPortal, ifthen[testpvar[CCUseRynthidWeaponsPortal], `@CCUseRynthidWeaponsPortal`, `true`]]}
+				DoExpr {setpvar[HBUseRynthidWeaponsPortal, ifthen[testpvar[HBUseRynthidWeaponsPortal], `@HBUseRynthidWeaponsPortal`, `true`]]}
 
 				~~ Distance to recruit nearby players with `#fellow nearby`
-				DoExpr {setpvar[CCFellowNearbyRecruitDistance, ifthen[testpvar[CCFellowNearbyRecruitDistance], `@CCFellowNearbyRecruitDistance`, `30`]]}
+				DoExpr {setpvar[HBFellowNearbyRecruitDistance, ifthen[testpvar[HBFellowNearbyRecruitDistance], `@HBFellowNearbyRecruitDistance`, `30`]]}
 
 				~~ Maximum fellowship size
-				DoExpr {setpvar[CCMaxFellowshipSize, ifthen[testpvar[CCMaxFellowshipSize], `@CCMaxFellowshipSize`, `9`]]}
+				DoExpr {setpvar[HBMaxFellowshipSize, ifthen[testpvar[HBMaxFellowshipSize], `@HBMaxFellowshipSize`, `9`]]}
 
 				~~ Use Auto Timers
-				DoExpr {setpvar[CCAutoTimers, ifthen[testpvar[CCAutoTimers], `@CCAutoTimers`, `true`]]}
+				DoExpr {setpvar[HBAutoTimers, ifthen[testpvar[HBAutoTimers], `@HBAutoTimers`, `true`]]}
 
 				~~ Metas (UB does not support dictionaries in pvars so using two lists instead)
-				DoExpr {setpvar[CCMetaKeys, ifthen[testpvar[CCMetaKeys], `@CCMetaKeys`, `listcreate[]`]]}
-				DoExpr {setpvar[CCMetaValues, ifthen[testpvar[CCMetaValues], `@CCMetaValues`, `listcreate[]`]]}
+				DoExpr {setpvar[HBMetaKeys, ifthen[testpvar[HBMetaKeys], `@HBMetaKeys`, `listcreate[]`]]}
+				DoExpr {setpvar[HBMetaValues, ifthen[testpvar[HBMetaValues], `@HBMetaValues`, `listcreate[]`]]}
 
 				~~ Profiles (UB does not support dictionaries in pvars so using two lists instead)
-				DoExpr {setpvar[CCProfileKeys, ifthen[testpvar[CCProfileKeys], `@CCProfileKeys`, `listcreate[]`]]}
-				DoExpr {setpvar[CCProfileValues, ifthen[testpvar[CCProfileValues], `@CCProfileValues`, `listcreate[]`]]}
+				DoExpr {setpvar[HBProfileKeys, ifthen[testpvar[HBProfileKeys], `@HBProfileKeys`, `listcreate[]`]]}
+				DoExpr {setpvar[HBProfileValues, ifthen[testpvar[HBProfileValues], `@HBProfileValues`, `listcreate[]`]]}
 
 				~~ Profiles landcells (UB does not support dictionaries in pvars so using two lists instead)
-				DoExpr {setpvar[CCProfileLandcellKeys, ifthen[testpvar[CCProfileLandcellKeys], `@CCProfileLandcellKeys`, `listcreate[]`]]}
-				DoExpr {setpvar[CCProfileLandcellValues, ifthen[testpvar[CCProfileLandcellValues], `@CCProfileLandcellValues`, `listcreate[]`]]}
+				DoExpr {setpvar[HBProfileLandcellKeys, ifthen[testpvar[HBProfileLandcellKeys], `@HBProfileLandcellKeys`, `listcreate[]`]]}
+				DoExpr {setpvar[HBProfileLandcellValues, ifthen[testpvar[HBProfileLandcellValues], `@HBProfileLandcellValues`, `listcreate[]`]]}
 
 				~~ Amount of time to surpress announcing available looting in seconds
-				DoExpr {setpvar[CCAnnounceLootingTimeout, ifthen[testpvar[CCAnnounceLootingTimeout], `@CCAnnounceLootingTimeout`, `60`]]}
+				DoExpr {setpvar[HBAnnounceLootingTimeout, ifthen[testpvar[HBAnnounceLootingTimeout], `@HBAnnounceLootingTimeout`, `60`]]}
 
 				~~ Amount of time to surpress announcing available giving in seconds
-				DoExpr {setpvar[CCAnnounceGivingTimeout, ifthen[testpvar[CCAnnounceGivingTimeout], `@CCAnnounceGivingTimeout`, `60`]]}
+				DoExpr {setpvar[HBAnnounceGivingTimeout, ifthen[testpvar[HBAnnounceGivingTimeout], `@HBAnnounceGivingTimeout`, `60`]]}
 
 				~~ Distance to an NPC to announce auto giving
-				DoExpr {setpvar[CCAnnounceThreshold, ifthen[testpvar[CCAnnounceThreshold], `@CCAnnounceThreshold`, `5`]]}
+				DoExpr {setpvar[HBAnnounceThreshold, ifthen[testpvar[HBAnnounceThreshold], `@HBAnnounceThreshold`, `5`]]}
 
 				~~ Spell to use to check time remaining on buffs. This cannot be a spell that is in your suit. Only self casted spells will give the correct time remaining.
-				DoExpr {setpvar[CCCheckBuffsSpell, ifthen[testpvar[CCCheckBuffsSpell], `@CCCheckBuffsSpell`, `Jumping Mastery Self`]]}
+				DoExpr {setpvar[HBCheckBuffsSpell, ifthen[testpvar[HBCheckBuffsSpell], `@HBCheckBuffsSpell`, `Jumping Mastery Self`]]}
 
 				~~ Amount of time left in buffs duration to warn about low buffs. Defaults to 30 minutes.
-				DoExpr {setpvar[CCWarnBuffsDuration, ifthen[testpvar[CCWarnBuffsDuration], `@CCWarnBuffsDuration`, `1800`]]}
+				DoExpr {setpvar[HBWarnBuffsDuration, ifthen[testpvar[HBWarnBuffsDuration], `@HBWarnBuffsDuration`, `1800`]]}
 
 				~~ Amount of time to surpress announcing when buffs are low
-				DoExpr {setpvar[CCAnnounceBuffsTimeout, ifthen[testpvar[CCAnnounceBuffsTimeout], `@CCAnnounceBuffsTimeout`, `300`]]}
+				DoExpr {setpvar[HBAnnounceBuffsTimeout, ifthen[testpvar[HBAnnounceBuffsTimeout], `@HBAnnounceBuffsTimeout`, `300`]]}
 
 				~~ Amount of luminance to warn when turning in
-				DoExpr {setpvar[CCWarnLuminance, ifthen[testpvar[CCWarnLuminance], `@CCWarnLuminance`, `1300000`]]}
+				DoExpr {setpvar[HBWarnLuminance, ifthen[testpvar[HBWarnLuminance], `@HBWarnLuminance`, `1300000`]]}
 
 				~~ Automatically start a timer for Rynthid Weapons wave one
-				DoExpr {setpvar[CCTimerWeapons, ifthen[testpvar[CCTimerWeapons], `@CCTimerWeapons`, `true`]]}
+				DoExpr {setpvar[HBTimerWeapons, ifthen[testpvar[HBTimerWeapons], `@HBTimerWeapons`, `true`]]}
 
 				~~ Message to send at the end of automatic Rynthid Weapons timer
-				DoExpr {setpvar[CCTimerWeaponsMsg, ifthen[testpvar[CCTimerWeaponsMsg], `@CCTimerWeaponsMsg`, `false`]]}
+				DoExpr {setpvar[HBTimerWeaponsMsg, ifthen[testpvar[HBTimerWeaponsMsg], `@HBTimerWeaponsMsg`, `false`]]}
 
 				~~ Automatically start a timer for VR Speed Runs
-				DoExpr {setpvar[CCTimerVR, ifthen[testpvar[CCTimerVR], `@CCTimerVR`, `true`]]}
+				DoExpr {setpvar[HBTimerVR, ifthen[testpvar[HBTimerVR], `@HBTimerVR`, `true`]]}
 
 				~~ Message to send at the end of automatic VR Speed Runs timer
-				DoExpr {setpvar[CCTimerVRMsg, ifthen[testpvar[CCTimerVRMsg], `@CCTimerVRMsg`, `false`]]}
+				DoExpr {setpvar[HBTimerVRMsg, ifthen[testpvar[HBTimerVRMsg], `@HBTimerVRMsg`, `false`]]}
 
 				~~ Distance to use nearest trash npc
-				DoExpr {setpvar[CCTrashDistance, ifthen[testpvar[CCTrashDistance], `@CCTrashDistance`, `15`]]}
+				DoExpr {setpvar[HBTrashDistance, ifthen[testpvar[HBTrashDistance], `@HBTrashDistance`, `15`]]}
 
 				~~ Distance away from `#jump on me` issuer to get when considering on them
-				DoExpr {setpvar[CCOnMeThreshold, ifthen[testpvar[CCOnMeThreshold], `@CCOnMeThreshold`, `0.1`]]}
+				DoExpr {setpvar[HBOnMeThreshold, ifthen[testpvar[HBOnMeThreshold], `@HBOnMeThreshold`, `0.1`]]}
 
 				~~ If the character should jump when looting
-				DoExpr {setpvar[CCJumpLoot, ifthen[testpvar[CCJumpLoot], `@CCJumpLoot`, `false`]]}
+				DoExpr {setpvar[HBJumpLoot, ifthen[testpvar[HBJumpLoot], `@HBJumpLoot`, `false`]]}
 
 				~~ Whether the Actions view is open or closed
-				DoExpr {setpvar[CCViewsActions, ifthen[testpvar[CCViewsActions], `@CCViewsActions`, `false`]]}
+				DoExpr {setpvar[HBViewsActions, ifthen[testpvar[HBViewsActions], `@HBViewsActions`, `false`]]}
 
 				~~ Whether the Jump view is open or closed
-				DoExpr {setpvar[CCViewsJump, ifthen[testpvar[CCViewsJump], `@CCViewsJump`, `false`]]}
+				DoExpr {setpvar[HBViewsJump, ifthen[testpvar[HBViewsJump], `@HBViewsJump`, `false`]]}
 
 
 				DoExpr {setvar[AutoTimers, listcreate[]]}
@@ -226,17 +226,17 @@ STATE: {Default} ~~ {
 
 				~~ Nav Routes
 				~~ Keys are landcells in hexidecimal format, values are the name of the nav file without the file extension
-				DoExpr {setvar[CCRoutes, dictcreate[]]}
-				DoExpr {dictadditem[$CCRoutes, `59540817`, `CC-Catacombs of Torment`]}
-				DoExpr {dictadditem[$CCRoutes, `002C029C`, `CC-Forgotten Chasm`]}
-				DoExpr {dictadditem[$CCRoutes, `472D0107`, `CC-Massilor's Crypt`]}
-				DoExpr {dictadditem[$CCRoutes, `00060100`, `CC-Western Power Forge`]}
-				DoExpr {dictadditem[$CCRoutes, `002E02D1`, `CC-Feeding Tube`]}
-				DoExpr {dictadditem[$CCRoutes, `5879052B`, `CC-Path of Rage`]}
-				DoExpr {dictadditem[$CCRoutes, `5E450372`, `CC-Black Death Catacombs`]}
-				DoExpr {dictadditem[$CCRoutes, `5652038A`, `CC-Halt Dericost Mnemosynes`]}
-				DoExpr {dictadditem[$CCRoutes, `56520245`, `CC-Halt Dericost`]}
-				DoExpr {dictadditem[$CCRoutes, `79E9033A`, `CC-Bloodstone Investigation 3`]}
+				DoExpr {setvar[HBRoutes, dictcreate[]]}
+				DoExpr {dictadditem[$HBRoutes, `59540817`, `HB-Catacombs of Torment`]}
+				DoExpr {dictadditem[$HBRoutes, `002C029C`, `HB-Forgotten Chasm`]}
+				DoExpr {dictadditem[$HBRoutes, `472D0107`, `HB-Massilor's Crypt`]}
+				DoExpr {dictadditem[$HBRoutes, `00060100`, `HB-Western Power Forge`]}
+				DoExpr {dictadditem[$HBRoutes, `002E02D1`, `HB-Feeding Tube`]}
+				DoExpr {dictadditem[$HBRoutes, `5879052B`, `HB-Path of Rage`]}
+				DoExpr {dictadditem[$HBRoutes, `5E450372`, `HB-Black Death Catacombs`]}
+				DoExpr {dictadditem[$HBRoutes, `5652038A`, `HB-Halt Dericost Mnemosynes`]}
+				DoExpr {dictadditem[$HBRoutes, `56520245`, `HB-Halt Dericost`]}
+				DoExpr {dictadditem[$HBRoutes, `79E9033A`, `HB-Bloodstone Investigation 3`]}
 
 	~~ Setup Auto Giving
 	IF: Always
@@ -397,8 +397,8 @@ STATE: {Default} ~~ {
 	IF: Always
 		DO:	CreateView {Main} {:CheCommand-Main.xml}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
-		DO:	DoExpr {echo[`[DEBUG] Che Command v`+$CCVersion+` by Che de Pa of Sundering`, $COLOR_DEBUG]}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
+		DO:	DoExpr {echo[`[DEBUG] Che Command v`+$HBVersion+` by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF: Always
 		DO: SetState {Init}
@@ -414,16 +414,16 @@ STATE: {Init} ~~ {
 	~~ Show Debug info about $MetaCallQueue
 	IF: All
 			Expr {listcount[$MetaCallQueue]>0}
-			Expr {$LEVEL_DEBUG>=@CCDebug}
+			Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[DEBUG] $MetaCallQueue => `+$MetaCallQueue, $COLOR_DEBUG]}
 
 	~~ Clear $MetaCallQueue if reset was used
-	IF: Expr {$CCReset==true}
+	IF: Expr {$HBReset==true}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Reset was called! Clearing queue\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Reset was called! Clearing queue\`, $COLOR_WARN]`, `false`]}
 				DoExpr {listclear[$MetaCallQueue]}
-				DoExpr {$CCReset=false}
+				DoExpr {$HBReset=false}
 
 	~~ Handle calling metas if there's some left in the queue
 	IF: Expr {listcount[$MetaCallQueue]>0}
@@ -440,25 +440,25 @@ STATE: {Init} ~~ {
 
 				DoExpr {setvar[BlueSeen, listcreate[]]}
 
-	~~ Enter Setup if `@CCCharacterList` or `@CCFellowname` is not set
+	~~ Enter Setup if `@HBCharacterList` or `@HBFellowname` is not set
 	IF: Any
-			Expr {listcount[@CCCharacterList]==0}
-			Expr {@CCFellowname==`Not Set`}
+			Expr {listcount[@HBCharacterList]==0}
+			Expr {@HBFellowname==`Not Set`}
 		DO: SetState {Setup}
 
 	~~ On initial startup display the characters that you will listen to
-	IF: Expr {testvar[CCStarted]==false}
+	IF: Expr {testvar[HBStarted]==false}
 		DO: DoAll
-				DoExpr {$CCStarted=true}
+				DoExpr {$HBStarted=true}
 				DoExpr {echo[`[DEBUG] I am setup and will listen to commands`, $COLOR_DEBUG]}
-				DoExpr {echo[`[DEBUG] I will listen to the following characters: `+@CCCharacterList, $COLOR_DEBUG]}
-				DoExpr {echo[`[DEBUG] I will create fellows with the name: `+@CCFellowname, $COLOR_DEBUG]}
+				DoExpr {echo[`[DEBUG] I will listen to the following characters: `+@HBCharacterList, $COLOR_DEBUG]}
+				DoExpr {echo[`[DEBUG] I will create fellows with the name: `+@HBFellowname, $COLOR_DEBUG]}
 
 	~~ Wait for Leader if supposed to be following
 	IF: All
 			Expr {listcount[$MetaCallQueue]==0}
-			Expr {@CCStay==false}
-			Expr {@CCLeader!=$CHARACTER_NAME}
+			Expr {@HBStay==false}
+			Expr {@HBLeader!=$CHARACTER_NAME}
 		DO: SetState {LeaderCheck}
 
 	IF: Always
@@ -500,8 +500,8 @@ STATE: {Setup} ~~ {
 				DoExpr {echo[`3) Issue the command #addchar Character Name for any additional characters who should listen to your commands.`, $COLOR_DEBUG]}
 				DoExpr {echo[`4) Issue the command #finish when done to restart in normal mode.`, $COLOR_DEBUG]}
 				DoExpr {echo[``, $COLOR_DEBUG]}
-				DoExpr {echo[`I will listen to the following characters: `+@CCCharacterList, $COLOR_DEBUG]}
-				DoExpr {echo[`I will create fellows with the name: `+@CCFellowname, $COLOR_DEBUG]}
+				DoExpr {echo[`I will listen to the following characters: `+@HBCharacterList, $COLOR_DEBUG]}
+				DoExpr {echo[`I will create fellows with the name: `+@HBFellowname, $COLOR_DEBUG]}
 
 	~~ Handle `#finish` for any character in ub netclients
 	IF:	All
@@ -511,7 +511,7 @@ STATE: {Setup} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[listmap[netclients[], `dictgetitem[$1, PlayerId]`], wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]]]}
 		DO: DoAll
-				DoExpr {ifthen[testpvar[CCLeader], `false`, `@CCLeader=listgetitem[@CCCharacterList, 0]`]}
+				DoExpr {ifthen[testpvar[HBLeader], `false`, `@HBLeader=listgetitem[@HBCharacterList, 0]`]}
 				Chat {/vt meta load CheCommand}
 
 	~~ Handle `#addfellow` for any character in ub netclients and a fellow is not formed
@@ -535,8 +535,8 @@ STATE: {Setup} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[listmap[netclients[], `dictgetitem[$1, PlayerId]`], wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]]]}
 		DO: DoAll
-				DoExpr {@CCCharacterList=getfellownames[]}
-				DoExpr {@CCFellowname=getfellowshipname[]}
+				DoExpr {@HBCharacterList=getfellownames[]}
+				DoExpr {@HBFellowname=getfellowshipname[]}
 				SetState {SetSetup}
 
 	~~ Handle `#addchar` for any character in ub netclients
@@ -547,7 +547,7 @@ STATE: {Setup} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[listmap[netclients[], `dictgetitem[$1, PlayerId]`], wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]]]}
 		DO: DoAll
-				DoExpr {listadd[@CCCharacterList, $capturegroup_name]}
+				DoExpr {listadd[@HBCharacterList, $capturegroup_name]}
 				DoExpr {clearvar[$capturegroup_name]}
 				SetState {SetSetup}
 
@@ -559,8 +559,8 @@ STATE: {Setup} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[listmap[netclients[], `dictgetitem[$1, PlayerId]`], wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]]]}
 		DO: DoAll
-				DoExpr {echo[`[INFO] Removing `+listgetitem[@CCCharacterList, cnumber[$capturegroup_position]]+` from Character List.`, $COLOR_INFO]}
-				DoExpr {listremoveat[@CCCharacterList, cnumber[$capturegroup_position]]}
+				DoExpr {echo[`[INFO] Removing `+listgetitem[@HBCharacterList, cnumber[$capturegroup_position]]+` from Character List.`, $COLOR_INFO]}
+				DoExpr {listremoveat[@HBCharacterList, cnumber[$capturegroup_position]]}
 				DoExpr {clearvar[$capturegroup_position]}
 				SetState {SetSetup}
 
@@ -598,45 +598,45 @@ STATE: {SetSetup} ~~ {
 	~~ Set all the buttons with the names of the profiles
 	IF: Always
 		DO: DoAll
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter1], ifthen[listcount[@CCCharacterList]>=1+$CharacterOffset, `@CCCharacterList{{0+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter2], ifthen[listcount[@CCCharacterList]>=2+$CharacterOffset, `@CCCharacterList{{1+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter3], ifthen[listcount[@CCCharacterList]>=3+$CharacterOffset, `@CCCharacterList{{2+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter4], ifthen[listcount[@CCCharacterList]>=4+$CharacterOffset, `@CCCharacterList{{3+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter5], ifthen[listcount[@CCCharacterList]>=5+$CharacterOffset, `@CCCharacterList{{4+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter6], ifthen[listcount[@CCCharacterList]>=6+$CharacterOffset, `@CCCharacterList{{5+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter7], ifthen[listcount[@CCCharacterList]>=7+$CharacterOffset, `@CCCharacterList{{6+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter8], ifthen[listcount[@CCCharacterList]>=8+$CharacterOffset, `@CCCharacterList{{7+$CharacterOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter9], ifthen[listcount[@CCCharacterList]>=9+$CharacterOffset, `@CCCharacterList{{8+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter1], ifthen[listcount[@HBCharacterList]>=1+$CharacterOffset, `@HBCharacterList{{0+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter2], ifthen[listcount[@HBCharacterList]>=2+$CharacterOffset, `@HBCharacterList{{1+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter3], ifthen[listcount[@HBCharacterList]>=3+$CharacterOffset, `@HBCharacterList{{2+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter4], ifthen[listcount[@HBCharacterList]>=4+$CharacterOffset, `@HBCharacterList{{3+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter5], ifthen[listcount[@HBCharacterList]>=5+$CharacterOffset, `@HBCharacterList{{4+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter6], ifthen[listcount[@HBCharacterList]>=6+$CharacterOffset, `@HBCharacterList{{5+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter7], ifthen[listcount[@HBCharacterList]>=7+$CharacterOffset, `@HBCharacterList{{6+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter8], ifthen[listcount[@HBCharacterList]>=8+$CharacterOffset, `@HBCharacterList{{7+$CharacterOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Setup, btnCharacter9], ifthen[listcount[@HBCharacterList]>=9+$CharacterOffset, `@HBCharacterList{{8+$CharacterOffset}}`, `empty`]]}
 
 	~~ Hide the empty buttons
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[listcount[@CCCharacterList]>=1+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter1], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=2+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter2], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=3+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter3], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=4+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter4], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=5+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter5], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=6+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter6], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=7+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter7], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=8+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter8], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=9+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter9], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=1+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter1], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=2+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter2], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=3+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter3], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=4+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter4], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=5+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter5], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=6+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter6], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=7+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter7], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=8+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter8], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=9+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter9], 0]`]}
 
-				DoExpr {ifthen[listcount[@CCCharacterList]>=1+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter1-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=2+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter2-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=3+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter3-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=4+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter4-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=5+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter5-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=6+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter6-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=7+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter7-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=8+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter8-delete], 0]`]}
-				DoExpr {ifthen[listcount[@CCCharacterList]>=9+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter9-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=1+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter1-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=2+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter2-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=3+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter3-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=4+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter4-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=5+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter5-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=6+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter6-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=7+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter7-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=8+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter8-delete], 0]`]}
+				DoExpr {ifthen[listcount[@HBCharacterList]>=9+$CharacterOffset, `false`, `uisetvisible[uigetcontrol[Setup, btnCharacter9-delete], 0]`]}
 
 	~~ Hide the Previous button if you can't go back
 	IF: Expr {$CharacterOffset<=0}
 		DO: DoExpr {uisetvisible[uigetcontrol[Setup, btnPrevious], 0]}
 
 	~~ Hide the Next button if you can't go foward
-	IF: Expr {listcount[@CCCharacterList]<=9+$CharacterOffset}
+	IF: Expr {listcount[@HBCharacterList]<=9+$CharacterOffset}
 		DO: DoExpr {uisetvisible[uigetcontrol[Setup, btnNext], 0]}
 
 	~~ Return to Setup
@@ -676,28 +676,28 @@ STATE: {Idle} ~~ {
 
 	~~ Announce if stuck
 	IF: All
-			Expr {@CCStay==false} ~~ Characters are following
-			Expr {@CCLeader!=$CHARACTER_NAME} ~~ Not the leader
+			Expr {@HBStay==false} ~~ Characters are following
+			Expr {@HBLeader!=$CHARACTER_NAME} ~~ Not the leader
 			Expr {getobjectinternaltype[$leaderObj]==$TYPE_OBJECT} ~~ Leader exists
-			Expr {stopwatchelapsedseconds[$StuckTimer]>=@CCStuckAnnounceDelay} ~~ Announce when the $StuckTimer is above the delay
-			Expr {coordinatedistancewithz[$InitialPosition, getplayercoordinates[]]<=@CCStuckThreshold} ~~ Character has not moved past the threshold
+			Expr {stopwatchelapsedseconds[$StuckTimer]>=@HBStuckAnnounceDelay} ~~ Announce when the $StuckTimer is above the delay
+			Expr {coordinatedistancewithz[$InitialPosition, getplayercoordinates[]]<=@HBStuckThreshold} ~~ Character has not moved past the threshold
 			Expr {getmotion[Forward]!=0} ~~ Character is moving
 			Expr {isportaling[]==false} ~~ Character is not portaling
 			Expr {$finalDistance=coordinatedistancewithz[wobjectgetphysicscoordinates[$leaderObj], getplayercoordinates[]]} ~~ Set $finalDistance
-			Expr {$finalDistance>=@CCStuckDistanceThreshold} ~~ The distance to the leader is greater than the threshold
+			Expr {$finalDistance>=@HBStuckDistanceThreshold} ~~ The distance to the leader is greater than the threshold
 			Not Expr {$finalDistance>1000} ~~ The leader hasn't portaled away
 		DO: DoAll
-				ChatExpr {`/t `+@CCLeader+`, I am stuck and you are `+floor[$finalDistance]+` meters away!`}
+				ChatExpr {`/t `+@HBLeader+`, I am stuck and you are `+floor[$finalDistance]+` meters away!`}
 				~~ ChatExpr {`/f InitialDistance: `+floor[$finalDistance]}
 				~~ ChatExpr {`/f finalDistance: `+floor[$finalDistance]}
 				SetState {Idle}
 
 	~~ Restart stuck stopwatch
 	IF: All
-			Expr {@CCLeader!=$CHARACTER_NAME}
+			Expr {@HBLeader!=$CHARACTER_NAME}
 			Expr {stopwatchelapsedseconds[$StuckTimer]>=5}
 		DO: DoAll
-				DoExpr {$leaderObj=wobjectfindnearestbynameandobjectclass[$PLAYER, @CCLeader]}
+				DoExpr {$leaderObj=wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]}
 				DoExpr {setvar[StuckTimer, stopwatchstart[stopwatchcreate[]]]}
 				~~ DoExpr {$InitialDistance=coordinatedistancewithz[wobjectgetphysicscoordinates[$leaderObj], getplayercoordinates[]]}
 				DoExpr {$InitialPosition=getplayercoordinates[]}
@@ -711,7 +711,7 @@ STATE: {Idle} ~~ {
 
 	~~ Find nearest Blue
 	IF: All
-			Expr {@CCAnnounceVRBlue==true}
+			Expr {@HBAnnounceVRBlue==true}
 			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]}
 			Not Expr {listcontains[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 		DO: DoAll
@@ -728,7 +728,7 @@ STATE: {Idle} ~~ {
 	~~ Start stopwatch when Rynthid Weapons greentext appears
 	IF: All
 			CellE 2D310025  ~~ Next to Rynthid Weapons Portal
-			Expr {@CCUseRynthidWeaponsPortal==true}
+			Expr {@HBUseRynthidWeaponsPortal==true}
 			ChatMatch {^With the last of the Warding Crystals shattered}
 		DO: DoAll
 				DoExpr {setvar[RynthidPortalWait, stopwatchstart[stopwatchcreate[]]]}
@@ -737,18 +737,18 @@ STATE: {Idle} ~~ {
 	~~ Use Rynthid Weapons portal after the stopwatch expires
 	IF: All
 			CellE 2D310025  ~~ Next to Rynthid Weapons Portal
-			Expr {@CCUseRynthidWeaponsPortal==true}
+			Expr {@HBUseRynthidWeaponsPortal==true}
 			Expr {testvar[RynthidPortalWait]!=0}
 			Expr {stopwatchelapsedseconds[$RynthidPortalWait]>=10}
 			Expr {wobjectfindnearestbytemplatetype[$RYNTHID_WEAPONS_PORTAL]!=0}
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbytemplatetype[$RYNTHID_WEAPONS_PORTAL]], getplayercoordinates[]]<=@CCPortalThreshold}
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbytemplatetype[$RYNTHID_WEAPONS_PORTAL]], getplayercoordinates[]]<=@HBPortalThreshold}
 		DO: DoAll
 				DoExpr {clearvar[RynthidPortalWait]}
 				SetState {UsePortal}
 
 	~~ Clear Rynthid Weapons stopwatch if not within range
 	IF: All
-			Expr {@CCUseRynthidWeaponsPortal==true}
+			Expr {@HBUseRynthidWeaponsPortal==true}
 			Expr {testvar[RynthidPortalWait]!=0}
 			Expr {stopwatchelapsedseconds[$RynthidPortalWait]>=15}
 			Expr {wobjectfindnearestbytemplatetype[$RYNTHID_WEAPONS_PORTAL]==0}
@@ -758,7 +758,7 @@ STATE: {Idle} ~~ {
 
 	~~ Handle Auto Timers
 	IF: All
-			Expr {@CCAutoTimers==true}
+			Expr {@HBAutoTimers==true}
 			Expr {$FoundTimers=listfilter[$AutoTimers, `cnumber[getdatetimelocal[hh]]==$1{{0}}&&cnumber[getdatetimelocal[mm]]==$1{{1}}&&cnumber[getdatetimelocal[ss]]==$1{{2}}&&getdatetimelocal[tt]==$1{{3}}`]}
 			Expr {listcount[$FoundTimers]>0}
 		DO: SetState {HandleAutoTimers}
@@ -766,7 +766,7 @@ STATE: {Idle} ~~ {
 	~~ Display message if route is available
 	IF: All
 			ExitPortal
-			Expr {listcount[listfilter[dictkeys[$CCRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]>0}
+			Expr {listcount[listfilter[dictkeys[$HBRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]>0}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Available route found!`, $COLOR_INFO]}
 				SetState {Idle}
@@ -774,7 +774,7 @@ STATE: {Idle} ~~ {
 	~~ Display message if profile is available
 	IF: All
 			ExitPortal
-			Expr {listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]!=-1}
+			Expr {listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]!=-1}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Available profile found!`, $COLOR_INFO]}
 				SetState {Idle}
@@ -791,7 +791,7 @@ STATE: {Idle} ~~ {
 	~~ Clear $PreventAnnounceLooting stopwatch after timeout to re-enable announcements for when looting is available
 	IF: All
 			Expr {testvar[PreventAnnounceLooting]==true}
-			Expr {stopwatchelapsedseconds[$PreventAnnounceLooting]>=@CCAnnounceLootingTimeout}
+			Expr {stopwatchelapsedseconds[$PreventAnnounceLooting]>=@HBAnnounceLootingTimeout}
 		DO: DoAll
 				DoExpr {clearvar[PreventAnnounceLooting]}
 				SetState {Idle}
@@ -800,7 +800,7 @@ STATE: {Idle} ~~ {
 	IF: All
 			Expr {testvar[PreventAnnounceGiving]==false}
 			Expr {getobjectinternaltype[wobjectfindnearestbyobjectclass[$NPC]]==$TYPE_OBJECT}
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]<=@CCAnnounceThreshold}
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]<=@HBAnnounceThreshold}
 			Expr {dicthaskey[$AUTOGIVE_PROFILE, wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]}
 		DO: DoAll
 				DoExpr {echo[`[INFO] Auto giving is available!`, $COLOR_INFO]}
@@ -810,7 +810,7 @@ STATE: {Idle} ~~ {
 	~~ Clear $PreventAnnounceGiving stopwatch after timeout to re-enable announcements for when giving is available
 	IF: All
 			Expr {testvar[PreventAnnounceGiving]==true}
-			Expr {stopwatchelapsedseconds[$PreventAnnounceGiving]>=@CCAnnounceGivingTimeout}
+			Expr {stopwatchelapsedseconds[$PreventAnnounceGiving]>=@HBAnnounceGivingTimeout}
 		DO: DoAll
 				DoExpr {clearvar[PreventAnnounceGiving]}
 				SetState {Idle}
@@ -818,16 +818,16 @@ STATE: {Idle} ~~ {
 	~~ Display message if buffs are low
 	IF: All
 			Expr {testvar[PreventAnnounceBuffs]==false}
-			Expr {getspellexpirationbyname[@CCCheckBuffsSpell]<=@CCWarnBuffsDuration}
+			Expr {getspellexpirationbyname[@HBCheckBuffsSpell]<=@HBWarnBuffsDuration}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, My buffs are low!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, My buffs are low!\`]`, `false`]}
 				DoExpr {setvar[PreventAnnounceBuffs, stopwatchstart[stopwatchcreate[]]]}
 				SetState {Idle}
 
 	~~ Clear $PreventAnnounceBuff stopwatch after timeout to re-enable announcements for when buffs are running low
 	IF: All
 			Expr {testvar[PreventAnnounceBuffs]==true}
-			Expr {stopwatchelapsedseconds[$PreventAnnounceBuffs]>=@CCAnnounceBuffsTimeout}
+			Expr {stopwatchelapsedseconds[$PreventAnnounceBuffs]>=@HBAnnounceBuffsTimeout}
 		DO: DoAll
 				DoExpr {clearvar[PreventAnnounceBuffs]}
 				SetState {Idle}
@@ -835,57 +835,57 @@ STATE: {Idle} ~~ {
 	~~ Display message if near luminance cap
 	IF: All
 			ChatMatch {^You've earned ([\d,]+) Luminance.$}
-			Expr {getcharquadprop[6]>=@CCWarnLuminance}
+			Expr {getcharquadprop[6]>=@HBWarnLuminance}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I am near my luminance cap!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I am near my luminance cap!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Display message if receiving a Chorizite Threaded Pack Token
 	IF: ChatMatch {(?:Lord Kresovus|Neelic|Raksaa|Sergeant Trebuus) gives you Chorizite Threaded Pack Token}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I received a Chorizite Threaded Pack Token!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I received a Chorizite Threaded Pack Token!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Start a timer for Rynthid Weapons wave one
 	IF: All
-			Expr {@CCTimerWeapons==true}
+			Expr {@HBTimerWeapons==true}
 			ChatMatch {^A voice echos in your mind, "So, you've worked so hard to find me. You've interrupted my experiments and you've interfered with my plans.}
 		DO: DoAll
-				DoExpr {$CCTimerAmount=310}
-				DoExpr {$CCTimerMsg=@CCTimerWeaponsMsg}
-				DoExpr {setvar[CCTimer, stopwatchstart[stopwatchcreate[]]]}
+				DoExpr {$HBTimerAmount=310}
+				DoExpr {$HBTimerMsg=@HBTimerWeaponsMsg}
+				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:CheCommand-Timer.xml}
 				SetState {Idle}
 
 	~~ Start a timer for VR Speed runs
 	IF: All
-			Expr {@CCTimerVR==true}
+			Expr {@HBTimerVR==true}
 			ChatMatch {The leader of your fellowship has paid the 100 Infused Amber Shards, let us begin}
 		DO: DoAll
-				DoExpr {$CCTimerAmount=60*30}
-				DoExpr {$CCTimerMsg=@CCTimerVRMsg}
-				DoExpr {setvar[CCTimer, stopwatchstart[stopwatchcreate[]]]}
+				DoExpr {$HBTimerAmount=60*30}
+				DoExpr {$HBTimerMsg=@HBTimerVRMsg}
+				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:CheCommand-Timer.xml}
 				SetState {Idle}
 
 	~~ Handle timer message
 	IF: All
-			Expr {testvar[CCTimer]!=false}
-			Expr {testvar[CCTimerMsg]!=false}
-			Expr {getobjectinternaltype[$CCTimerMsg]==$TYPE_STRING}
-			Expr {$CCTimerAmount-stopwatchelapsedseconds[$CCTimer]<=0}
+			Expr {testvar[HBTimer]!=false}
+			Expr {testvar[HBTimerMsg]!=false}
+			Expr {getobjectinternaltype[$HBTimerMsg]==$TYPE_STRING}
+			Expr {$HBTimerAmount-stopwatchelapsedseconds[$HBTimer]<=0}
 		DO: DoAll
-				ChatExpr {$CCTimerMsg}
+				ChatExpr {$HBTimerMsg}
 				SetState {Idle}
 
 	~~ Handle timer going off
 	IF: All
-			Expr {testvar[CCTimer]!=false}
-			Expr {$CCTimerAmount-stopwatchelapsedseconds[$CCTimer]<=0}
+			Expr {testvar[HBTimer]!=false}
+			Expr {$HBTimerAmount-stopwatchelapsedseconds[$HBTimer]<=0}
 		DO: DoAll
-				DoExpr {clearvar[CCTimer]}
-				DoExpr {clearvar[CCTimerAmount]}
-				DoExpr {clearvar[CCTimerMsg]}
+				DoExpr {clearvar[HBTimer]}
+				DoExpr {clearvar[HBTimerAmount]}
+				DoExpr {clearvar[HBTimerMsg]}
 				DoExpr {echo[`[INFO] ==============`, $COLOR_INFO]}
 				DoExpr {echo[`[INFO] Timer is done!`, $COLOR_INFO]}
 				DoExpr {echo[`[INFO] ==============`, $COLOR_INFO]}
@@ -908,7 +908,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleActions}
 
 	~~ Handle `#fellow add`
@@ -917,7 +917,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {FellowAdd}
 
 	~~ Handle Fellows
@@ -926,7 +926,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleFellow}
 
 	~~ Handle Navigation
@@ -935,7 +935,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleNavigation}
 
 	~~ Handle Quests
@@ -944,7 +944,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleQuests}
 
 	~~ Handle Routes
@@ -953,7 +953,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleRoute}
 
 	~~ Load Profiles
@@ -962,7 +962,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {AutoloadProfile}
 
 	~~ Handle `#profile add`
@@ -971,7 +971,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {ProfileAdd}
 
 	~~ Handle `#profile addlandcell`
@@ -980,7 +980,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {ProfileAddLandcell}
 
 	~~ Handle `#profile load`
@@ -989,7 +989,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {ProfileLoad}
 
 	~~ Handle Profiles
@@ -998,7 +998,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleProfile}
 
 	~~ Handle `#meta load`
@@ -1007,7 +1007,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {MetaLoad}
 
 	~~ Handle `#meta remove`
@@ -1016,7 +1016,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {MetaRemove}
 
 	~~ Handle `#meta add`
@@ -1025,7 +1025,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {MetaAdd}
 
 	~~ Handle Metas
@@ -1034,7 +1034,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleMetas}
 
 	~~ Handle Killtasks
@@ -1043,7 +1043,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleKilltask}
 
 	~~ Handle Auto Looting
@@ -1052,7 +1052,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {AutoLoot}
 
 	~~ Handle Looting
@@ -1061,7 +1061,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleLooting}
 
 	~~ Handle Looting Info
@@ -1070,7 +1070,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleLootingInfo}
 
 	~~ Handle Facing a direction
@@ -1079,7 +1079,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleFace}
 
 	~~ Handle Jumping text
@@ -1088,7 +1088,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleJumping}
 
 	~~ Handle Picking up items
@@ -1097,7 +1097,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandlePickup}
 
 	~~ Handle Auto Giving items
@@ -1106,7 +1106,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {AutoGive}
 
 	~~ Handle Giving items
@@ -1115,7 +1115,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleGive}
 
 	~~ Handle Trashing items
@@ -1124,7 +1124,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleTrash}
 
 	~~ Handle Passing items
@@ -1133,7 +1133,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandlePass}
 
 	~~ Handle Use
@@ -1142,7 +1142,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleUse}
 
 	~~ Handle Checking
@@ -1151,7 +1151,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleCheck}
 
 	~~ Handle Counting
@@ -1160,7 +1160,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleCount}
 
 	~~ Handle Timers
@@ -1169,7 +1169,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleTimers}
 
 	~~ Handle VTank Options
@@ -1178,7 +1178,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: DoAll
 				ChatExpr {`/vt opt set `+$capturegroup_optiontext}
 				SetState {Idle}
@@ -1189,7 +1189,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: DoAll
 				ChatExpr {$capturegroup_echotext}
 				SetState {Idle}
@@ -1197,7 +1197,7 @@ STATE: {Idle} ~~ {
 	~~ Handle Version
 	IF: ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#version\"$} {}
 		DO: DoAll
-				DoExpr {chatbox[`/t `+$capturegroup_name+`, CheCommand `+$CCVersion]}
+				DoExpr {chatbox[`/t `+$capturegroup_name+`, CheCommand `+$HBVersion]}
 				SetState {Idle}
 
 	~~ Cast the Focusing Stones's Brillence on a player for the issuer of the command
@@ -1207,7 +1207,7 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {Brill}
 
 	~~ Cast the Royal Bouquet's Blessing on a player for the issuer of the command
@@ -1217,15 +1217,15 @@ STATE: {Idle} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {Blessing}
 
 	~~ Update Timer countdown original
 	~~ IF: All
-	~~ 		Expr {testvar[CCTimer]!=false}
+	~~ 		Expr {testvar[HBTimer]!=false}
 	~~ 		Expr {uiviewvisible[Timer]}
 	~~ 	DO: DoAll
-	~~ 			DoExpr {$total_seconds=$CCTimerAmount-stopwatchelapsedseconds[$CCTimer]}
+	~~ 			DoExpr {$total_seconds=$HBTimerAmount-stopwatchelapsedseconds[$HBTimer]}
 	~~ 			DoExpr {$hours=floor[$total_seconds/3600]}
 	~~ 			DoExpr {$remaining_seconds=$total_seconds%3600}
 	~~ 			DoExpr {$minutes=floor[$remaining_seconds/60]}
@@ -1235,9 +1235,9 @@ STATE: {Idle} ~~ {
 
 	~~ Update Timer countdown left hand side
 	IF: All
-			Expr {testvar[CCTimer]!=false}
+			Expr {testvar[HBTimer]!=false}
 			Expr {uiviewvisible[Timer]}
-			Expr {$total_seconds=$CCTimerAmount-stopwatchelapsedseconds[$CCTimer]}
+			Expr {$total_seconds=$HBTimerAmount-stopwatchelapsedseconds[$HBTimer]}
 			Expr {uisetlabel[uigetcontrol[Timer, Timer], cstrf[floor[$total_seconds%3600/60], `00`]+`:`+cstrf[$total_seconds%3600%60, `00`]]}
 			Never
 		DO: None
@@ -1267,7 +1267,7 @@ STATE: {CallMeta} ~~ {
 	IF: Expr {listcount[$MetaCallQueue]>0}
 		DO: DoAll
 				DoExpr {$meta=listpop[$MetaCallQueue, 0]}
-				DoExpr {$CCReturnMeta=`CheCommand`}
+				DoExpr {$HBReturnMeta=`CheCommand`}
 				ChatExpr {`/vt meta load `+$meta}
 
 ~~ }
@@ -1297,7 +1297,7 @@ STATE: {HandleActions} ~~ {
 	IF: Expr {(stay)#getvar[capturegroup_actiontext]}
 		DO:	DoAll
 				EmbedNav Empty {[None]}
-				DoExpr {@CCStay=true}
+				DoExpr {@HBStay=true}
 				SetState {Idle}
 
 	~~ Handle `#action follow` for followers
@@ -1307,8 +1307,8 @@ STATE: {HandleActions} ~~ {
 		DO:	DoAll
 				SetOpt {NavPriorityBoost} {true}
 				ChatExpr {`/ub follow `+$capturegroup_name}
-				DoExpr {@CCLeader=$capturegroup_name}
-				DoExpr {@CCStay=false}
+				DoExpr {@HBLeader=$capturegroup_name}
+				DoExpr {@HBStay=false}
 				SetState {Idle}
 
 	~~ Handle `#action follow` for person who issued command
@@ -1317,8 +1317,8 @@ STATE: {HandleActions} ~~ {
 			Expr {$capturegroup_name==false}
 		DO:	DoAll
 				EmbedNav Empty {[None]}
-				DoExpr {@CCLeader=$CHARACTER_NAME}
-				DoExpr {@CCStay=false}
+				DoExpr {@HBLeader=$CHARACTER_NAME}
+				DoExpr {@HBStay=false}
 				SetState {Idle}
 
 	~~ Handle `#action contracts`
@@ -1372,7 +1372,7 @@ STATE: {HandleActions} ~~ {
 		DO: SetState {UseVendor}
 
 	~~ Handle no match for actiontext
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching action for #action`, $COLOR_WARN]}
 				SetState {Idle}
@@ -1485,43 +1485,43 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto colosseum`
 	IF: Expr {(colosseum)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=4213} ~~ Colosseum Recall
+				DoExpr {$HBRecallSpell=4213} ~~ Colosseum Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto facility hub`
 	IF: Expr {(facility hub)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=5175} ~~ Facility Hub Recall
+				DoExpr {$HBRecallSpell=5175} ~~ Facility Hub Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto glenden wood`
 	IF: Expr {(glenden wood)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=3865} ~~ Glenden Wood Recall
+				DoExpr {$HBRecallSpell=3865} ~~ Glenden Wood Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto ulgrims`
 	IF: Expr {(ulgrims)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2941} ~~ Ulgrim's Recall
+				DoExpr {$HBRecallSpell=2941} ~~ Ulgrim's Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto candeth`
 	IF: Expr {(candeth)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=4214} ~~ Candeth's Keep Recall
+				DoExpr {$HBRecallSpell=4214} ~~ Candeth's Keep Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto bur`
 	IF: Expr {(bur)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=4084} ~~ Bur Recall
+				DoExpr {$HBRecallSpell=4084} ~~ Bur Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto mount lethe`
 	IF: Expr {(mount lethe)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2813} ~~ Mount Lethe Recall
+				DoExpr {$HBRecallSpell=2813} ~~ Mount Lethe Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto couch`
@@ -1534,27 +1534,27 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(asherons castle)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavPortalspaceActivator`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `AsheronsCastle`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `AsheronsCastle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto frozen valley`
 	IF: Expr {(frozen valley)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavPortalspaceActivator`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto hoshino`
 	IF: Expr {(hoshino)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavPortalspaceActivator`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto graveyard`
 	IF: Expr {(graveyard)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=4128} ~~ Call of the Mhoire Forge
+				DoExpr {$HBRecallSpell=4128} ~~ Call of the Mhoire Forge
 				SetState {HandleRecall}
 
 	~~ Handle `#navto neftet`
@@ -1566,91 +1566,91 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto singularity caul`
 	IF: Expr {(singularity caul)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2943} ~~ Recall to the Singularity Caul
+				DoExpr {$HBRecallSpell=2943} ~~ Recall to the Singularity Caul
 				SetState {HandleRecall}
 
 	~~ Handle `#navto rynthid`
 	IF: Expr {(rynthid)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=6150} ~~ Rynthid Recall
+				DoExpr {$HBRecallSpell=6150} ~~ Rynthid Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto olthoi`
 	IF: Expr {(olthoi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=4198} ~~ Olthoi North Recall
+				DoExpr {$HBRecallSpell=4198} ~~ Olthoi North Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto viridian rise`
 	IF: Expr {(viridian rise)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=6321} ~~ Viridian Rise Recall
+				DoExpr {$HBRecallSpell=6321} ~~ Viridian Rise Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto viridian rise tree`
 	IF: Expr {(viridian rise tree)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=6322} ~~ Viridian Rise Tree Recall
+				DoExpr {$HBRecallSpell=6322} ~~ Viridian Rise Tree Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto gearknight`
 	IF: Expr {(gear knight)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=5330} ~~ Gear Knight Invasion Area Camp Recall
+				DoExpr {$HBRecallSpell=5330} ~~ Gear Knight Invasion Area Camp Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto aphus lassel`
 	IF: Expr {(aphus lassel)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2931} ~~ Recall Aphus Lassel
+				DoExpr {$HBRecallSpell=2931} ~~ Recall Aphus Lassel
 				SetState {HandleRecall}
 
 	~~ Handle `#navto aerlinthe`
 	IF: Expr {$capturegroup_navdestination==`aerlinthe`}  ~~ Prevent aerlinthe from eating Lin destination
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2041} ~~ Aerlinthe Recall
+				DoExpr {$HBRecallSpell=2041} ~~ Aerlinthe Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto sanctuary`
 	IF: Expr {(sanctuary)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2023} ~~ Recall Sanctuary
+				DoExpr {$HBRecallSpell=2023} ~~ Recall Sanctuary
 				SetState {HandleRecall}
 
 	~~ Handle `#navto gear knight`
 	IF: Expr {(gear knight)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=5330} ~~ Gear Knight Invasion Area Camp Recall
+				DoExpr {$HBRecallSpell=5330} ~~ Gear Knight Invasion Area Camp Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto lifestone`
 	IF: Expr {(lifestone)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=1636} ~~ Lifestone Sending
+				DoExpr {$HBRecallSpell=1636} ~~ Lifestone Sending
 				SetState {HandleRecall}
 
 	~~ Handle `#navto lifestone recall`
 	IF: Expr {(lifestone recall)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=1635} ~~ Lifestone recall
+				DoExpr {$HBRecallSpell=1635} ~~ Lifestone recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto portal recall`
 	IF: Expr {(portal recall)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2645} ~~ Portal Recall
+				DoExpr {$HBRecallSpell=2645} ~~ Portal Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto primary`
 	IF: Expr {(primary)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=48} ~~ Primary Portal Recall
+				DoExpr {$HBRecallSpell=48} ~~ Primary Portal Recall
 				SetState {HandleRecall}
 
 	~~ Handle `#navto secondary`
 	IF: Expr {(secondary)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2647} ~~ Secondary Portal Recall
+				DoExpr {$HBRecallSpell=2647} ~~ Secondary Portal Recall
 				SetState {HandleRecall}
 
 
@@ -1661,98 +1661,98 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(ahurenga)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Ahurenga`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Ahurenga`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto bluespire`
 	IF: Expr {(bluespire)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Bluespire`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Bluespire`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto danbys outpost`
 	IF: Expr {(danbys outpost)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Danby's Outpost`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Danby's Outpost`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto eastwatch`
 	IF: Expr {(eastwatch)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Eastwatch`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Eastwatch`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto fiun outpost`
 	IF: Expr {(fiun outpost)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto greenspire`
 	IF: Expr {(greenspire)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Greenspire`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Greenspire`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto linvak tukal`
 	IF: Expr {$capturegroup_navdestination==`linvak tukal`}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Linvak Tukal`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Linvak Tukal`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto neydisa castle`
 	IF: Expr {(neydisa castle)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Neydisa Castle`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Neydisa Castle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto oolutangas refuge`
 	IF: Expr {(oolutangas refuge)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Oolutanga's Refuge`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Oolutanga's Refuge`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto redspire`
 	IF: Expr {(redspire)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Redspire`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Redspire`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto sanamar`
 	IF: Expr {(sanamar)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Sanamar`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Sanamar`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto silyun`
 	IF: Expr {(silyun)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Silyun`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Silyun`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto timaru`
 	IF: Expr {(timaru)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Timaru`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Timaru`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto westwatch`
 	IF: Expr {(westwatch)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Westwatch`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Westwatch`]]}
 				SetState {CallMeta}
 
 	~~ Sho
@@ -1761,84 +1761,84 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(baishi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Baishi`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Baishi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto freehold`
 	IF: Expr {(freehold)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Freehold`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Freehold`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto hebian-to`
 	IF: Expr {(hebian-to)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Hebian-To`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Hebian-To`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto kara`
 	IF: Expr {(kara)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Kara`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Kara`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto kryst`
 	IF: Expr {(kryst)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Kryst`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Kryst`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto lin`
 	IF: Expr {(lin)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Lin`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Lin`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mayoi`
 	IF: Expr {(mayoi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Mayoi`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Mayoi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto nanto`
 	IF: Expr {(nanto)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Nanto`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Nanto`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto sawato`
 	IF: Expr {(sawato)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Sawato`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Sawato`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto shoushi`
 	IF: Expr {(shoushi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Shoushi`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Shoushi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto tou-tou`
 	IF: Expr {(tou-tou)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Tou-Tou`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Tou-Tou`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto yanshi`
 	IF: Expr {(yanshi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Yanshi`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Yanshi`]]}
 				SetState {CallMeta}
 
 
@@ -1849,70 +1849,70 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(al-arqas)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto al-jalima`
 	IF: Expr {(al-jalima)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Jalima`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Jalima`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto khayyaban`
 	IF: Expr {(khayyaban)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto qalabar`
 	IF: Expr {(qalabar)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Qalaba'r`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Qalaba'r`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto samsur`
 	IF: Expr {(samsur)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Samsur`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Samsur`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto tufa`
 	IF: Expr {(tufa)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Tufa`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Tufa`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto uziz`
 	IF: Expr {(uziz)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Uziz`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Uziz`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto xarabydun`
 	IF: Expr {(xarabydun)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Xarabydun`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Xarabydun`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto yaraq`
 	IF: Expr {(yaraq)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Yaraq`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Yaraq`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto zaikhal`
 	IF: Expr {(zaikhal)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Zaikhal`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Zaikhal`]]}
 				SetState {CallMeta}
 
 
@@ -1923,77 +1923,77 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(arwic)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Arwic`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Arwic`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto cragstone`
 	IF: Expr {(cragstone)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Cragstone`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Cragstone`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto dryreach`
 	IF: Expr {(dryreach)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Dryreach`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Dryreach`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto eastham`
 	IF: Expr {(eastham)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Eastham`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Eastham`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto fort tethana`
 	IF: Expr {(fort tethana)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Fort Tethana`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Fort Tethana`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto glenden wood`
 	IF: Expr {(glenden wood)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Glenden Wood`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Glenden Wood`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto holtburg`
 	IF: Expr {(holtburg)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Holtburg`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Holtburg`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto lytelthorpe`
 	IF: Expr {(lytelthorpe)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Lytelthorpe`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Lytelthorpe`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto plateau village`
 	IF: Expr {(plateau village)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Plateau Village`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Plateau Village`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto rithwic`
 	IF: Expr {(rithwic)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Rithwic`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Rithwic`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto stonehold`
 	IF: Expr {(stonehold)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
 				SetState {CallMeta}
 
 	~~ Subway
@@ -2002,112 +2002,112 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(candeth keep)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto jungle subs`
 	IF: Expr {(jungle subs)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Jungle Subs`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Jungle Subs`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto withered`
 	IF: Expr {(withered)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Withered`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Withered`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mid direlands`
 	IF: Expr {(mid direlands)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Mid Direlands`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Mid Direlands`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto abayar's laboratory`
 	IF: Expr {(abayar's laboratory)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Abayar's Laboratory`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Abayar's Laboratory`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto dark design`
 	IF: Expr {(dark design)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Dark Design`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Dark Design`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto creepy canyons`
 	IF: Expr {(creepy canyons)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Creepy Canyons`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Creepy Canyons`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto thrungus hole`
 	IF: Expr {(thrungus hole)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Thrungus Hole`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Thrungus Hole`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto black death catacombs`
 	IF: Expr {(black death catacombs)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Black Death Catacombs`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Black Death Catacombs`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto insatiable vault`
 	IF: Expr {(insatiable vault)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Insatiable Vault`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Insatiable Vault`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto ravenous vault`
 	IF: Expr {(ravenous vault)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Ravenous Vault`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Ravenous Vault`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto augmentation realm main level`
 	IF: Expr {(augmentation realm main level)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Augmentation Realm Main Level`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Augmentation Realm Main Level`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto obsidian rim`
 	IF: Expr {(obsidian rim)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto path of the blind`
 	IF: Expr {(path of the blind)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Path of the Blind`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Path of the Blind`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto singularity bore`
 	IF: Expr {(singularity bore)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Singularity Bore`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Singularity Bore`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto egg orchard`
 	IF: Expr {(egg orchard)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Egg Orchard`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Egg Orchard`]]}
 				SetState {CallMeta}
 
 	~~ Jungle Subway
@@ -2116,124 +2116,124 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(south direlands)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `South Direlands`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `South Direlands`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto vissidal island`
 	IF: Expr {(vissidal island)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Vissidal Island`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Vissidal Island`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto beach fort`
 	IF: Expr {(beach fort)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Beach Fort`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Beach Fort`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto black spawn den`
 	IF: Expr {(black spawn den)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Black Spawn Den`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Black Spawn Den`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto obsidian rim`
 	IF: Expr {(obsidian rim)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto north direlands`
 	IF: Expr {(north direlands)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `North Direlands`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `North Direlands`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto crater pathway`
 	IF: Expr {(crater pathway)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Crater Pathway`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Crater Pathway`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto dark isle`
 	IF: Expr {(dark isle)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Dark Isle`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Dark Isle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mukkir-infested black spear temple`
 	IF: Expr {(mukkir infested black spear temple)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Mukkir-Infested Black Spear Temple`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Mukkir-Infested Black Spear Temple`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto the colosseum`
 	IF: Expr {(the colosseum)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `The Colosseum`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `The Colosseum`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto nexus`
 	IF: Expr {(nexus)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Nexus`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Nexus`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mountain retreat`
 	IF: Expr {(mountain retreat)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Mountain Retreat`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Mountain Retreat`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto empyrean facility upper level`
 	IF: Expr {(empyrean facility upper level)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Empyrean Facility Upper Level`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Empyrean Facility Upper Level`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto underground city`
 	IF: Expr {(underground city)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Underground City`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Underground City`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto northern aerlinthe island`
 	IF: Expr {(northern aerlinthe island)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Northern Aerlinthe Island`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Northern Aerlinthe Island`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto halls of metos`
 	IF: Expr {(halls of metos)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Halls of Metos`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Halls of Metos`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto frozen valley camp`
 	IF: Expr {(frozen valley camp)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Frozen Valley Camp`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Frozen Valley Camp`]]}
 				SetState {CallMeta}
 
 
 	~~ Handle no match for navdestination
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching destination for #navto`, $COLOR_WARN]}
 				SetState {Idle}
@@ -2294,77 +2294,77 @@ STATE: {HandleQuests} ~~ {
 	IF: Expr {(bloodstone investigation)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `bloodstone investigation`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `bloodstone investigation`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest count phainors amulet`
 	IF: Expr {(count phainors amulet)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `count phainors amulet`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `count phainors amulet`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest deewains`
 	IF: Expr {(deewains)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `deewains`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `deewains`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest curator`
 	IF: Expr {(curator)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `curator`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `curator`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest dream reaver`
 	IF: Expr {(dream reaver)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `dream reaver`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `dream reaver`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest empyrean rescue`
 	IF: Expr {(empyrean rescue)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `empyrean rescue`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `empyrean rescue`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest end of days`
 	IF: Expr {(end of days)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `end of days`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `end of days`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest fear factory`
 	IF: Expr {(fear factory)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `fear factory`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `fear factory`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest first sister`
 	IF: Expr {(first sister)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `first sister`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `first sister`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest izexi`
 	IF: Expr {(izexi)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `izexi`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `izexi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest four corners`
 	IF: Expr {(four corners)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `four corners`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `four corners`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest geraines host`
@@ -2377,200 +2377,200 @@ STATE: {HandleQuests} ~~ {
 	IF: Expr {(geraines study)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `geraines study`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `geraines study`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest gurog creation`
 	IF: Expr {(gurog creation)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `gurog creation`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `gurog creation`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest halt dericost`
 	IF: Expr {(halt dericost)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `halt dericost`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `halt dericost`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest hive queen`
 	IF: Expr {(hive queen)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hive queen`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hive queen`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest hoshino fortress`
 	IF: Expr {(hoshino fortress)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hoshino fortress`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hoshino fortress`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest hoshino must die`
 	IF: Expr {(hoshino must die)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hoshino must die`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hoshino must die`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest janthefs`
 	IF: Expr {(janthefs)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `janthefs`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `janthefs`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest liberation of uziz`
 	IF: Expr {(liberation of uziz)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `liberation of uziz`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `liberation of uziz`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest lost lore`
 	IF: Expr {(lost lore)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `lost lore`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `lost lore`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest lugian assault`
 	IF: Expr {(lugian assault)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `lugian assault`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `lugian assault`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest mhoire castle`
 	IF: Expr {(mhoire castle)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `mhoire castle`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `mhoire castle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest nanjou stockade`
 	IF: Expr {(nanjou stockade)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `nanjou stockade`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `nanjou stockade`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest ninja academy`
 	IF: Expr {(ninja academy)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `ninja academy`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `ninja academy`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest oubliette`
 	IF: Expr {(oubliette)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `oubliette`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `oubliette`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest purging the corruption`
 	IF: Expr {(purging the corruption)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `purging the corruption`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `purging the corruption`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest releasing the light`
 	IF: Expr {(releasing the light)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `releasing the light`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `releasing the light`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest mouf p`
 	IF: Expr {(mouf p)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `mouf p`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `mouf p`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest rynthid foothold`
 	IF: Expr {(rynthid foothold)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid foothold`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid foothold`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest rynthid foundry`
 	IF: Expr {(rynthid foundry)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid foundry`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid foundry`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest rynthid training`
 	IF: Expr {(rynthid training)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid training`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid training`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest save karul`
 	IF: Expr {(save karul)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `save karul`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `save karul`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest second sister`
 	IF: Expr {(second sister)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `second sister`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `second sister`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest seed of power`
 	IF: Expr {(seed of power)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `seed of power`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `seed of power`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest serpent burial grounds`
 	IF: Expr {(serpent burial grounds)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `serpent burial grounds`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `serpent burial grounds`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest shroud of emotion`
 	IF: Expr {(shroud of emotion)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `shroud of emotion`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `shroud of emotion`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest slave master`
 	IF: Expr {(slave master)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `slave master`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `slave master`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest tanada intercept`
 	IF: Expr {(tanada intercept)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `tanada intercept`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `tanada intercept`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest third sister`
 	IF: Expr {(third sister)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$CCArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `third sister`]]}
+				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `third sister`]]}
 				SetState {CallMeta}
 
 	~~ Handle no match for questdestination
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching quest for #quest`, $COLOR_WARN]}
 				SetState {Idle}
@@ -2584,17 +2584,17 @@ STATE: {HandleRoute} ~~ {
 		DO:	SetState {Idle}
 
 	~~ No routes found, show warning
-	IF: Expr {listcount[listfilter[dictkeys[$CCRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]==0}
+	IF: Expr {listcount[listfilter[dictkeys[$HBRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]==0}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching routes found for `+cstrf[getplayerlandcell[], `X8`], $COLOR_WARN]}
 				SetState {Idle}
 
 	~~ Route found, load route and start navigation
-	IF: Expr {listcount[listfilter[dictkeys[$CCRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]>0}
+	IF: Expr {listcount[listfilter[dictkeys[$HBRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]>0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Loading route: \`+dictgetitem[$CCRoutes, cstrf[getplayerlandcell[], \`X8\`]]]`, `false`]}
-				ChatExpr {`/vt nav load `+dictgetitem[$CCRoutes, cstrf[getplayerlandcell[], `X8`]]}
-				DoExpr {@CCStay=true}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loading route: \`+dictgetitem[$HBRoutes, cstrf[getplayerlandcell[], \`X8\`]]]`, `false`]}
+				ChatExpr {`/vt nav load `+dictgetitem[$HBRoutes, cstrf[getplayerlandcell[], `X8`]]}
+				DoExpr {@HBStay=true}
 				DoExpr {uisetlabel[uigetcontrol[Main, Follow], `Follow`]}
 				SetOpt {EnableNav} {True}
 				SetOpt {NavPriorityBoost} {False}
@@ -2622,7 +2622,7 @@ STATE: {HandleMetas} ~~ {
 
 	~~ Handle `#meta list` when it's empty
 	IF: All
-			Expr {listcount[@CCMetaValues]==0}
+			Expr {listcount[@HBMetaValues]==0}
 			Expr {(list)#getvar[capturegroup_metatext]}
 		DO: DoAll
 				DoExpr {echo[`No metas`, $COLOR_INFO]}
@@ -2630,10 +2630,10 @@ STATE: {HandleMetas} ~~ {
 
 	~~ Handle `#meta list` if there are metas
 	IF: All
-			Expr {listcount[@CCMetaValues]>0}
+			Expr {listcount[@HBMetaValues]>0}
 			Expr {(list)#getvar[capturegroup_metatext]}
 		DO: DoAll
-				DoExpr {listmap[@CCMetaKeys, `echo[$1+\` => \`+listgetitem[@CCMetaValues, $0], $COLOR_INFO]`]}
+				DoExpr {listmap[@HBMetaKeys, `echo[$1+\` => \`+listgetitem[@HBMetaValues, $0], $COLOR_INFO]`]}
 				SetState {Idle}
 
 ~~ }
@@ -2645,21 +2645,21 @@ STATE: {MetaAdd} ~~ {
 		DO:	SetState {Idle}
 
 	~~ Add an additional meta to an existing nickname
-	IF: Expr {listindexof[@CCMetaKeys, $capturegroup_nickname]!=-1}
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]!=-1}
 		DO: DoAll
-				DoExpr {$id=listindexof[@CCMetaKeys, $capturegroup_nickname]}
-				DoExpr {$metafilenames=listgetitem[@CCMetaValues, $id]}
+				DoExpr {$id=listindexof[@HBMetaKeys, $capturegroup_nickname]}
+				DoExpr {$metafilenames=listgetitem[@HBMetaValues, $id]}
 				DoExpr {listadd[$metafilenames, $capturegroup_metafilename]}
-				DoExpr {echo[`Added `+$capturegroup_nickname+` => `+listgetitem[@CCMetaValues, listindexof[@CCMetaKeys, $capturegroup_nickname]], $COLOR_INFO]}
+				DoExpr {echo[`Added `+$capturegroup_nickname+` => `+listgetitem[@HBMetaValues, listindexof[@HBMetaKeys, $capturegroup_nickname]], $COLOR_INFO]}
 				DoExpr {listmap[listcreate[`metafilenames`, `id`, `capturegroup_nickname`, `capturegroup_metafilename`], `clearvar[$1]`]}
 				SetState {Idle}
 
 	~~ Add a new meta nickname
-	IF: Expr {listindexof[@CCMetaKeys, $capturegroup_nickname]==-1}
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==-1}
 		DO: DoAll
-				DoExpr {listadd[@CCMetaKeys, $capturegroup_nickname]}
-				DoExpr {listadd[@CCMetaValues, listcreate[$capturegroup_metafilename]]}
-				DoExpr {echo[`Added `+$capturegroup_nickname+` => `+listgetitem[@CCMetaValues, listindexof[@CCMetaKeys, $capturegroup_nickname]], $COLOR_INFO]}
+				DoExpr {listadd[@HBMetaKeys, $capturegroup_nickname]}
+				DoExpr {listadd[@HBMetaValues, listcreate[$capturegroup_metafilename]]}
+				DoExpr {echo[`Added `+$capturegroup_nickname+` => `+listgetitem[@HBMetaValues, listindexof[@HBMetaKeys, $capturegroup_nickname]], $COLOR_INFO]}
 				DoExpr {listmap[listcreate[`capturegroup_nickname`, `capturegroup_metafilename`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -2672,19 +2672,19 @@ STATE: {MetaRemove} ~~ {
 		DO:	SetState {Idle}
 
 	~~ Warn if nicknamed meta is not found
-	IF: Expr {listindexof[@CCMetaKeys, $capturegroup_nickname]==-1}
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==-1}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No meta found`, $COLOR_WARN]}
 				DoExpr {clearvar[capturegroup_nickname]}
 				SetState {Idle}
 
 	~~ Remove the nicknamed meta
-	IF: Expr {listindexof[@CCMetaKeys, $capturegroup_nickname]!=-1}
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]!=-1}
 		DO: DoAll
-				DoExpr {$id=listindexof[@CCMetaKeys, $capturegroup_nickname]}
-				DoExpr {echo[`Removing `+$capturegroup_nickname+` => `+listgetitem[@CCMetaValues, $id], $COLOR_INFO]}
-				DoExpr {listremoveat[@CCMetaKeys, $id]}
-				DoExpr {listremoveat[@CCMetaValues, $id]}
+				DoExpr {$id=listindexof[@HBMetaKeys, $capturegroup_nickname]}
+				DoExpr {echo[`Removing `+$capturegroup_nickname+` => `+listgetitem[@HBMetaValues, $id], $COLOR_INFO]}
+				DoExpr {listremoveat[@HBMetaKeys, $id]}
+				DoExpr {listremoveat[@HBMetaValues, $id]}
 				DoExpr {clearvar[capturegroup_nickname]}
 				SetState {Idle}
 
@@ -2697,22 +2697,22 @@ STATE: {MetaLoad} ~~ {
 		DO:	SetState {Idle}
 
 	~~ Warn if nicknamed meta is not found
-	IF: Expr {listindexof[@CCMetaKeys, $capturegroup_nickname]==-1}
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==-1}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No meta found`, $COLOR_WARN]}
 				DoExpr {clearvar[capturegroup_nickname]}
 				SetState {Idle}
 
 	~~ Turn on vitals if they are off
-	IF: Expr {@CCVitals==false}
+	IF: Expr {@HBVitals==false}
 		DO: CallState {ToggleVitals} {MetaLoad}
 
 	~~ load nicknamed meta(s)
-	IF: Expr {listindexof[@CCMetaKeys, $capturegroup_nickname]!=-1}
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]!=-1}
 		DO: DoAll
-				DoExpr {$id=listindexof[@CCMetaKeys, $capturegroup_nickname]}
-				DoExpr {$MetaCallQueue=listcopy[listgetitem[@CCMetaValues, $id]]}
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Loading meta(s) \`+listgetitem[@CCMetaValues, $id]]`, `false`]}
+				DoExpr {$id=listindexof[@HBMetaKeys, $capturegroup_nickname]}
+				DoExpr {$MetaCallQueue=listcopy[listgetitem[@HBMetaValues, $id]]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loading meta(s) \`+listgetitem[@HBMetaValues, $id]]`, `false`]}
 				DoExpr {listmap[listcreate[`id`, `capturegroup_nickname`, `capturegroup_metafilename`], `clearvar[$1]`]}
 				SetState {CallMeta}
 
@@ -2739,7 +2739,7 @@ STATE: {HandleProfile} ~~ {
 	~~ Warn if `#profile landcell` has no entry
 	IF: All
 			Expr {(landcell)#getvar[capturegroup_profiletext]}
-			Expr {listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]==-1}
+			Expr {listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]==-1}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No profile found for landcell `+cstrf[getplayerlandcell[], `X8`], $COLOR_WARN]}
 				SetState {Idle}
@@ -2747,21 +2747,21 @@ STATE: {HandleProfile} ~~ {
 	~~ Show `#profile landcell` value
 	IF: All
 			Expr {(landcell)#getvar[capturegroup_profiletext]}
-			Expr {listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]!=-1}
+			Expr {listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]!=-1}
 		DO: DoAll
-				DoExpr {$id=listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]}
-				DoExpr {echo[cstrf[getplayerlandcell[], `X8`]+` => `+listgetitem[@CCProfileLandcellValues, $id], $COLOR_INFO]}
+				DoExpr {$id=listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]}
+				DoExpr {echo[cstrf[getplayerlandcell[], `X8`]+` => `+listgetitem[@HBProfileLandcellValues, $id], $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Show `#profile list` values
 	IF: Expr {(list)#getvar[capturegroup_profiletext]}
 		DO: DoAll
-				DoExpr {listmap[@CCProfileKeys, `echo[$1+\` => \`+listgetitem[@CCProfileValues, $0], $COLOR_INFO]`]}
+				DoExpr {listmap[@HBProfileKeys, `echo[$1+\` => \`+listgetitem[@HBProfileValues, $0], $COLOR_INFO]`]}
 				SetState {Idle}
 
 
 	~~ Handle no match for profiletext
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching argument for #profile`, $COLOR_WARN]}
 				SetState {Idle}
@@ -2776,8 +2776,8 @@ STATE: {ProfileAdd} ~~ {
 	~~ Add a profile
 	IF: Always
 		DO: DoAll
-				DoExpr {listadd[@CCProfileKeys, $capturegroup_profilename]}
-				DoExpr {listadd[@CCProfileValues, $capturegroup_profilevalue]}
+				DoExpr {listadd[@HBProfileKeys, $capturegroup_profilename]}
+				DoExpr {listadd[@HBProfileValues, $capturegroup_profilevalue]}
 				DoExpr {echo[`Added `+$capturegroup_profilename+` => `+$capturegroup_profilevalue, $COLOR_INFO]}
 				SetState {Idle}
 
@@ -2794,21 +2794,21 @@ STATE: {ProfileLoad} ~~ {
 		DO: DestroyView {Profiles}
 
 	~~ Warn if no profile found
-	IF: Expr {listindexof[@CCProfileKeys, $capturegroup_profilename]==-1}
+	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]==-1}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No profile found`, $COLOR_WARN]}
 				SetState {Idle}
 
 	~~ Turn on vitals if they are off
-	IF: Expr {@CCVitals==false}
+	IF: Expr {@HBVitals==false}
 		DO: CallState {ToggleVitals} {ProfileLoad}
 
 	~~ load profile
-	IF: Expr {listindexof[@CCProfileKeys, $capturegroup_profilename]!=-1}
+	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]!=-1}
 		DO: DoAll
-				DoExpr {$id=listindexof[@CCProfileKeys, $capturegroup_profilename]}
-				ChatExpr {`/vt settings loadchar `+listgetitem[@CCProfileValues, $id]}
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Loaded profile \`+listgetitem[@CCProfileValues, $id]]`, `false`]}
+				DoExpr {$id=listindexof[@HBProfileKeys, $capturegroup_profilename]}
+				ChatExpr {`/vt settings loadchar `+listgetitem[@HBProfileValues, $id]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loaded profile \`+listgetitem[@HBProfileValues, $id]]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -2822,8 +2822,8 @@ STATE: {ProfileAddLandcell} ~~ {
 	~~ Add a profile for a landcell
 	IF: Always
 		DO: DoAll
-				DoExpr {listadd[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]}
-				DoExpr {listadd[@CCProfileLandcellValues, $capturegroup_profilename]}
+				DoExpr {listadd[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]}
+				DoExpr {listadd[@HBProfileLandcellValues, $capturegroup_profilename]}
 				DoExpr {echo[`Added `+cstrf[getplayerlandcell[], `X8`]+` => `+$capturegroup_profilename, $COLOR_INFO]}
 				SetState {Idle}
 
@@ -2836,19 +2836,19 @@ STATE: {AutoloadProfile} ~~ {
 		DO:	SetState {Idle}
 
 	~~ Warn if landcell has no entry
-	IF: Expr {listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]==-1}
+	IF: Expr {listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]==-1}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No profile found for landcell `+cstrf[getplayerlandcell[], `X8`], $COLOR_WARN]}
 				SetState {Idle}
 
 	~~ Load profile for landcell
-	IF: Expr {listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]!=-1}
+	IF: Expr {listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]!=-1}
 		DO: DoAll
-				DoExpr {$id=listindexof[@CCProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]}
-				DoExpr {$nickname=listgetitem[@CCProfileLandcellValues, $id]}
-				DoExpr {$nid=listindexof[@CCProfileKeys, $nickname]}
-				ChatExpr {`/vt settings loadchar `+listgetitem[@CCProfileValues, $nid]}
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Loaded profile \`+listgetitem[@CCProfileValues, $nid]]`, `false`]}
+				DoExpr {$id=listindexof[@HBProfileLandcellKeys, cstrf[getplayerlandcell[], `X8`]]}
+				DoExpr {$nickname=listgetitem[@HBProfileLandcellValues, $id]}
+				DoExpr {$nid=listindexof[@HBProfileKeys, $nickname]}
+				ChatExpr {`/vt settings loadchar `+listgetitem[@HBProfileValues, $nid]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loaded profile \`+listgetitem[@HBProfileValues, $nid]]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -2902,7 +2902,7 @@ STATE: {HandleKilltask} ~~ {
 				SetState {CallMeta}
 
 	~~ Handle no match for flagaction
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching action for #flag`, $COLOR_WARN]}
 				SetState {Idle}
@@ -3013,7 +3013,7 @@ STATE: {Face} ~~ {
 
 	IF:	ChatMatch {^You think, "Turning Success"}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished turning\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished turning\`]`, `false`]}
 				DoExpr {clearvar[direction]}
 				CallState {EnableOptions} {Idle}
 
@@ -3074,7 +3074,7 @@ STATE: {Jump} ~~ {
 	~~ Jump success
 	IF:	ChatMatch {^You think, "Jumper Success"}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished jumping\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished jumping\`]`, `false`]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Jump failure
@@ -3095,21 +3095,21 @@ STATE: {JumpStack} ~~ {
 	IF: Expr {testvar[OriginalNavClosestOpRange]==false}
 		DO: DoAll
 				DoExpr {setvar[OriginalNavClosestOpRange, vtgetsetting[NavClosestOpRange]]}
-				DoExpr {vtsetsetting[NavClosestOpRange, cstrf[@CCOnMeThreshold/240, `N8`]]}
+				DoExpr {vtsetsetting[NavClosestOpRange, cstrf[@HBOnMeThreshold/240, `N8`]]}
 				DoExpr {setvar[OriginalNavPriorityBoost, vtgetsetting[NavPriorityBoost]]}
 				DoExpr {vtsetsetting[NavPriorityBoost, `true`]}
 				ChatExpr {`/ub follow `+$capturegroup_name}
 				SetState {JumpStack}
 
 	~~ Finish if on top of the issuer
-	IF: Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]], getplayercoordinates[]]<=@CCOnMeThreshold}
+	IF: Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]], getplayercoordinates[]]<=@HBOnMeThreshold}
 		DO: DoAll
 				DoExpr {echo[`Original NavClosestOpRange: `+$OriginalNavClosestOpRange, $COLOR_DEBUG]}
 				DoExpr {vtsetsetting[NavClosestOpRange, cstrf[$OriginalNavClosestOpRange, `N8`]]}
 				DoExpr {vtsetsetting[NavPriorityBoost, cstrf[$OriginalNavPriorityBoost, `N0`]]}
 				EmbedNav Empty {[None]}
-				DoExpr {ifthen[@CCStay==false, `chatbox[\`/ub follow \`+@CCLeader]`, `false`]}
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished navigating on top of \`+$capturegroup_name]`, `false`]}
+				DoExpr {ifthen[@HBStay==false, `chatbox[\`/ub follow \`+@HBLeader]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating on top of \`+$capturegroup_name]`, `false`]}
 				DoExpr {listmap[listcreate[`OriginalNavClosestOpRange`, `OriginalNavPriorityBoost`, `capturegroup_name`, `capturegroup_jumptext`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3155,7 +3155,7 @@ STATE: {Pickup} ~~ {
 			Expr {testvar[hasNearbyItem]==false]}
 			Expr {listcount[wobjectfindalllandscapebynamerx[$item]]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No \`+$item+\` nearby\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No \`+$item+\` nearby\`]`, `false`]}
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -3166,7 +3166,7 @@ STATE: {Pickup} ~~ {
 			ChatMatch {You cannot pick up more than}
 			ChatMatch {You must wait}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Picked up \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Picked up \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -3227,7 +3227,7 @@ STATE: {AutoGive} ~~ {
 	~~ No NPC nearby with the Autogive name
 	IF: Not Expr {dicthaskey[$AUTOGIVE_PROFILE, wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No autogive profile for \`+wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No autogive profile for \`+wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3253,14 +3253,14 @@ STATE: {Give} ~~ {
 		DO: CallState {DisableOptions} {Give}
 
 	~~ If set equip item before giving
-	IF: Expr {@CCEquipOnTurnin!=false}
+	IF: Expr {@HBEquipOnTurnin!=false}
 		DO: DoAll
-				DoExpr {actiontryuseitem[@CCEquipOnTurnin]}
+				DoExpr {actiontryuseitem[@HBEquipOnTurnin]}
 
 	~~ Warn if unable to give
 	IF: ChatMatch {doesn't know what to do with that.$}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Unable to give \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to give \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -3270,7 +3270,7 @@ STATE: {Give} ~~ {
 			ChatMatch {^You hand over}
 			ChatMatch {^You allow}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Gave \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -3286,7 +3286,7 @@ STATE: {Give} ~~ {
 			SecsInStateGE 1
 			Expr {wobjectfindininventorybynamerx[`^`+$item+`$`]==false}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not have \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -3309,7 +3309,7 @@ STATE: {Give} ~~ {
 	~~ Handle no player or NPC with that name nearby
 	IF: Expr {wobjectfindnearestbynameandobjectclass[$PLAYER, $name]==false&&wobjectfindnearestbynameandobjectclass[$NPC, $name]==false}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I can't find \`+$name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I can't find \`+$name]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -3339,7 +3339,7 @@ STATE: {HandleTrash} ~~ {
 			Expr {testvar[capturegroup_trashtext]==true}
 			Expr {wobjectfindininventorybyname[$capturegroup_trashtext]==false}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not have \`+$capturegroup_trashtext]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$capturegroup_trashtext]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_trashtext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3366,7 +3366,7 @@ STATE: {AutoTrash} ~~ {
 	~~ Abort if no trash items
 	IF: Expr {listcount[$items]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I have no trash!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I have no trash!\`]`, `false`]}
 				DoExpr {clearvar[items]}
 				SetState {Idle}
 
@@ -3388,20 +3388,20 @@ STATE: {GiveTrash} ~~ {
 	IF: All
 			Expr {testvar[trashNPC]==false}
 			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$NPC, `Garbage Barrel`]]==$OBJECT}
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Garbage Barrel`]],getplayercoordinates[]]<@CCTrashDistance}
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Garbage Barrel`]],getplayercoordinates[]]<@HBTrashDistance}
 		DO: DoExpr {$trashNPC=wobjectfindnearestbynameandobjectclass[$NPC, `Garbage Barrel`]}
 
 	~~ If a Town Crier is nearby set $trashNPC to it
 	IF: All
 			Expr {testvar[trashNPC]==false}
 			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$NPC, `Town Crier`]]==$OBJECT}
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Town Crier`]],getplayercoordinates[]]<@CCTrashDistance}
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Town Crier`]],getplayercoordinates[]]<@HBTrashDistance}
 		DO: DoExpr {$trashNPC=wobjectfindnearestbynameandobjectclass[$NPC, `Town Crier`]}
 
 	~~ Warn if no Town Criers or Garbage Barrels nearby
 	IF: Expr {testvar[trashNPC]==false}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, There are no Town Criers or Garbage Barrels nearby!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, There are no Town Criers or Garbage Barrels nearby!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `items`, `giving`, `trashNPC`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3415,7 +3415,7 @@ STATE: {GiveTrash} ~~ {
 			Expr {listcount[$items]==0}
 			Expr {getitemcountininventorybyname[$item]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I gave all my trash!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I gave all my trash!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `items`, `giving`, `trashNPC`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3491,14 +3491,14 @@ STATE: {PassGive} ~~ {
 			Expr {testvar[giving]==false}
 			Expr {listcount[wobjectfindallinventorybynamerx[$item]]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not have \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
 
-	~~ Pass to next person in the @CCCharacterList
+	~~ Pass to next person in the @HBCharacterList
 	IF: Expr {listcount[wobjectfindallinventorybynamerx[$item]]>0}
 		DO: DoAll
-				DoExpr {$onlineCharacters=listfilter[@CCCharacterList, `$1==$CHARACTER_NAME||getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, $1]]==$TYPE_OBJECT`]}
+				DoExpr {$onlineCharacters=listfilter[@HBCharacterList, `$1==$CHARACTER_NAME||getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, $1]]==$TYPE_OBJECT`]}
 				DoExpr {$sortedCharacters=listsort[$onlineCharacters]} ~~ Sort to ensure all character lists are identical in order
 				DoExpr {$currentPos=listindexof[$sortedCharacters, $CHARACTER_NAME]}
 				DoExpr {$nextPos=ifthen[$currentPos+1>listcount[$sortedCharacters]-1, `0`, `$currentPos+1`]}
@@ -3510,7 +3510,7 @@ STATE: {PassGive} ~~ {
 	~~ Handed off item
 	IF: ChatMatch {^You give}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Gave \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3555,7 +3555,7 @@ STATE: {Use} ~~ {
 	~~ Warn if no item found
 	IF: Expr {testvar[Item]==false}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Item to use not found!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to use not found!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ If inventory item use it
@@ -3582,7 +3582,7 @@ STATE: {UseInventory} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {actiontryuseitem[$Item]}
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished using \`+$ItemName]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using \`+$ItemName]`, `false`]}
 				DoExpr {listmap[listcreate[`Item`, `ItemName`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3627,7 +3627,7 @@ STATE: {UseLandscape} ~~ {
 			ChatMatch {^You have killed} ~~ Slain Protectorate
 			IntoPortal
 		DO:	DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished using \`+$ItemName]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using \`+$ItemName]`, `false`]}
 				DoExpr {listmap[listcreate[`Item`, `ItemName`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
 
@@ -3661,46 +3661,46 @@ STATE: {HandleCheck} ~~ {
 	~~ Handle `#check buffs`
 	IF: Expr {(buffs)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				DoExpr {$total_seconds=getspellexpirationbyname[@CCCheckBuffsSpell]}
+				DoExpr {$total_seconds=getspellexpirationbyname[@HBCheckBuffsSpell]}
 				DoExpr {$hours=floor[$total_seconds/3600]}
 				DoExpr {$remaining_seconds=$total_seconds%3600}
 				DoExpr {$minutes=floor[$remaining_seconds/60]}
 				DoExpr {$seconds=$remaining_seconds%60}
-				ChatExpr {`/t `+@CCLeader+`, Buffs: `+$hours+` hours, `+$minutes+` minutes, `+$seconds+` seconds`}
+				ChatExpr {`/t `+@HBLeader+`, Buffs: `+$hours+` hours, `+$minutes+` minutes, `+$seconds+` seconds`}
 				SetState {Idle}
 
 	~~ Handle `#check luminance`
 	IF: Expr {(luminance)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@CCLeader+`, Luminance: `+cstrf[getcharquadprop[6], `N0`]}
+				ChatExpr {`/t `+@HBLeader+`, Luminance: `+cstrf[getcharquadprop[6], `N0`]}
 				SetState {Idle}
 
 	~~ Handle `#check level`
 	IF: Expr {(level)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@CCLeader+`, Level: `+getcharintprop[25]}
+				ChatExpr {`/t `+@HBLeader+`, Level: `+getcharintprop[25]}
 				SetState {Idle}
 
 	~~ Handle `#check landblock`
 	IF: Expr {(landblock)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@CCLeader+`, Landblock: `+hexstr[getplayerlandblock[]]}
+				ChatExpr {`/t `+@HBLeader+`, Landblock: `+hexstr[getplayerlandblock[]]}
 				SetState {Idle}
 
 	~~ Handle `#check landcell`
 	IF: Expr {(landcell)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@CCLeader+`, Landblock: `+hexstr[getplayerlandcell[]]}
+				ChatExpr {`/t `+@HBLeader+`, Landblock: `+hexstr[getplayerlandcell[]]}
 				SetState {Idle}
 
 	~~ Handle `#check settings`
 	IF: Expr {(settings)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@CCLeader+`, Toggle Vitals: `+ifthen[@CCVitals, `On`, `Off`]+`, Buff: `+ifthen[vtgetsetting[EnableBuffing], `On`, `Off`]+`, Combat: `+ifthen[vtgetsetting[EnableCombat], `On`, `Off`]+`, Nav: `+ifthen[vtgetsetting[EnableNav], `On`, `Off`]+`, Loot: `+ifthen[vtgetsetting[EnableLooting], `On`, `Off`]}
+				ChatExpr {`/t `+@HBLeader+`, Toggle Vitals: `+ifthen[@HBVitals, `On`, `Off`]+`, Buff: `+ifthen[vtgetsetting[EnableBuffing], `On`, `Off`]+`, Combat: `+ifthen[vtgetsetting[EnableCombat], `On`, `Off`]+`, Nav: `+ifthen[vtgetsetting[EnableNav], `On`, `Off`]+`, Loot: `+ifthen[vtgetsetting[EnableLooting], `On`, `Off`]}
 				SetState {Idle}
 
 	~~ Handle no match for checktext
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching action for #check`, $COLOR_WARN]}
 				SetState {Idle}
@@ -3716,7 +3716,7 @@ STATE: {AutoLoot} ~~ {
 	~~ Warn if there are no corpses
 	IF: Expr {listcount[wobjectfindalllandscapebyobjectclass[$CORPSE]]==0}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] No corpses found\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] No corpses found\`, $COLOR_WARN]`, `false`]}
 				SetState {Idle}
 
 	~~ Find all corpses with a name in $AUTO_LOOT_CORPSES
@@ -3729,7 +3729,7 @@ STATE: {AutoLoot} ~~ {
 			Expr {listcount[wobjectfindalllandscapebyobjectclass[$CORPSE]]>0}
 			Expr {listcount[$foundCorpses]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No auto loot corpses found!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No auto loot corpses found!\`]`, `false`]}
 				DoExpr {clearvar[foundCorpses]}
 				SetState {Idle}
 
@@ -3776,7 +3776,7 @@ STATE: {Loot} ~~ {
 	~~ Out of corpses
 	IF: Expr {listcount[$foundCorpses]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No corpses found with \`+$LootCorpseItem]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No corpses found with \`+$LootCorpseItem]`, `false`]}
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
 
@@ -3798,7 +3798,7 @@ STATE: {OpenCorpse} ~~ {
 	~~ Has an open corpse
 	IF: Expr {getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT}
 		DO: DoAll
-				~~ DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Opened corpse\`, $COLOR_INFO]`, `false`]}
+				~~ DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Opened corpse\`, $COLOR_INFO]`, `false`]}
 				SetState {LootCorpse}
 
 	~~ Try opening the corpse
@@ -3820,11 +3820,11 @@ STATE: {LootCorpse} ~~ {
 
 	~~ IF: Always
 	~~ 	DO: DoAll
-	~~ 			DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Looting corpse\`, $COLOR_INFO]`, `false`]}
+	~~ 			DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Looting corpse\`, $COLOR_INFO]`, `false`]}
 
 	~~ Disable jump confirmation since we don't need it for looting
 	IF: All
-			Expr {@CCJumpLoot==true}
+			Expr {@HBJumpLoot==true}
 			Expr {uboptget[`Jumper.ThinkComplete`]==true}
 		DO: DoAll
 				DoExpr {uboptset[`Jumper.ThinkComplete`, false]}
@@ -3840,7 +3840,7 @@ STATE: {LootCorpse} ~~ {
 	~~ Corpse is not open
 	IF: Expr {getobjectinternaltype[wobjectgetopencontainer[]]!=$TYPE_OBJECT}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[WARN] Corpse is not open!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[WARN] Corpse is not open!\`, $COLOR_WARN]`, `false`]}
 				SetState {OpenCorpse}
 
 	~~ Find all wanted items on the corpse
@@ -3855,7 +3855,7 @@ STATE: {LootCorpse} ~~ {
 			ChatMatch {You cannot pick up more than}
 			ChatMatch {You must wait}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Unable to loot \`+$LootCorpseItem]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to loot \`+$LootCorpseItem]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
@@ -3865,7 +3865,7 @@ STATE: {LootCorpse} ~~ {
 	~~ Picked up an item since inventory has increased
 	IF: Expr {getitemcountininventorybynamerx[$LootCorpseItem]>$ItemCount}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Looted \`+$LootCorpseItem]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Looted \`+$LootCorpseItem]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
@@ -3875,7 +3875,7 @@ STATE: {LootCorpse} ~~ {
 	~~ Warn if no items found on the corpse
 	IF: Expr {listcount[$CorpseItemsWanted]==0}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Did not find the item \`+$LootCorpseItem+\` on \`+$LootCorpseName, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Did not find the item \`+$LootCorpseItem+\` on \`+$LootCorpseName, $COLOR_WARN]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listadd[$CorpseBlacklist, wobjectgetid[$Corpse]]}
 				SetState {Loot}
@@ -3883,7 +3883,7 @@ STATE: {LootCorpse} ~~ {
 	~~ Pickup item from the corpse
 	IF: Expr {listcount[$CorpseItemsWanted]>0}
 		DO: DoAll
-				DoExpr {ifthen[@CCJumpLoot&&$jumped==false, `chatbox[\`/ub jump\`]`, `false`]}  ~~ Try jumping once to break animation and loot faster
+				DoExpr {ifthen[@HBJumpLoot&&$jumped==false, `chatbox[\`/ub jump\`]`, `false`]}  ~~ Try jumping once to break animation and loot faster
 				DoExpr {setvar[jumped, true]}
 				DoExpr {$item=listpop[$CorpseItemsWanted, 0]}
 				DoExpr {actiontryuseitem[$item]}
@@ -3936,7 +3936,7 @@ STATE: {UsePortal} ~~ {
 			Expr {getobjectinternaltype[wobjectfindnearestbyobjectclass[$NPC]]==$TYPE_OBJECT} ~~ NPC within range
 			Any
 				Expr {wobjectfindnearestbyobjectclass[$PORTAL]==false} ~~ No portal detected
-				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$PORTAL]], getplayercoordinates[]]<=@CCPortalThreshold} ~~ No portal within threshold
+				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$PORTAL]], getplayercoordinates[]]<=@HBPortalThreshold} ~~ No portal within threshold
 		DO: SetState {UsePortalNPC}
 
 	~~ No portal or NPC within range
@@ -3944,12 +3944,12 @@ STATE: {UsePortal} ~~ {
 			Expr {isportaling[]==false}
 			Any
 				Expr {wobjectfindnearestbyobjectclass[$PORTAL]==false} ~~ no portal detected
-				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$PORTAL]], getplayercoordinates[]]<=@CCPortalThreshold} ~~ no portal within threshold
+				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$PORTAL]], getplayercoordinates[]]<=@HBPortalThreshold} ~~ no portal within threshold
 			Any
 				Expr {wobjectfindnearestbyobjectclass[$NPC]==false} ~~ no NPC detected
-				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]<=@CCPortalThreshold} ~~ no NPC within threshold
+				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]<=@HBPortalThreshold} ~~ no NPC within threshold
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No portal within range!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No portal within range!\`]`, `false`]}
 				SetState {LeaderCheck}
 
 	~~ Warn if you can't interact with that portal.
@@ -3961,7 +3961,7 @@ STATE: {UsePortal} ~~ {
 				ChatMatch {You must be a member of the}
 				ChatMatch {Nothing happens}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Unable to use portal!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to use portal!\`]`, `false`]}
 				SetState {LeaderCheck}
 
 	~~ Use the Portal
@@ -3973,7 +3973,7 @@ STATE: {UsePortal} ~~ {
 	~~ Finished using portal; reset options to what they originally were
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished using portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using portal\`]`, `false`]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -3995,7 +3995,7 @@ STATE: {UsePortalNPC} ~~ {
 			Expr {wobjecthasdata[wobjectfindnearestbyobjectclass[$NPC]]==true}
 			Not Expr {istrue[wobjectgetstringprop[wobjectfindnearestbyobjectclass[$NPC], $STRING_PROP_DESCRIPTION]#portal]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No portal within range!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No portal within range!\`]`, `false`]}
 				SetState {LeaderCheck}
 
 	~~ Use the NPC Portal
@@ -4010,7 +4010,7 @@ STATE: {UsePortalNPC} ~~ {
 	~~ Finished using portal; go to LeaderCheck
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished using portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using portal\`]`, `false`]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -4034,7 +4034,7 @@ STATE: {UseVRPortal} ~~ {
 	~~ Finished using portal; go to LeaderCheck
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished using VR portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using VR portal\`]`, `false`]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -4051,47 +4051,47 @@ STATE: {LeaderCheck} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options if other states haven't
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {LeaderCheck}
 
 	~~ If leader go straight to EnableOptions
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
 		DO: CallState {EnableOptions} {Idle}
 
 	~~ If not following go straight to EnableOptions
-	IF: Expr {@CCStay==true}
+	IF: Expr {@HBStay==true}
 		DO: CallState {EnableOptions} {Idle}
 
 	~~ If following re-enable follow when leader is nearby
 	IF: All
-			Expr {@CCStay==false}
-			Expr {@CCLeader!=$CHARACTER_NAME}
-			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @CCLeader]]==$TYPE_OBJECT}  ~~ CCLeader WObject exists
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, @CCLeader]], getplayercoordinates[]]<=@CCLeaderCheckDistance}  ~~ CCLeader is nearby
+			Expr {@HBStay==false}
+			Expr {@HBLeader!=$CHARACTER_NAME}
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]==$TYPE_OBJECT}  ~~ HBLeader WObject exists
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]], getplayercoordinates[]]<=@HBLeaderCheckDistance}  ~~ HBLeader is nearby
 		DO: DoAll
 				SetOpt {NavPriorityBoost} {true}
-				ChatExpr {`/ub follow `+@CCLeader}
+				ChatExpr {`/ub follow `+@HBLeader}
 
 	~~ When leader is nearby leave check
 	IF: All
-			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @CCLeader]]==$TYPE_OBJECT}  ~~ CCLeader WObject exists
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, @CCLeader]], getplayercoordinates[]]<=@CCLeaderCheckDistance}  ~~ CCLeader is nearby
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]==$TYPE_OBJECT}  ~~ HBLeader WObject exists
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]], getplayercoordinates[]]<=@HBLeaderCheckDistance}  ~~ HBLeader is nearby
 		DO: CallState {EnableOptions} {Idle}
 
 	~~ Warn if in the check too long
 	IF:	SecsInStateGE 15
-		DO: DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Waiting for nearby leader for 15 seconds!\`]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Waiting for nearby leader for 15 seconds!\`]`, `false`]}
 
 	~~ Disable waiting if longer than the timeout
 	IF: SecsInStateGE 30
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Timeout reached waiting for leader! Staying but listening for commands.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Timeout reached waiting for leader! Staying but listening for commands.\`]`, `false`]}
 				EmbedNav Empty {[None]}
-				DoExpr {@CCStay=true}
+				DoExpr {@HBStay=true}
 				CallState {EnableOptions} {Idle}
 
 ~~ }
@@ -4106,7 +4106,7 @@ STATE: {HandleFellow} ~~ {
 		DO: DoAll
 				DoExpr {echo[`#fellow add: Add characters by name`, $COLOR_INFO]}
 				DoExpr {echo[`#fellow close: Close the fellow`, $COLOR_INFO]}
-				DoExpr {echo[`#fellow create: Create a fellow and add all characters in @CCCharacterList`, $COLOR_INFO]}
+				DoExpr {echo[`#fellow create: Create a fellow and add all characters in @HBCharacterList`, $COLOR_INFO]}
 				DoExpr {echo[`#fellow disband: Disband the fellow`, $COLOR_INFO]}
 				DoExpr {echo[`#fellow leader: Make the issuer of the command leader`, $COLOR_INFO]}
 				DoExpr {echo[`#fellow nearby: Add all characters close to the issuer of the command`, $COLOR_INFO]}
@@ -4201,7 +4201,7 @@ STATE: {HandleFellow} ~~ {
 				SetState {Idle}
 
 	~~ Handle no match for actiontext
-	IF: Expr {$LEVEL_WARN>=@CCDebug}
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching parameter for #fellow`, $COLOR_WARN]}
 				SetState {Idle}
@@ -4216,7 +4216,7 @@ STATE: {FellowCreate} ~~ {
 
 	~~ Create the fellow
 	IF:	Always
-		DO:	ChatExpr {`/ub fellow create `+@CCFellowname}
+		DO:	ChatExpr {`/ub fellow create `+@HBFellowname}
 
 	~~ If fellow is created move to FellowInvite
 	IF:	Expr {getfellowshipstatus[]==1}
@@ -4238,11 +4238,11 @@ STATE: {FellowInvite} ~~ {
 	IF: Expr {testvar[FellowBlacklist]==false}
 		DO: DoExpr {$FellowBlacklist=listcreate[]}
 
-	~~ Find all nearby players who are in @CCCharacterList
+	~~ Find all nearby players who are in @HBCharacterList
 	IF: Always
 		DO: DoAll
 				DoExpr {$AllNearbyPlayers=listmap[wobjectfindallbyobjectclass[$PLAYER],`wobjectgetstringprop[$1,1]`]}
-				DoExpr {$AllNearbyCharacterList=listfilter[$AllNearbyPlayers, `listcontains[@CCCharacterList, $1]`]}
+				DoExpr {$AllNearbyCharacterList=listfilter[$AllNearbyPlayers, `listcontains[@HBCharacterList, $1]`]}
 				DoExpr {$AllNearbyNotInFellow=listfilter[$AllNearbyCharacterList, `listcontains[getfellownames[], $1]==false`]}
 				DoExpr {$AllNearbyNotInFellowNotBlacklisted=listfilter[$AllNearbyNotInFellow, `listcontains[$FellowBlacklist, $1]==false`]}
 
@@ -4252,7 +4252,7 @@ STATE: {FellowInvite} ~~ {
 				DoExpr {listmap[listcreate[`AllNearbyPlayers`, `AllNearbyCharacterList`, `AllNearbyNotInFellow`, `AllNearbyNotInFellowNotBlacklisted`, `FellowBlacklist`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
 
-	~~ Recruit a nearby player in $CCCharacterlist
+	~~ Recruit a nearby player in $HBCharacterlist
 	IF: Always
 		DO: DoAll
 				DoExpr {$name=listpop[$AllNearbyNotInFellowNotBlacklisted, 0]}
@@ -4278,7 +4278,7 @@ STATE: {FellowNearby} ~~ {
 	~~ Abort if not in a fellow
 	IF: Expr {getfellowshipstatus[]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Aborting, not in a fellow\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Aborting, not in a fellow\`, $COLOR_WARN]`, `false`]}
 				SetState {Idle}
 
 	~~ Create blacklist
@@ -4290,7 +4290,7 @@ STATE: {FellowNearby} ~~ {
 		DO: DoAll
 				DoExpr {$AllNearbyPlayers=listmap[wobjectfindallbyobjectclass[$PLAYER], `wobjectgetstringprop[$1, 1]`]}
 				DoExpr {$AllNearbyExceptSelf=listfilter[$AllNearbyPlayers, `$1!=$CHARACTER_NAME`]}
-				DoExpr {$AllNearbyPlayersWithinRange=listfilter[$AllNearbyExceptSelf, `coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, $1]], getplayercoordinates[]]<@CCFellowNearbyRecruitDistance`]}
+				DoExpr {$AllNearbyPlayersWithinRange=listfilter[$AllNearbyExceptSelf, `coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, $1]], getplayercoordinates[]]<@HBFellowNearbyRecruitDistance`]}
 				DoExpr {$AllNearbyNotInFellow=listfilter[$AllNearbyPlayersWithinRange, `listcontains[getfellownames[], $1]==false`]}
 				DoExpr {$AllNearbyNotInFellowNotBlacklisted=listfilter[$AllNearbyNotInFellow, `listcontains[$FellowBlacklist, $1]==false`]}
 
@@ -4299,7 +4299,7 @@ STATE: {FellowNearby} ~~ {
 	~~ Clear variables and return to idle if there are no more characters to add
 	IF: Any
 			Expr {listcount[$AllNearbyNotInFellowNotBlacklisted]==0}
-			Expr {getfellowshipcount[]>=@CCMaxFellowshipSize}
+			Expr {getfellowshipcount[]>=@HBMaxFellowshipSize}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`AllNearbyPlayers`, `AllNearbyExceptSelf`, `AllNearbyPlayersWithinRange`, `AllNearbyNotInFellow`, `AllNearbyNotInFellowNotBlacklisted`, `FellowBlacklist`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4333,13 +4333,13 @@ STATE: {FellowAdd} ~~ {
 	~~ Abort if not in a fellow
 	IF: Expr {getfellowshipstatus[]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Aborting, not in a fellow\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Aborting, not in a fellow\`, $COLOR_WARN]`, `false`]}
 				SetState {Idle}
 
 	~~ Warn if no players are found
 	IF: Expr {listcount[listfilter[wobjectfindallbynamerx[$namerx], `wobjectgetobjectclass[$1]==$PLAYER`]]==0}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] No players found!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] No players found!\`, $COLOR_WARN]`, `false`]}
 				SetState {Idle}
 
 	~~ Create blacklist
@@ -4357,7 +4357,7 @@ STATE: {FellowAdd} ~~ {
 	~~ Clear variables and return to idle if there are no more characters to add
 	IF: Any
 			Expr {listcount[$AllCharactersNotInFellowNotBlacklisted]==0}
-			Expr {getfellowshipcount[]>=@CCMaxFellowshipSize}
+			Expr {getfellowshipcount[]>=@HBMaxFellowshipSize}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`AllCharacters`, `AllCharacterNames`, `AllCharactersNotInFellow`, `AllCharactersNotInFellowNotBlacklisted`, `FellowBlacklist`, `name`, `namerx`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4366,7 +4366,7 @@ STATE: {FellowAdd} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {$name=listpop[$AllCharactersNotInFellowNotBlacklisted, 0]}
-				DoExpr {ifthen[$LEVEL_DEBUG>=@CCDebug, `echo[\`[INFO] recruiting \`+$name, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[INFO] recruiting \`+$name, $COLOR_INFO]`, `false`]}
 				ChatExpr {`/ub fellow recruit `+$name}
 				SetState {FellowAdd}
 
@@ -4387,9 +4387,9 @@ STATE: {HandleRecall} ~~ {
 		DO:	SetState {Idle}
 
 	~~ Return to Idle if the spell isn't known
-	IF: Not Expr {getisspellknown[$CCRecallSpell]}
+	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Disable all options
@@ -4405,13 +4405,13 @@ STATE: {HandleRecall} ~~ {
 	~~ Cast the recall spell
 	IF: Expr {isportaling[]==false}
 		DO: DoAll
-				DoExpr {actiontrycastbyid[$CCRecallSpell]}
+				DoExpr {actiontrycastbyid[$HBRecallSpell]}
 				SetState {HandleRecall}
 
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
 				SetState {LeaderCheck}
 
 ~~}
@@ -4432,7 +4432,7 @@ STATE: {HandleCount} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {$count=getitemcountininventorybynamerx[$capturegroup_counttext]}
-				ChatExpr {`/t `+@CCLeader+`, `+$capturegroup_counttext+`: `+$count}
+				ChatExpr {`/t `+@HBLeader+`, `+$capturegroup_counttext+`: `+$count}
 				DoExpr {listmap[listcreate[`capturegroup_counttext`, `capturegroup_name`, `capturegroup_saythink`, `count`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4453,9 +4453,9 @@ STATE: {HandleTimers} ~~ {
 
 	IF: Always
 		DO: DoAll
-				DoExpr {$CCTimerAmount=cnumber[$capturegroup_timertext]*60}
-				DoExpr {$CCTimerMsg=$capturegroup_timermsg}
-				DoExpr {setvar[CCTimer, stopwatchstart[stopwatchcreate[]]]}
+				DoExpr {$HBTimerAmount=cnumber[$capturegroup_timertext]*60}
+				DoExpr {$HBTimerMsg=$capturegroup_timermsg}
+				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 
 	~~ Show Timer view
 	IF: Not Expr {uiviewvisible[Timer]}
@@ -4477,19 +4477,19 @@ STATE: {UseNPC} ~~ {
 
 	~~ If set equip item to talk to npc
 	IF: All
-			Expr {@CCEquipOnTurnin!=false}
-			Expr {wobjectfindnearestbyobjectclass[31]!=@CCEquipOnTurnin}
+			Expr {@HBEquipOnTurnin!=false}
+			Expr {wobjectfindnearestbyobjectclass[31]!=@HBEquipOnTurnin}
 			Expr {testvar[equipped]==false}
 		DO: DoAll
-				DoExpr {actiontryuseitem[@CCEquipOnTurnin]}
+				DoExpr {actiontryuseitem[@HBEquipOnTurnin]}
 				DoExpr {$equipped=true}
 
 	~~ Warn if no NPC nearby
 	IF: Any
 			Expr {wobjectfindnearestbyobjectclass[$NPC]==false}
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]>=@CCNPCThreshold} ~~ no NPC within threshold
+			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]>=@HBNPCThreshold} ~~ no NPC within threshold
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No NPC within range!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No NPC within range!\`]`, `false`]}
 				SetState {LeaderCheck}
 
 	~~ Stop using NPC if you receieve a response
@@ -4521,7 +4521,7 @@ STATE: {UseNPC} ~~ {
 			ChatMatch {^You have killed} ~~ Slain Protectorate
 			IntoPortal
 		DO:	DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Talked to \`+$name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Talked to \`+$name]`, `false`]}
 				DoExpr {clearvar[equipped]}
 				SetState {LeaderCheck}
 
@@ -4564,7 +4564,7 @@ STATE: {UseVendor} ~~ {
 	~~ Autovendor finished
 	IF:	ChatMatch {^You think, "AutoVendor finished}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished vending with \`+$name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished vending with \`+$name]`, `false`]}
 				DoExpr {actiontryuseitem[wobjectfindnearestbyobjectclass[$VENDOR]]} ~~ Close the vendor window
 				DoExpr {clearvar[open]}
 				SetState {LeaderCheck}
@@ -4583,7 +4583,7 @@ STATE: {ReadContracts} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	~~ If Remaining contracts try using them
@@ -4595,7 +4595,7 @@ STATE: {ReadContracts} ~~ {
 	~~ No contracts left return to Idle
 	IF: Expr {getitemcountininventorybynamerx[`(Hunting\: Lost City of Neftet)|(Contract for)`]==0}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished reading contracts\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished reading contracts\`]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -4702,7 +4702,7 @@ STATE: {ShowJump} ~~ {
 		DO: DoAll
 				CreateView {Jump} {:CheCommand-Jump.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump <<`]}
-				DoExpr {@CCViewsJump=true}
+				DoExpr {@HBViewsJump=true}
 				SetState {Idle}
 
 	~~ Close Jump view
@@ -4710,7 +4710,7 @@ STATE: {ShowJump} ~~ {
 		DO: DoAll
 				DestroyView {Jump}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump >>`]}
-				DoExpr {@CCViewsJump=false}
+				DoExpr {@HBViewsJump=false}
 				SetState {Idle}
 ~~ }
 
@@ -4869,7 +4869,7 @@ STATE: {ShowActions} ~~ {
 		DO: DoAll
 				CreateView {Actions} {:CheCommand-Actions.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowActions], `Actions <<`]}
-				DoExpr {@CCViewsActions=true}
+				DoExpr {@HBViewsActions=true}
 				SetState {Idle}
 
 	~~ Close Action view
@@ -4877,7 +4877,7 @@ STATE: {ShowActions} ~~ {
 		DO: DoAll
 				DestroyView {Actions}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowActions], `Actions >>`]}
-				DoExpr {@CCViewsActions=false}
+				DoExpr {@HBViewsActions=false}
 				SetState {Idle}
 
 ~~ }
@@ -5005,7 +5005,7 @@ STATE: {ShowSettings} ~~ {
 		DO: DoAll
 				CreateView {Settings} {:CheCommand-Settings.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowSettings], `Settings <<`]}
-				DoExpr {uisetlabel[uigetcontrol[Settings, ChatCommand], `Chat: `+@CCChatCommand]}  ~~ Set the current ChatCommand
+				DoExpr {uisetlabel[uigetcontrol[Settings, ChatCommand], `Chat: `+@HBChatCommand]}  ~~ Set the current ChatCommand
 				SetState {Idle}
 
 	~~ Close Settings view
@@ -5022,23 +5022,23 @@ STATE: {SetupViews} ~~ {
 
 	IF: Always
 		DO: DoAll
-				DoExpr {uisetlabel[uigetcontrol[Main, Follow], ifthen[@CCStay, `Follow`, `Stay`]]}
-				~~ DoExpr {uisetlabel[uigetcontrol[Main, Combat], ifthen[testpvar[CCOriginalVitalsEnableCombat], `ifthen[@CCOriginalVitalsEnableCombat, \`Combat Off\`, \`Combat On\`]`, `ifthen[vtgetsetting[EnableCombat], \`Combat Off\`, \`Combat On\`]`]]}
+				DoExpr {uisetlabel[uigetcontrol[Main, Follow], ifthen[@HBStay, `Follow`, `Stay`]]}
+				~~ DoExpr {uisetlabel[uigetcontrol[Main, Combat], ifthen[testpvar[HBOriginalVitalsEnableCombat], `ifthen[@HBOriginalVitalsEnableCombat, \`Combat Off\`, \`Combat On\`]`, `ifthen[vtgetsetting[EnableCombat], \`Combat Off\`, \`Combat On\`]`]]}
 
 	~~ If actions was previously open show it again
-	IF: Expr {@CCViewsActions==true}
+	IF: Expr {@HBViewsActions==true}
 		DO: DoAll
 				CreateView {Actions} {:CheCommand-Actions.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowActions], `Actions <<`]}
 
 	~~ If jump was previously open show it again
-	IF: Expr {@CCViewsJump==true}
+	IF: Expr {@HBViewsJump==true}
 		DO: DoAll
 				CreateView {Jump} {:CheCommand-Jump.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump <<`]}
 
 	~~ If timer is running open timer view
-	IF: Expr {testvar[CCTimer]==true}
+	IF: Expr {testvar[HBTimer]==true}
 		DO: CreateView {Timer} {:CheCommand-Timer.xml}
 
 	IF: Always
@@ -5086,35 +5086,35 @@ STATE: {SetMetas} ~~ {
 	~~ Set all the buttons with the names of the metas
 	IF: Always
 		DO: DoAll
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta1], ifthen[listcount[@CCMetaKeys]>=1+$MetaOffset, `@CCMetaKeys{{0+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta2], ifthen[listcount[@CCMetaKeys]>=2+$MetaOffset, `@CCMetaKeys{{1+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta3], ifthen[listcount[@CCMetaKeys]>=3+$MetaOffset, `@CCMetaKeys{{2+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta4], ifthen[listcount[@CCMetaKeys]>=4+$MetaOffset, `@CCMetaKeys{{3+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta5], ifthen[listcount[@CCMetaKeys]>=5+$MetaOffset, `@CCMetaKeys{{4+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta6], ifthen[listcount[@CCMetaKeys]>=6+$MetaOffset, `@CCMetaKeys{{5+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta7], ifthen[listcount[@CCMetaKeys]>=7+$MetaOffset, `@CCMetaKeys{{6+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta8], ifthen[listcount[@CCMetaKeys]>=8+$MetaOffset, `@CCMetaKeys{{7+$MetaOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta9], ifthen[listcount[@CCMetaKeys]>=9+$MetaOffset, `@CCMetaKeys{{8+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta1], ifthen[listcount[@HBMetaKeys]>=1+$MetaOffset, `@HBMetaKeys{{0+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta2], ifthen[listcount[@HBMetaKeys]>=2+$MetaOffset, `@HBMetaKeys{{1+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta3], ifthen[listcount[@HBMetaKeys]>=3+$MetaOffset, `@HBMetaKeys{{2+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta4], ifthen[listcount[@HBMetaKeys]>=4+$MetaOffset, `@HBMetaKeys{{3+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta5], ifthen[listcount[@HBMetaKeys]>=5+$MetaOffset, `@HBMetaKeys{{4+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta6], ifthen[listcount[@HBMetaKeys]>=6+$MetaOffset, `@HBMetaKeys{{5+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta7], ifthen[listcount[@HBMetaKeys]>=7+$MetaOffset, `@HBMetaKeys{{6+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta8], ifthen[listcount[@HBMetaKeys]>=8+$MetaOffset, `@HBMetaKeys{{7+$MetaOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Metas, btnMeta9], ifthen[listcount[@HBMetaKeys]>=9+$MetaOffset, `@HBMetaKeys{{8+$MetaOffset}}`, `empty`]]}
 
 	~~ Hide the empty buttons
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=1+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta1], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=2+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta2], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=3+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta3], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=4+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta4], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=5+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta5], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=6+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta6], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=7+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta7], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=8+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta8], 0]`]}
-				DoExpr {ifthen[listcount[@CCMetaKeys]>=9+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta9], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=1+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta1], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=2+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta2], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=3+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta3], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=4+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta4], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=5+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta5], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=6+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta6], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=7+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta7], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=8+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta8], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=9+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta9], 0]`]}
 
 	~~ Hide the Previous button if you can't go back
 	IF: Expr {$MetaOffset<=0}
 		DO: DoExpr {uisetvisible[uigetcontrol[Metas, btnPrevious], 0]}
 
 	~~ Hide the Next button if you can't go foward
-	IF: Expr {listcount[@CCMetaKeys]<=9+$MetaOffset}
+	IF: Expr {listcount[@HBMetaKeys]<=9+$MetaOffset}
 		DO: DoExpr {uisetvisible[uigetcontrol[Metas, btnNext], 0]}
 
 	~~ Return to Idle
@@ -5188,35 +5188,35 @@ STATE: {SetProfiles} ~~ {
 	~~ Set all the buttons with the names of the profiles
 	IF: Always
 		DO: DoAll
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile1], ifthen[listcount[@CCProfileKeys]>=1+$ProfileOffset, `@CCProfileKeys{{0+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile2], ifthen[listcount[@CCProfileKeys]>=2+$ProfileOffset, `@CCProfileKeys{{1+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile3], ifthen[listcount[@CCProfileKeys]>=3+$ProfileOffset, `@CCProfileKeys{{2+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile4], ifthen[listcount[@CCProfileKeys]>=4+$ProfileOffset, `@CCProfileKeys{{3+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile5], ifthen[listcount[@CCProfileKeys]>=5+$ProfileOffset, `@CCProfileKeys{{4+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile6], ifthen[listcount[@CCProfileKeys]>=6+$ProfileOffset, `@CCProfileKeys{{5+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile7], ifthen[listcount[@CCProfileKeys]>=7+$ProfileOffset, `@CCProfileKeys{{6+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile8], ifthen[listcount[@CCProfileKeys]>=8+$ProfileOffset, `@CCProfileKeys{{7+$ProfileOffset}}`, `empty`]]}
-				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile9], ifthen[listcount[@CCProfileKeys]>=9+$ProfileOffset, `@CCProfileKeys{{8+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile1], ifthen[listcount[@HBProfileKeys]>=1+$ProfileOffset, `@HBProfileKeys{{0+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile2], ifthen[listcount[@HBProfileKeys]>=2+$ProfileOffset, `@HBProfileKeys{{1+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile3], ifthen[listcount[@HBProfileKeys]>=3+$ProfileOffset, `@HBProfileKeys{{2+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile4], ifthen[listcount[@HBProfileKeys]>=4+$ProfileOffset, `@HBProfileKeys{{3+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile5], ifthen[listcount[@HBProfileKeys]>=5+$ProfileOffset, `@HBProfileKeys{{4+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile6], ifthen[listcount[@HBProfileKeys]>=6+$ProfileOffset, `@HBProfileKeys{{5+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile7], ifthen[listcount[@HBProfileKeys]>=7+$ProfileOffset, `@HBProfileKeys{{6+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile8], ifthen[listcount[@HBProfileKeys]>=8+$ProfileOffset, `@HBProfileKeys{{7+$ProfileOffset}}`, `empty`]]}
+				DoExpr {uisetlabel[uigetcontrol[Profiles, btnProfile9], ifthen[listcount[@HBProfileKeys]>=9+$ProfileOffset, `@HBProfileKeys{{8+$ProfileOffset}}`, `empty`]]}
 
 	~~ Hide the empty buttons
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=1+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile1], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=2+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile2], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=3+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile3], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=4+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile4], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=5+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile5], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=6+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile6], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=7+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile7], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=8+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile8], 0]`]}
-				DoExpr {ifthen[listcount[@CCProfileKeys]>=9+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile9], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=1+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile1], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=2+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile2], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=3+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile3], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=4+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile4], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=5+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile5], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=6+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile6], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=7+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile7], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=8+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile8], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=9+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile9], 0]`]}
 
 	~~ Hide the Previous button if you can't go back
 	IF: Expr {$ProfileOffset<=0}
 		DO: DoExpr {uisetvisible[uigetcontrol[Profiles, btnPrevious], 0]}
 
 	~~ Hide the Next button if you can't go foward
-	IF: Expr {listcount[@CCProfileKeys]<=9+$ProfileOffset}
+	IF: Expr {listcount[@HBProfileKeys]<=9+$ProfileOffset}
 		DO: DoExpr {uisetvisible[uigetcontrol[Profiles, btnNext], 0]}
 
 	~~ Return to Idle
@@ -5253,13 +5253,13 @@ STATE: {ProfilePreviousPage} ~~ {
 
 STATE: {ToggleStay} ~~ {
 
-	IF: Expr {@CCStay==true}
+	IF: Expr {@HBStay==true}
 		DO: DoAll
 				DoExpr {uisetlabel[uigetcontrol[Main, Follow], `Stay`]}
 				DoExpr {$command=`#action follow`}
 				SetState {ChatCommand}
 
-	IF: Expr {@CCStay==false}
+	IF: Expr {@HBStay==false}
 		DO: DoAll
 				DoExpr {uisetlabel[uigetcontrol[Main, Follow], `Follow`]}
 				DoExpr {$command=`#action stay`}
@@ -5271,16 +5271,16 @@ STATE: {ToggleStay} ~~ {
 STATE: {ToggleChatCommand} ~~ {
 
 	~~ Toggle ChatCommand to say
-	IF: Expr {@CCChatCommand==`Fellow`}
+	IF: Expr {@HBChatCommand==`Fellow`}
 		DO: DoAll
-				DoExpr {setpvar[CCChatCommand, `Say`]}
+				DoExpr {setpvar[HBChatCommand, `Say`]}
 				DoExpr {uisetlabel[uigetcontrol[Settings, ChatCommand], `Chat: Say`]}
 				SetState {Idle}
 
 	~~ Toggle ChatCommand to fellow
-	IF: Expr {@CCChatCommand==`Say`}
+	IF: Expr {@HBChatCommand==`Say`}
 		DO: DoAll
-				DoExpr {setpvar[CCChatCommand, `Fellow`]}
+				DoExpr {setpvar[HBChatCommand, `Fellow`]}
 				DoExpr {uisetlabel[uigetcontrol[Settings, ChatCommand], `Chat: Fellow`]}
 				SetState {Idle}
 
@@ -5291,7 +5291,7 @@ STATE: {ChatCommand} ~~ {
 
 	~~ Warn if sending chat commands to Fellow and not in a fellow
 	IF: All
-			Expr {@CCChatCommand==`Fellow`}
+			Expr {@HBChatCommand==`Fellow`}
 			Expr {getfellowshipstatus[]!=1}
 		DO: DoAll
 				DoExpr {echo[`[WARN] Not in fellow but sending commands to fellow!`, $COLOR_WARN]}
@@ -5300,7 +5300,7 @@ STATE: {ChatCommand} ~~ {
 	~~ Send chat command
 	IF: Always
 		DO: DoAll
-				ChatExpr {`/`+@CCChatCommand+` `+$command}
+				ChatExpr {`/`+@HBChatCommand+` `+$command}
 				DoExpr {clearvar[command]}
 				SetState {Idle}
 
@@ -5310,13 +5310,13 @@ STATE: {ChatCommand} ~~ {
 
 ~~ STATE: {ToggleCombat} ~~ {
 
-~~ 	IF: Expr {ifthen[testpvar[CCOriginalVitalsEnableCombat], `@CCOriginalVitalsEnableCombat`, `vtgetsetting[EnableCombat]`]==true}
+~~ 	IF: Expr {ifthen[testpvar[HBOriginalVitalsEnableCombat], `@HBOriginalVitalsEnableCombat`, `vtgetsetting[EnableCombat]`]==true}
 ~~ 		DO: DoAll
 ~~ 				ChatExpr {`#vtoption enablecombat false`}
 ~~ 				DoExpr {uisetlabel[uigetcontrol[Main, Combat], `Combat On`]}
 ~~ 				SetState {Idle}
 
-~~ 	IF: Expr {ifthen[testpvar[CCOriginalVitalsEnableCombat], `@CCOriginalVitalsEnableCombat`, `vtgetsetting[EnableCombat]`]==false}
+~~ 	IF: Expr {ifthen[testpvar[HBOriginalVitalsEnableCombat], `@HBOriginalVitalsEnableCombat`, `vtgetsetting[EnableCombat]`]==false}
 ~~ 		DO: DoAll
 ~~ 				ChatExpr {`#vtoption enablecombat true`}
 ~~ 				DoExpr {uisetlabel[uigetcontrol[Main, Combat], `Combat Off`]}
@@ -5326,21 +5326,21 @@ STATE: {ChatCommand} ~~ {
 
 STATE: {ToggleVitals} ~~ {
 
-	IF: Expr {@CCVitals==true}
+	IF: Expr {@HBVitals==true}
 		DO: DoAll
-				DoExpr {@CCVitals=false} ~~ Toggle vitals
-				DoExpr {setpvar[CCOriginalVitalsEnableBuffing, cstr[vtgetsetting[EnableBuffing]]]}
-				DoExpr {setpvar[CCOriginalVitalsEnableCombat, cstr[vtgetsetting[EnableCombat]]]}
-				DoExpr {setpvar[CCOriginalVitalsEnableLooting, cstr[vtgetsetting[EnableLooting]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeNormHitP, cstr[vtgetsetting[Recharge-Norm-HitP]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeNormStam, cstr[vtgetsetting[Recharge-Norm-Stam]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeNormMana, cstr[vtgetsetting[Recharge-Norm-Mana]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeNoTargHitP, cstr[vtgetsetting[Recharge-NoTarg-HitP]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeNoTargStam, cstr[vtgetsetting[Recharge-NoTarg-Stam]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeNoTargMana, cstr[vtgetsetting[Recharge-NoTarg-Mana]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeHelperHitP, cstr[vtgetsetting[Recharge-Helper-HitP]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeHelperStam, cstr[vtgetsetting[Recharge-Helper-Stam]]]}
-				DoExpr {setpvar[CCOriginalVitalsRechargeHelperMana, cstr[vtgetsetting[Recharge-Helper-Mana]]]}
+				DoExpr {@HBVitals=false} ~~ Toggle vitals
+				DoExpr {setpvar[HBOriginalVitalsEnableBuffing, cstr[vtgetsetting[EnableBuffing]]]}
+				DoExpr {setpvar[HBOriginalVitalsEnableCombat, cstr[vtgetsetting[EnableCombat]]]}
+				DoExpr {setpvar[HBOriginalVitalsEnableLooting, cstr[vtgetsetting[EnableLooting]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeNormHitP, cstr[vtgetsetting[Recharge-Norm-HitP]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeNormStam, cstr[vtgetsetting[Recharge-Norm-Stam]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeNormMana, cstr[vtgetsetting[Recharge-Norm-Mana]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeNoTargHitP, cstr[vtgetsetting[Recharge-NoTarg-HitP]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeNoTargStam, cstr[vtgetsetting[Recharge-NoTarg-Stam]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeNoTargMana, cstr[vtgetsetting[Recharge-NoTarg-Mana]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeHelperHitP, cstr[vtgetsetting[Recharge-Helper-HitP]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeHelperStam, cstr[vtgetsetting[Recharge-Helper-Stam]]]}
+				DoExpr {setpvar[HBOriginalVitalsRechargeHelperMana, cstr[vtgetsetting[Recharge-Helper-Mana]]]}
 				DoExpr {vtsetsetting[EnableBuffing, `0`]}
 				DoExpr {vtsetsetting[EnableCombat, `0`]}
 				DoExpr {vtsetsetting[EnableLooting, `0`]}
@@ -5355,21 +5355,21 @@ STATE: {ToggleVitals} ~~ {
 				DoExpr {vtsetsetting[Recharge-Helper-Mana, `0`]}
 				Return
 
-	IF: Expr {@CCVitals==false}
+	IF: Expr {@HBVitals==false}
 		DO: DoAll
-				DoExpr {@CCVitals=true} ~~ Toggle vitals
-				DoExpr {vtsetsetting[EnableBuffing, @CCOriginalVitalsEnableBuffing]}
-				DoExpr {vtsetsetting[EnableCombat, @CCOriginalVitalsEnableCombat]}
-				DoExpr {vtsetsetting[EnableLooting, @CCOriginalVitalsEnableLooting]}
-				DoExpr {vtsetsetting[Recharge-Norm-HitP, @CCOriginalVitalsRechargeNormHitP]}
-				DoExpr {vtsetsetting[Recharge-Norm-Stam, @CCOriginalVitalsRechargeNormStam]}
-				DoExpr {vtsetsetting[Recharge-Norm-Mana, @CCOriginalVitalsRechargeNormMana]}
-				DoExpr {vtsetsetting[Recharge-NoTarg-HitP, @CCOriginalVitalsRechargeNoTargHitP]}
-				DoExpr {vtsetsetting[Recharge-NoTarg-Stam, @CCOriginalVitalsRechargeNoTargStam]}
-				DoExpr {vtsetsetting[Recharge-NoTarg-Mana, @CCOriginalVitalsRechargeNoTargMana]}
-				DoExpr {vtsetsetting[Recharge-Helper-HitP, @CCOriginalVitalsRechargeHelperHitP]}
-				DoExpr {vtsetsetting[Recharge-Helper-Stam, @CCOriginalVitalsRechargeHelperStam]}
-				DoExpr {vtsetsetting[Recharge-Helper-Mana, @CCOriginalVitalsRechargeHelperMana]}
+				DoExpr {@HBVitals=true} ~~ Toggle vitals
+				DoExpr {vtsetsetting[EnableBuffing, @HBOriginalVitalsEnableBuffing]}
+				DoExpr {vtsetsetting[EnableCombat, @HBOriginalVitalsEnableCombat]}
+				DoExpr {vtsetsetting[EnableLooting, @HBOriginalVitalsEnableLooting]}
+				DoExpr {vtsetsetting[Recharge-Norm-HitP, @HBOriginalVitalsRechargeNormHitP]}
+				DoExpr {vtsetsetting[Recharge-Norm-Stam, @HBOriginalVitalsRechargeNormStam]}
+				DoExpr {vtsetsetting[Recharge-Norm-Mana, @HBOriginalVitalsRechargeNormMana]}
+				DoExpr {vtsetsetting[Recharge-NoTarg-HitP, @HBOriginalVitalsRechargeNoTargHitP]}
+				DoExpr {vtsetsetting[Recharge-NoTarg-Stam, @HBOriginalVitalsRechargeNoTargStam]}
+				DoExpr {vtsetsetting[Recharge-NoTarg-Mana, @HBOriginalVitalsRechargeNoTargMana]}
+				DoExpr {vtsetsetting[Recharge-Helper-HitP, @HBOriginalVitalsRechargeHelperHitP]}
+				DoExpr {vtsetsetting[Recharge-Helper-Stam, @HBOriginalVitalsRechargeHelperStam]}
+				DoExpr {vtsetsetting[Recharge-Helper-Mana, @HBOriginalVitalsRechargeHelperMana]}
 				Return
 
 ~~ }
@@ -5378,14 +5378,14 @@ STATE: {ToggleVitals} ~~ {
 ~~ Use Virindi Hotkey System to map this state to a key like `tab` to toggle on and off combat/healing/buffing
 STATE: {HotkeyToggleVitals} ~~ {
 
-	IF: Expr {@CCVitals==true}
+	IF: Expr {@HBVitals==true}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Turning off vitals\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Turning off vitals\`, $COLOR_INFO]`, `false`]}
 				CallState {ToggleVitals} {Idle}
 
-	IF: Expr {@CCVitals==false}
+	IF: Expr {@HBVitals==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Turning on vitals\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Turning on vitals\`, $COLOR_INFO]`, `false`]}
 				CallState {ToggleVitals} {Idle}
 
 	IF: Always
