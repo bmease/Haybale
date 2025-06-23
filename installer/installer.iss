@@ -66,3 +66,17 @@ Source: "C:\Games\VirindiPlugins\VirindiTank\CheCommandNavTownNetwork.met"; Dest
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
+[Code]
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  InstallPath: string;
+  PathFile: string;
+begin
+  if CurStep = ssPostInstall then
+  begin
+    InstallPath := ExpandConstant('{app}');
+    PathFile := ExpandConstant('{userappdata}\{#MyAppName}\install_path.txt');
+    
+    SaveStringToFile(PathFile, InstallPath, False);
+  end;
+end;
