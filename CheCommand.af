@@ -211,18 +211,18 @@ STATE: {Default} ~~ {
 
 
 				DoExpr {setvar[AutoTimers, listcreate[]]}
-				DoExpr {listadd[$AutoTimers, listcreate[11, 00, 00, `AM`, listcreate[`CheCommandNavRecomp`, `CheCommandNavChair`]]]}
+				DoExpr {listadd[$AutoTimers, listcreate[11, 00, 00, `AM`, listcreate[`HaybaleNavRecomp`, `HaybaleNavChair`]]]}
 
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 20, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 21, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 22, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 23, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 24, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 25, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 26, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 27, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 28, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 29, 00, `AM`, listcreate[`CheCommandNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 20, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 21, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 22, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 23, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 24, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 25, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 26, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 27, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 28, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
+				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 29, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
 
 				~~ Nav Routes
 				~~ Keys are landcells in hexidecimal format, values are the name of the nav file without the file extension
@@ -395,7 +395,7 @@ STATE: {Default} ~~ {
 
 	~~ Open Remote view
 	IF: Always
-		DO:	CreateView {Main} {:CheCommand-Main.xml}
+		DO:	CreateView {Main} {:Haybale-Main.xml}
 
 	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoExpr {echo[`[DEBUG] Che Command v`+$HBVersion+` by Che de Pa of Sundering`, $COLOR_DEBUG]}
@@ -488,7 +488,7 @@ STATE: {Setup} ~~ {
 	IF: Not Expr {uiviewvisible[Setup]}
 		DO: DoAll
 				DoExpr {$CharacterOffset=0}
-				CreateView {Setup} {:CheCommand-Setup.xml}
+				CreateView {Setup} {:Haybale-Setup.xml}
 				SetState {SetSetup}
 
 	~~ Display help information
@@ -512,7 +512,7 @@ STATE: {Setup} ~~ {
 				Expr {listcontains[listmap[netclients[], `dictgetitem[$1, PlayerId]`], wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, $capturegroup_name]]]}
 		DO: DoAll
 				DoExpr {ifthen[testpvar[HBLeader], `false`, `@HBLeader=listgetitem[@HBCharacterList, 0]`]}
-				Chat {/vt meta load CheCommand}
+				Chat {/vt meta load Haybale}
 
 	~~ Handle `#addfellow` for any character in ub netclients and a fellow is not formed
 	IF:	All
@@ -854,7 +854,7 @@ STATE: {Idle} ~~ {
 				DoExpr {$HBTimerAmount=310}
 				DoExpr {$HBTimerMsg=@HBTimerWeaponsMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
-				CreateView {Timer} {:CheCommand-Timer.xml}
+				CreateView {Timer} {:Haybale-Timer.xml}
 				SetState {Idle}
 
 	~~ Start a timer for VR Speed runs
@@ -865,7 +865,7 @@ STATE: {Idle} ~~ {
 				DoExpr {$HBTimerAmount=60*30}
 				DoExpr {$HBTimerMsg=@HBTimerVRMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
-				CreateView {Timer} {:CheCommand-Timer.xml}
+				CreateView {Timer} {:Haybale-Timer.xml}
 				SetState {Idle}
 
 	~~ Handle timer message
@@ -1197,7 +1197,7 @@ STATE: {Idle} ~~ {
 	~~ Handle Version
 	IF: ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#version\"$} {}
 		DO: DoAll
-				DoExpr {chatbox[`/t `+$capturegroup_name+`, CheCommand `+$HBVersion]}
+				DoExpr {chatbox[`/t `+$capturegroup_name+`, Haybale `+$HBVersion]}
 				SetState {Idle}
 
 	~~ Cast the Focusing Stones's Brillence on a player for the issuer of the command
@@ -1263,11 +1263,11 @@ STATE: {HandleAutoTimers} ~~ {
 
 STATE: {CallMeta} ~~ {
 
-	~~ Call a meta with the return meta being CheCommand
+	~~ Call a meta with the return meta being Haybale
 	IF: Expr {listcount[$MetaCallQueue]>0}
 		DO: DoAll
 				DoExpr {$meta=listpop[$MetaCallQueue, 0]}
-				DoExpr {$HBReturnMeta=`CheCommand`}
+				DoExpr {$HBReturnMeta=`Haybale`}
 				ChatExpr {`/vt meta load `+$meta}
 
 ~~ }
@@ -1327,7 +1327,7 @@ STATE: {HandleActions} ~~ {
 
 	~~ Handle `#action update`
 	IF: Expr {(update)#getvar[capturegroup_actiontext]}
-		DO: Chat {/vt meta load CheCommand}
+		DO: Chat {/vt meta load Haybale}
 
 	~~ Handle `#action pack`
 	IF: Expr {(pack)#getvar[capturegroup_actiontext]}
@@ -1338,8 +1338,8 @@ STATE: {HandleActions} ~~ {
 	~~ Handle `#action mule`
 	IF: Expr {(mule)#getvar[capturegroup_actiontext]}
 		DO: DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSort`]}
-				DoExpr {listadd[$MetaCallQueue, `CheCommandHandoffSort`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSort`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleHandoffSort`]}
 				SetState {CallMeta}
 
 	~~ Handle `#action portal`
@@ -1473,13 +1473,13 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto comps`
 	IF: Expr {(comps)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavRecomp`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavRecomp`]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto haven buffs`
 	IF: Expr {(haven buffs)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavHavenBuffs`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavHavenBuffs`]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto colosseum`
@@ -1527,28 +1527,28 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto couch`
 	IF: Expr {(couch)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavChair`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavChair`]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto asheron castle`
 	IF: Expr {(asherons castle)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavPortalspaceActivator`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `AsheronsCastle`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavPortalspaceActivator`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `AsheronsCastle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto frozen valley`
 	IF: Expr {(frozen valley)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavPortalspaceActivator`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavPortalspaceActivator`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto hoshino`
 	IF: Expr {(hoshino)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavPortalspaceActivator`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavPortalspaceActivator`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto graveyard`
@@ -1560,7 +1560,7 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto neftet`
 	IF: Expr {(neftet)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavNeftet`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavNeftet`]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto singularity caul`
@@ -1660,99 +1660,99 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto ahurenga`
 	IF: Expr {(ahurenga)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Ahurenga`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Ahurenga`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto bluespire`
 	IF: Expr {(bluespire)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Bluespire`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Bluespire`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto danbys outpost`
 	IF: Expr {(danbys outpost)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Danby's Outpost`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Danby's Outpost`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto eastwatch`
 	IF: Expr {(eastwatch)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Eastwatch`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Eastwatch`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto fiun outpost`
 	IF: Expr {(fiun outpost)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto greenspire`
 	IF: Expr {(greenspire)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Greenspire`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Greenspire`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto linvak tukal`
 	IF: Expr {$capturegroup_navdestination==`linvak tukal`}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Linvak Tukal`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Linvak Tukal`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto neydisa castle`
 	IF: Expr {(neydisa castle)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Neydisa Castle`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Neydisa Castle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto oolutangas refuge`
 	IF: Expr {(oolutangas refuge)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Oolutanga's Refuge`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Oolutanga's Refuge`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto redspire`
 	IF: Expr {(redspire)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Redspire`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Redspire`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto sanamar`
 	IF: Expr {(sanamar)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Sanamar`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Sanamar`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto silyun`
 	IF: Expr {(silyun)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Silyun`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Silyun`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto timaru`
 	IF: Expr {(timaru)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Timaru`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Timaru`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto westwatch`
 	IF: Expr {(westwatch)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Westwatch`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Westwatch`]]}
 				SetState {CallMeta}
 
 	~~ Sho
@@ -1760,85 +1760,85 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto baishi`
 	IF: Expr {(baishi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Baishi`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Baishi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto freehold`
 	IF: Expr {(freehold)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Freehold`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Freehold`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto hebian-to`
 	IF: Expr {(hebian-to)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Hebian-To`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Hebian-To`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto kara`
 	IF: Expr {(kara)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Kara`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Kara`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto kryst`
 	IF: Expr {(kryst)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Kryst`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Kryst`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto lin`
 	IF: Expr {(lin)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Lin`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Lin`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mayoi`
 	IF: Expr {(mayoi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Mayoi`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Mayoi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto nanto`
 	IF: Expr {(nanto)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Nanto`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Nanto`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto sawato`
 	IF: Expr {(sawato)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Sawato`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Sawato`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto shoushi`
 	IF: Expr {(shoushi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Shoushi`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Shoushi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto tou-tou`
 	IF: Expr {(tou-tou)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Tou-Tou`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Tou-Tou`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto yanshi`
 	IF: Expr {(yanshi)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Yanshi`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Yanshi`]]}
 				SetState {CallMeta}
 
 
@@ -1848,71 +1848,71 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto al-arqas`
 	IF: Expr {(al-arqas)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto al-jalima`
 	IF: Expr {(al-jalima)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Al-Jalima`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Al-Jalima`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto khayyaban`
 	IF: Expr {(khayyaban)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto qalabar`
 	IF: Expr {(qalabar)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Qalaba'r`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Qalaba'r`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto samsur`
 	IF: Expr {(samsur)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Samsur`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Samsur`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto tufa`
 	IF: Expr {(tufa)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Tufa`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Tufa`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto uziz`
 	IF: Expr {(uziz)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Uziz`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Uziz`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto xarabydun`
 	IF: Expr {(xarabydun)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Xarabydun`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Xarabydun`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto yaraq`
 	IF: Expr {(yaraq)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Yaraq`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Yaraq`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto zaikhal`
 	IF: Expr {(zaikhal)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Zaikhal`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Zaikhal`]]}
 				SetState {CallMeta}
 
 
@@ -1922,78 +1922,78 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto arwic`
 	IF: Expr {(arwic)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Arwic`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Arwic`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto cragstone`
 	IF: Expr {(cragstone)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Cragstone`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Cragstone`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto dryreach`
 	IF: Expr {(dryreach)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Dryreach`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Dryreach`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto eastham`
 	IF: Expr {(eastham)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Eastham`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Eastham`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto fort tethana`
 	IF: Expr {(fort tethana)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Fort Tethana`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Fort Tethana`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto glenden wood`
 	IF: Expr {(glenden wood)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Glenden Wood`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Glenden Wood`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto holtburg`
 	IF: Expr {(holtburg)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Holtburg`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Holtburg`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto lytelthorpe`
 	IF: Expr {(lytelthorpe)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Lytelthorpe`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Lytelthorpe`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto plateau village`
 	IF: Expr {(plateau village)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Plateau Village`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Plateau Village`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto rithwic`
 	IF: Expr {(rithwic)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Rithwic`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Rithwic`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto stonehold`
 	IF: Expr {(stonehold)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavTownNetwork`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
 				SetState {CallMeta}
 
 	~~ Subway
@@ -2001,113 +2001,113 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto candeth keep`
 	IF: Expr {(candeth keep)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto jungle subs`
 	IF: Expr {(jungle subs)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Jungle Subs`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Jungle Subs`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto withered`
 	IF: Expr {(withered)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Withered`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Withered`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mid direlands`
 	IF: Expr {(mid direlands)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Mid Direlands`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Mid Direlands`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto abayar's laboratory`
 	IF: Expr {(abayar's laboratory)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Abayar's Laboratory`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Abayar's Laboratory`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto dark design`
 	IF: Expr {(dark design)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Dark Design`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Dark Design`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto creepy canyons`
 	IF: Expr {(creepy canyons)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Creepy Canyons`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Creepy Canyons`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto thrungus hole`
 	IF: Expr {(thrungus hole)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Thrungus Hole`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Thrungus Hole`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto black death catacombs`
 	IF: Expr {(black death catacombs)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Black Death Catacombs`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Black Death Catacombs`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto insatiable vault`
 	IF: Expr {(insatiable vault)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Insatiable Vault`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Insatiable Vault`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto ravenous vault`
 	IF: Expr {(ravenous vault)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Ravenous Vault`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Ravenous Vault`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto augmentation realm main level`
 	IF: Expr {(augmentation realm main level)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Augmentation Realm Main Level`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Augmentation Realm Main Level`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto obsidian rim`
 	IF: Expr {(obsidian rim)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto path of the blind`
 	IF: Expr {(path of the blind)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Path of the Blind`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Path of the Blind`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto singularity bore`
 	IF: Expr {(singularity bore)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Singularity Bore`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Singularity Bore`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto egg orchard`
 	IF: Expr {(egg orchard)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavSubway`, dictcreate[`destination`, `Egg Orchard`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavSubway`, dictcreate[`destination`, `Egg Orchard`]]}
 				SetState {CallMeta}
 
 	~~ Jungle Subway
@@ -2115,120 +2115,120 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto south direlands`
 	IF: Expr {(south direlands)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `South Direlands`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `South Direlands`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto vissidal island`
 	IF: Expr {(vissidal island)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Vissidal Island`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Vissidal Island`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto beach fort`
 	IF: Expr {(beach fort)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Beach Fort`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Beach Fort`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto black spawn den`
 	IF: Expr {(black spawn den)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Black Spawn Den`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Black Spawn Den`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto obsidian rim`
 	IF: Expr {(obsidian rim)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Obsidian Rim`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto north direlands`
 	IF: Expr {(north direlands)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `North Direlands`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `North Direlands`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto crater pathway`
 	IF: Expr {(crater pathway)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Crater Pathway`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Crater Pathway`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto dark isle`
 	IF: Expr {(dark isle)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Dark Isle`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Dark Isle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mukkir-infested black spear temple`
 	IF: Expr {(mukkir infested black spear temple)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Mukkir-Infested Black Spear Temple`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Mukkir-Infested Black Spear Temple`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto the colosseum`
 	IF: Expr {(the colosseum)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `The Colosseum`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `The Colosseum`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto nexus`
 	IF: Expr {(nexus)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Nexus`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Nexus`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto mountain retreat`
 	IF: Expr {(mountain retreat)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Mountain Retreat`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Mountain Retreat`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto empyrean facility upper level`
 	IF: Expr {(empyrean facility upper level)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Empyrean Facility Upper Level`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Empyrean Facility Upper Level`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto underground city`
 	IF: Expr {(underground city)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Underground City`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Underground City`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto northern aerlinthe island`
 	IF: Expr {(northern aerlinthe island)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Northern Aerlinthe Island`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Northern Aerlinthe Island`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto halls of metos`
 	IF: Expr {(halls of metos)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Halls of Metos`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Halls of Metos`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#navto frozen valley camp`
 	IF: Expr {(frozen valley camp)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavJungleSubway`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavJungleSubway`, dictcreate[`destination`, `Frozen Valley Camp`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Frozen Valley Camp`]]}
 				SetState {CallMeta}
 
 
@@ -2293,280 +2293,280 @@ STATE: {HandleQuests} ~~ {
 	~~ Handle `#quest bloodstone investigation`
 	IF: Expr {(bloodstone investigation)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `bloodstone investigation`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `bloodstone investigation`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest count phainors amulet`
 	IF: Expr {(count phainors amulet)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `count phainors amulet`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `count phainors amulet`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest deewains`
 	IF: Expr {(deewains)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `deewains`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `deewains`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest curator`
 	IF: Expr {(curator)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `curator`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `curator`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest dream reaver`
 	IF: Expr {(dream reaver)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `dream reaver`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `dream reaver`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest empyrean rescue`
 	IF: Expr {(empyrean rescue)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `empyrean rescue`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `empyrean rescue`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest end of days`
 	IF: Expr {(end of days)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `end of days`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `end of days`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest fear factory`
 	IF: Expr {(fear factory)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `fear factory`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `fear factory`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest first sister`
 	IF: Expr {(first sister)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `first sister`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `first sister`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest izexi`
 	IF: Expr {(izexi)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `izexi`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `izexi`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest four corners`
 	IF: Expr {(four corners)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `four corners`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `four corners`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest geraines host`
 	IF: Expr {(geraines host)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavGerainesHosts`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavGerainesHosts`]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest geraines study`
 	IF: Expr {(geraines study)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `geraines study`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `geraines study`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest gurog creation`
 	IF: Expr {(gurog creation)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `gurog creation`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `gurog creation`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest halt dericost`
 	IF: Expr {(halt dericost)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `halt dericost`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `halt dericost`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest hive queen`
 	IF: Expr {(hive queen)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hive queen`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `hive queen`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest hoshino fortress`
 	IF: Expr {(hoshino fortress)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hoshino fortress`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `hoshino fortress`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest hoshino must die`
 	IF: Expr {(hoshino must die)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `hoshino must die`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `hoshino must die`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest janthefs`
 	IF: Expr {(janthefs)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `janthefs`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `janthefs`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest liberation of uziz`
 	IF: Expr {(liberation of uziz)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `liberation of uziz`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `liberation of uziz`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest lost lore`
 	IF: Expr {(lost lore)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `lost lore`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `lost lore`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest lugian assault`
 	IF: Expr {(lugian assault)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `lugian assault`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `lugian assault`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest mhoire castle`
 	IF: Expr {(mhoire castle)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `mhoire castle`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `mhoire castle`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest nanjou stockade`
 	IF: Expr {(nanjou stockade)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `nanjou stockade`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `nanjou stockade`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest ninja academy`
 	IF: Expr {(ninja academy)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `ninja academy`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `ninja academy`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest oubliette`
 	IF: Expr {(oubliette)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `oubliette`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `oubliette`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest purging the corruption`
 	IF: Expr {(purging the corruption)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `purging the corruption`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `purging the corruption`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest releasing the light`
 	IF: Expr {(releasing the light)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `releasing the light`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `releasing the light`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest mouf p`
 	IF: Expr {(mouf p)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `mouf p`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `mouf p`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest rynthid foothold`
 	IF: Expr {(rynthid foothold)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid foothold`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `rynthid foothold`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest rynthid foundry`
 	IF: Expr {(rynthid foundry)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid foundry`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `rynthid foundry`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest rynthid training`
 	IF: Expr {(rynthid training)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `rynthid training`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `rynthid training`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest save karul`
 	IF: Expr {(save karul)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `save karul`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `save karul`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest second sister`
 	IF: Expr {(second sister)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `second sister`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `second sister`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest seed of power`
 	IF: Expr {(seed of power)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `seed of power`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `seed of power`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest serpent burial grounds`
 	IF: Expr {(serpent burial grounds)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `serpent burial grounds`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `serpent burial grounds`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest shroud of emotion`
 	IF: Expr {(shroud of emotion)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `shroud of emotion`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `shroud of emotion`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest slave master`
 	IF: Expr {(slave master)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `slave master`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `slave master`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest tanada intercept`
 	IF: Expr {(tanada intercept)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `tanada intercept`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `tanada intercept`]]}
 				SetState {CallMeta}
 
 	~~ Handle `#quest third sister`
 	IF: Expr {(third sister)#getvar[capturegroup_questdestination]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavQuest`]}
-				DoExpr {$HBArguments=dictcreate[`CheCommandNavQuest`, dictcreate[`destination`, `third sister`]]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavQuest`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavQuest`, dictcreate[`destination`, `third sister`]]}
 				SetState {CallMeta}
 
 	~~ Handle no match for questdestination
@@ -2871,34 +2871,34 @@ STATE: {HandleKilltask} ~~ {
 	~~ Handle `#flag frozen valley`
 	IF: Expr {(frozen valley)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavFrozenValley`]}
-				DoExpr {listadd[$MetaCallQueue, `CheCommandKillTaskFlagFrozenValley`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavFrozenValley`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagFrozenValley`]}
 				SetState {CallMeta}
 
 	~~ Handle `#flag neftet`
 	IF: Expr {(neftet)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavNeftet`]}
-				DoExpr {listadd[$MetaCallQueue, `CheCommandKillTaskFlagNeftet`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavNeftet`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagNeftet`]}
 				SetState {CallMeta}
 
 	~~ Handle `#flag rynthid`
 	IF: Expr {(rynthid)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandKillTaskFlagRynthid`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagRynthid`]}
 				SetState {CallMeta}
 
 	~~ Handle `#flag hoshino`
 	IF: Expr {(hoshino)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandNavHoshino`]}
-				DoExpr {listadd[$MetaCallQueue, `CheCommandKillTaskFlagHoshino`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavHoshino`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagHoshino`]}
 				SetState {CallMeta}
 
 	~~ Handle `#flag hoshino`
 	IF: Expr {(vr)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `CheCommandKillTaskFlagVR`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagVR`]}
 				SetState {CallMeta}
 
 	~~ Handle no match for flagaction
@@ -4460,7 +4460,7 @@ STATE: {HandleTimers} ~~ {
 	~~ Show Timer view
 	IF: Not Expr {uiviewvisible[Timer]}
 		DO: DoAll
-				CreateView {Timer} {:CheCommand-Timer.xml}
+				CreateView {Timer} {:Haybale-Timer.xml}
 				SetState {Idle}
 
 ~~ }
@@ -4700,7 +4700,7 @@ STATE: {ShowJump} ~~ {
 	~~ Show Jump view
 	IF: Not Expr {uiviewvisible[Jump]}
 		DO: DoAll
-				CreateView {Jump} {:CheCommand-Jump.xml}
+				CreateView {Jump} {:Haybale-Jump.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump <<`]}
 				DoExpr {@HBViewsJump=true}
 				SetState {Idle}
@@ -4726,7 +4726,7 @@ STATE: {ShowNavto} ~~ {
 			Not Expr {uiviewvisible[JungleSubway]}
 			Not Expr {uiviewvisible[Quests]}
 		DO: DoAll
-				CreateView {Navto} {:CheCommand-TownNetwork.xml}
+				CreateView {Navto} {:Haybale-TownNetwork.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto <<`]}
 				SetState {Idle}
 
@@ -4758,7 +4758,7 @@ STATE: {ShowRecalls} ~~ {
 	IF: Not Expr {uiviewvisible[Recalls]}
 		DO: DoAll
 				DestroyView {Navto}
-				CreateView {Recalls} {:CheCommand-Recalls.xml}
+				CreateView {Recalls} {:Haybale-Recalls.xml}
 				~~ DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto <<`]}
 				SetState {Idle}
 
@@ -4778,7 +4778,7 @@ STATE: {ShowEmpyreanPortalspaceActivator} ~~ {
 	IF: Not Expr {uiviewvisible[Empyrean]}
 		DO: DoAll
 				DestroyView {Navto}
-				CreateView {Empyrean} {:CheCommand-Empyrean.xml}
+				CreateView {Empyrean} {:Haybale-Empyrean.xml}
 				SetState {Idle}
 
 	~~ Close Empyrean Portalspace Activator view
@@ -4796,7 +4796,7 @@ STATE: {ShowSubway} ~~ {
 	IF: Not Expr {uiviewvisible[Subway]}
 		DO: DoAll
 				DestroyView {Navto}
-				CreateView {Subway} {:CheCommand-Subway.xml}
+				CreateView {Subway} {:Haybale-Subway.xml}
 				SetState {Idle}
 
 	~~ Close Empyrean Portalspace Activator view
@@ -4814,7 +4814,7 @@ STATE: {ShowJungleSubway} ~~ {
 	IF: Not Expr {uiviewvisible[JungleSubway]}
 		DO: DoAll
 				DestroyView {Navto}
-				CreateView {JungleSubway} {:CheCommand-JungleSubway.xml}
+				CreateView {JungleSubway} {:Haybale-JungleSubway.xml}
 				SetState {Idle}
 
 	~~ Close Empyrean Portalspace Activator view
@@ -4832,7 +4832,7 @@ STATE: {ShowQuests} ~~ {
 	IF: Not Expr {uiviewvisible[Quests]}
 		DO: DoAll
 				DestroyView {Navto}
-				CreateView {Quests} {:CheCommand-Quests.xml}
+				CreateView {Quests} {:Haybale-Quests.xml}
 				SetState {Idle}
 
 	~~ Close Quests view
@@ -4850,7 +4850,7 @@ STATE: {ShowKilltasks} ~~ {
 	IF: Not Expr {uiviewvisible[Killtasks]}
 		DO: DoAll
 				DestroyView {Navto}
-				CreateView {Killtasks} {:CheCommand-Killtasks.xml}
+				CreateView {Killtasks} {:Haybale-Killtasks.xml}
 				SetState {Idle}
 
 	~~ Close Killtasks view
@@ -4867,7 +4867,7 @@ STATE: {ShowActions} ~~ {
 	~~ Show Actions view
 	IF: Not Expr {uiviewvisible[Actions]}
 		DO: DoAll
-				CreateView {Actions} {:CheCommand-Actions.xml}
+				CreateView {Actions} {:Haybale-Actions.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowActions], `Actions <<`]}
 				DoExpr {@HBViewsActions=true}
 				SetState {Idle}
@@ -4947,7 +4947,7 @@ STATE: {GiveSelect} ~~ {
 	~~ Display the Give Selection view
 	IF: Always
 		DO: DoAll
-				CreateView {GiveSelect} {:CheCommand-GiveSelect.xml}
+				CreateView {GiveSelect} {:Haybale-GiveSelect.xml}
 				DoExpr {$item=wobjectgetname[wobjectgetselection[]]}
 				DoExpr {uisetlabel[uigetcontrol[GiveSelect, Item], $item]}
 				SetState {Idle}
@@ -5003,7 +5003,7 @@ STATE: {ShowSettings} ~~ {
 	~~ Show Settings view
 	IF: Not Expr {uiviewvisible[Settings]}
 		DO: DoAll
-				CreateView {Settings} {:CheCommand-Settings.xml}
+				CreateView {Settings} {:Haybale-Settings.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowSettings], `Settings <<`]}
 				DoExpr {uisetlabel[uigetcontrol[Settings, ChatCommand], `Chat: `+@HBChatCommand]}  ~~ Set the current ChatCommand
 				SetState {Idle}
@@ -5028,18 +5028,18 @@ STATE: {SetupViews} ~~ {
 	~~ If actions was previously open show it again
 	IF: Expr {@HBViewsActions==true}
 		DO: DoAll
-				CreateView {Actions} {:CheCommand-Actions.xml}
+				CreateView {Actions} {:Haybale-Actions.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowActions], `Actions <<`]}
 
 	~~ If jump was previously open show it again
 	IF: Expr {@HBViewsJump==true}
 		DO: DoAll
-				CreateView {Jump} {:CheCommand-Jump.xml}
+				CreateView {Jump} {:Haybale-Jump.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump <<`]}
 
 	~~ If timer is running open timer view
 	IF: Expr {testvar[HBTimer]==true}
-		DO: CreateView {Timer} {:CheCommand-Timer.xml}
+		DO: CreateView {Timer} {:Haybale-Timer.xml}
 
 	IF: Always
 		DO: SetState {Idle}
@@ -5059,7 +5059,7 @@ STATE: {ShowMetas} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {$MetaOffset=0}
-				CreateView {Metas} {:CheCommand-Metas.xml}
+				CreateView {Metas} {:Haybale-Metas.xml}
 				SetState {SetMetas}
 
 ~~ }
@@ -5161,7 +5161,7 @@ STATE: {ShowProfiles} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {$ProfileOffset=0}
-				CreateView {Profiles} {:CheCommand-Profiles.xml}
+				CreateView {Profiles} {:Haybale-Profiles.xml}
 				SetState {SetProfiles}
 
 ~~ }
