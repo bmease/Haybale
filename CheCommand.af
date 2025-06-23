@@ -1653,6 +1653,18 @@ STATE: {HandleNavigation} ~~ {
 				DoExpr {$CCRecallSpell=2647} ~~ Secondary Portal Recall
 				SetState {HandleRecall}
 
+	~~ Handle `#navto primary summon`
+	IF: Expr {(primary summon)#getvar[capturegroup_navdestination]}
+		DO:	DoAll
+				DoExpr {$CCRecallSpell=157} ~~ Primary Summon Portal
+				SetState {HandleSummonPortal}
+
+	~~ Handle `#navto secondary`
+	IF: Expr {(secondary summon)#getvar[capturegroup_navdestination]}
+		DO:	DoAll
+				DoExpr {$CCRecallSpell=2648} ~~ Secondary Summon Portal
+				SetState {HandleSummonPortal}
+
 
 
 	~~ Annex
@@ -4416,6 +4428,156 @@ STATE: {HandleRecall} ~~ {
 
 ~~}
 
+STATE: {HandleSummonPortal} ~~ {
+	IF:	ChatMatch {![Rr]eset}
+		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
+
+	~~ Return to Idle if the spell isn't known
+	IF: Not Expr {getisspellknown[$CCRecallSpell]}
+		DO: DoAll
+				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know this spell\`]`, `false`]}
+				SetState {Idle}
+
+	~~ Disable all options
+	IF: Expr {testvar[OptionsSet]==false}
+		DO: DoAll
+				CallState {DisableOptions} {HandleSummonPortal}
+
+	~~ Close recalls view
+	IF: Expr {uiviewvisible[Recalls]}
+		DO: DoAll
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto >>`]}
+				DestroyView {Recalls}
+	
+	IF: Expr {getvar[capturegroup_name]==false]}
+		DO: DoAll
+				DoExpr {setvar[castingCharacterHeading, getheading[wobjectgetplayer[]]]}
+
+	IF: Expr {getvar[capturegroup_name]!=false]}
+		DO: DoAll
+				SetState {ListenForSummonPortal}
+
+	~~ Cast the recall spell
+	IF: All
+			Expr {getvar[capturegroup_name]==false]} ~~ Only the character who issued the command can summon a portal. Didn't capture a name because it was 'say' or 'think'
+		DO: DoAll			
+				DoExpr {setvar[maxCastAttempts, 3]} ~~ Set the maximum number of cast attempts
+				DoExpr {setvar[currentAttemptCount, 0]} ~~ Set a variable to indicate if the spell was cast successfully
+				SetState {TrycastSummonPortal}
+~~ }
+
+STATE: {TrycastSummonPortal} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
+
+	IF: Expr {getvar[currentAttemptCount]>=getvar[maxCastAttempts]} ~~ Maximum number of cast attempts reached
+		DO: DoAll
+				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Failed to cast the spell after `+getvar[currentAttemptCount]+` attempts\`]`, `false`]}
+				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
+
+	~~ Cast the recall spell
+	IF: Expr {$wasCastSuccessfull==false}
+		DO: DoAll
+				DoExpr {setvar[currentAttemptCount, getvar[currentAttemptCount]+1]}
+				DoExpr {$wasCastSuccessfull=actiontrycastbyid[$CCRecallSpell]}
+				SetState {TrycastSummonPortal}
+
+	~~ Cast the recall spell
+	IF: Expr {$wasCastSuccessfull==true}
+		DO: DoAll
+				SetState {LocateSummonedPortal}
+
+~~ }
+
+STATE: {LocateSummonedPortal} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
+
+	IF: All
+			SecsInStateGE 3
+			Expr {getvar[checkedForGateways]==false} ~~ gatewayList is not set yet
+		DO: DoAll
+				DoExpr {setvar[checkedForGateways, true]} ~~ Set a variable to indicate that we checked for gateways
+				DoExpr {setvar[gatewayList, wobjectfindallbynamerx[Gateway]]}
+				SetState {LocateSummonedPortal}
+
+	IF: All			
+			Expr {getvar[checkedForGateways]==true}
+			Expr {listcount[getvar[gatewayList]]>0}
+			Expr {setvar[currentGateway,listpop[getvar[gatewayList]]]&&getheading[getvar[currentGateway]]==getvar[castingCharacterHeading]&&setvar[foundGatewayId, wobjectgetid[$currentGateway]]} ~~ Loop through surrounding gateways and find the one that matches the heading of the character who casted the spell
+		DO: DoAll
+				ChatExpr {`/`+@CCChatCommand+` #portal found ` + getvar[foundGatewayId]}
+				SetState {ListenForSummonPortal}
+
+	IF: All
+			Expr {getvar[checkedForGateways]==true}
+			Expr {listcount[getvar[gatewayList]]==0} ~~ No gateways found
+			Expr {getvar[foundGatewayId]==false} ~~ Gateway not found
+		DO: DoAll
+				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No gateway found!\`]`, `false`]}
+				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
+~~ }
+
+STATE: {ListenForSummonPortal} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
+
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#portal found (?<portalid>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+		DO: SetState {UseSummonedPortal}
+
+~~ }
+
+STATE: {UseSummonedPortal} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
+
+	~~ Disable all options
+	IF: Expr {testvar[OptionsSet]==false}
+		DO: CallState {DisableOptions} {UseSummonedPortal}
+
+	~~ Close recalls view
+	IF: Expr {uiviewvisible[Recalls]}
+		DO: DoAll
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto >>`]}
+				DestroyView {Recalls}
+
+	~~ Use the Summoned Portal
+	IF: All
+			Expr {isportaling[]==false}
+			Expr {getvar[capturegroup_portalid]!=false} ~~ Gateway exists
+		DO: DoAll
+				DoExpr {actiontryuseitem[wobjectfindbyid[cnumber[getvar[capturegroup_portalid]]]]}
+				SetState {UseSummonedPortal}
+
+	~~ Finished using the Summoned Portal; go to LeaderCheck
+	IF: Expr {isportaling[]==true}
+		DO: DoAll
+				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+$capturegroup_name+\`, Finished using Summoned Portal\`]`, `false`]}
+				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
+
+~~ }
+
+STATE: {CleanUpHandleSummonPortal} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Idle}
+
+	~~ Clear all variables
+	IF: Always
+		DO: DoAll
+				DoExpr {listmap[listcreate[`castingCharacterHeading`,`foundGatewayId`,`checkedForGateways`,`gatewayList`,`currentGateway`,`maxCastAttempts`,`currentAttemptCount`,`wasCastSuccessfull`], `clearvar[$1]`]}
+				Return
+
+~~ }
 
 STATE: {HandleCount} ~~ {
 	IF:	ChatMatch {![Rr]eset}
