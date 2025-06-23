@@ -59,59 +59,216 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[LEVEL_WARN, 30]}
 				DoExpr {setvar[LEVEL_ERROR, 40]}
 
+				DoExpr {setvar[STRING_PROP_NAME, 1]}
+
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
+				DoExpr {setvar[OriginalOpenDoors, vtgetsetting[OpenDoors]]}
+				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
+		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Frozen Valley v0.0.2 by Che de Pa of Sundering`, $COLOR_DEBUG]}
+
+	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {echo[`[DEBUG] Che Nav Neftet v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
-
-	~~ Finish if in Neftet
-	IF: BlockE 87630000
-		DO: SetState {Finished}
-
-	~~ Navigate to Neftet if not there
-	IF:	Not BlockE 87630000
-		DO:	SetState {ToNeftet}
-
-~~ }
-
-
-STATE: {ToNeftet} ~~ {
-
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
-		DO: DoAll
-				DoExpr {echo[`[INFO] Navigating to Neftet`, $COLOR_INFO]}
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO: DoAll
 				SetOpt {EnableNav} {True}
+				SetOpt {OpenDoors} {False}
+				SetOpt {NavCloseStopRange} {0.00625}
+
+	~~ If in Frozen Valley start flagging
+	IF:	Any
+			BlockE 7AE80000
+			BlockE 79E80000
+		DO:	SetState {ToGregoria}
+
+	~~ Bail out if not Frozen Valley
+	IF:	Not BlockE 7AE80000
+		DO:	DoAll
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Must be in Frozen Valley! Finishing!\`, $COLOR_WARN]`, `false`]}
+				SetState {Finished}
+
+~~ }
+
+
+STATE: {UseNPC} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF:	Any
+			All
+				ChatCapture {^(?<tellname>.*?) tells you, \"(?<npctext>.*)\"$} {}
+				Expr {$capturegroup_tellname==$name}
+			All
+				ChatCapture {^(?<tellname>.*?) gives you (?<npctext>.*)$} {}
+				Expr {$capturegroup_tellname==$name}
+		DO: Return
+
+	~~ Use NPC
+	IF: Always
+		DO: DoAll
+				DoExpr {actiontryuseitem[wobjectfindnearestbyobjectclass[$NPC]]}
+				DoExpr {$name=wobjectgetstringprop[wobjectfindnearestbyobjectclass[$NPC], $STRING_PROP_NAME]}
+				SetState {UseNPC}
+
+~~ }
+
+
+STATE: {ToGregoria} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
-		DO: EmbedNav ToNeftet {ToNeftet}
+		DO: EmbedNav ToGregoria {ToGregoria}
 
-	IF:	All
-			NavEmpty
-			CellE 8763000E
-		DO: SetState {Finished}
+	IF: NavEmpty
+		DO: CallState {UseNPC} {ToHunter}
+
+~~ }
+
+
+STATE: {ToHunter} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToHunter {ToHunter}
+
+	IF: NavEmpty
+		DO: CallState {UseNPC} {ToLeilah}
+
+~~ }
+
+
+STATE: {ToLeilah} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToLeilah {ToLeilah}
+
+	IF: NavEmpty
+		DO: CallState {UseNPC} {ToGeorge}
+
+~~ }
+
+
+STATE: {ToGeorge} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToGeorge {ToGeorge}
+
+	IF: NavEmpty
+		DO: CallState {UseNPC} {ToKumiko}
+
+~~ }
+
+
+STATE: {ToKumiko} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToKumiko {ToKumiko}
+
+	IF: NavEmpty
+		DO: CallState {UseNPC} {ToBoone}
+
+~~ }
+
+
+STATE: {ToBoone} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToBoone {ToBoone}
+
+	IF: NavEmpty
+		DO: CallState {UseNPC} {Finished}
 
 ~~ }
 
 
 STATE: {Finished} ~~ {
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
-				DoExpr {echo[`[INFO] Finished navigating to Neftet`, $COLOR_INFO]}
+				DoExpr {echo[`Finished flagging at Frozen Valley`, $COLOR_INFO]}
 
 	~~ Reset all options to what they originally were
 	IF: Always
 		DO: DoAll
+				EmbedNav Empty {[None]}
+
 				SetOpt {EnableNav} {$OriginalEnableNav}
+				SetOpt {OpenDoors} {$OriginalOpenDoors}
+				SetOpt {NavCloseStopRange} {$OriginalNavCloseStopRange}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
+
 ~~ }
 
 
-NAV: ToNeftet once ~~ {
-	rcl -101.027787327766 35.5967526912689 2.08333134651184E-05 {Lost City of Neftet Recall}
+NAV: Empty once ~~ {
+~~ }
+
+
+NAV: ToGregoria once ~~ {
+	pnt -4.31175100008647 83.7780919949214 0.500020853678385
+~~ }
+
+
+NAV: ToHunter once ~~ {
+	pnt -4.29127804835637 83.7788769563039 0.500020853678385
+~~ }
+
+
+NAV: ToLeilah once ~~ {
+	pnt -4.27922592163086 83.7620017846425 0.500020853678385
+~~ }
+
+
+NAV: ToGeorge once ~~ {
+	pnt -4.29558569987615 83.7376018444697 0.500020853678385
+	pnt -4.28879783550898 83.718429684639 0.500020853678385
+~~ }
+
+
+NAV: ToKumiko once ~~ {
+	pnt -4.2908243894577 83.7109905083974 0.500020853678385
+	pnt -4.2774374405543 83.7062661012014 0.500020853678385
+~~ }
+
+
+NAV: ToBoone once ~~ {
+	pnt -4.28440517187119 83.7029200673103 0.500020853678385
+	pnt -4.29071335395177 83.700676993529 0.500020853678385
 ~~ }

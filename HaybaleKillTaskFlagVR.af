@@ -48,6 +48,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[PLAYER, 24]}
 				DoExpr {setvar[VENDOR, 25]}
 				DoExpr {setvar[NPC, 37]}
+				DoExpr {setvar[FOCI, 38]}
 
 				DoExpr {setvar[COLOR_DEBUG, 17]}
 				DoExpr {setvar[COLOR_INFO, 5]}
@@ -61,249 +62,225 @@ STATE: {Default} ~~ {
 
 				DoExpr {setvar[STRING_PROP_NAME, 1]}
 
+				DoExpr {setvar[VrRecallSpell, 6321]}
+
 				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
-				DoExpr {setvar[OriginalOpenDoors, vtgetsetting[OpenDoors]]}
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
-		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Hoshino v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
+		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Viridian Rise v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
 		DO: DoAll
 				SetOpt {EnableNav} {True}
-				SetOpt {OpenDoors} {False}
 				SetOpt {NavCloseStopRange} {0.00625}
 
-	~~ If in Hoshino start flagging
-	IF:	BlockE 49E40000
+	IF: CellE B3490013
 		DO:	DoAll
-				SetState {ToFreng}
+				DoExpr {echo[`[INFO] At VR drop. Navigating inside!`, $COLOR_INFO]}
+				SetState {ToInsideVR}
 
-	~~ Bail out if not Hoshino
-	IF:	Not BlockE 49E40000
+	~~ If inside Viridian Rise start flagging
+	IF:	CellE B3490034
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Must be at Royal Tent! Finishing!\`, $COLOR_WARN]`, `false`]}
-				SetState {Finished}
+				SetState {ToShalrionMarker}
+
+	~~ Bail out if not Viridian Rise
+	IF:	Not CellE B3490034
+		DO:	DoAll
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Not at VR. Attempting recall!\`, $COLOR_WARN]`, `false`]}
+				SetState {VrRecall}
 
 ~~ }
 
+
+STATE: {VrRecall} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Idle}
+
+	~~ Return to Idle if the spell isn't known
+	IF: Not Expr {getisspellknown[$VrRecallSpell]}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
+				SetState {Finished}
+
+	~~ Cast the recall spell
+	IF: Expr {isportaling[]==false}
+		DO: DoAll
+				DoExpr {actiontrycastbyid[$VrRecallSpell]}
+				SetState {VrRecall}
+
+	~~ Finished recalling; go to LeaderCheck
+	IF: Expr {isportaling[]==true}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				SetState {ToInsideVR}
+
+~~}
+
+STATE: {ToInsideVR} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToInsideVR {ToInsideVR}
+
+	IF: All
+			NavEmpty
+			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Viridian Portal`]==false&&1}
+		DO: DoAll				
+				DoExpr {setvar[targetNPCType,$NPC]}
+				DoExpr {setvar[targetNPC,`Ancient Statue of the Viridian Rise`]}
+				CallState {UseNPC} {ToInsideVR}
+	
+	IF: All
+			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Viridian Portal`]!=false&&1}
+		DO:	DoAll
+				SetState {UseVrPortal}
+
+~~ }
+
+STATE: {UseVrPortal} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF:	All
+			Expr {isportaling[]==false}
+		DO:	DoAll				
+				DoExpr {actiontryuseitem[wobjectfindnearestbynameandobjectclass[$NPC, `Viridian Portal`]]}
+				SetState {UseVrPortal}
+
+	IF:	All
+			Expr {isportaling[]==true}
+		DO:	DoAll
+				SetState {ToShalrionMarker}
+
+~~ }
 
 STATE: {UseNPC} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	Any
-			All
-				ChatCapture {^(?<tellname>.*?) tells you, \"(?<npctext>.*)\"$} {}
-				Expr {$capturegroup_tellname==$targetNPC}
-			All
-				ChatCapture {^(?<tellname>.*?) gives you (?<npctext>.*)$} {}
-				Expr {$capturegroup_tellname==$targetNPC}
+			ChatMatch {The mark of the Viridian Guardians briefly burns with blue flame}
+			ChatMatch {A plaque on this statue reads}
+			ChatMatch {You may complete this quest again in}
 		DO: Return
 
 	~~ Use NPC
 	IF: Always
 		DO: DoAll
-				DoExpr {actiontryuseitem[wobjectfindnearestbynameandobjectclass[$NPC,$targetNPC]]}
+				DoExpr {actiontryuseitem[wobjectfindnearestbynameandobjectclass[$targetNPCType,$targetNPC]]}
 				SetState {UseNPC}
 
 ~~ }
 
 
-STATE: {ToFreng} ~~ {
+STATE: {ToShalrionMarker} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
-		DO: EmbedNav ToFreng {ToFreng}
+		DO: EmbedNav ToShalrionMarker {ToShalrionMarker}
 
 	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Sergeant Freng`]}
-				CallState {UseNPC} {ToTrebuus}
+		DO: DoAll				
+				DoExpr {setvar[targetNPCType,$NPC]}
+				DoExpr {setvar[targetNPC,`Shalrion's Marker`]}
+				CallState {UseNPC} {ToBrellegiasMarker}
 
 ~~ }
 
 
-STATE: {ToTrebuus} ~~ {
+STATE: {ToBrellegiasMarker} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
-		DO: EmbedNav ToTrebuus {ToTrebuus}
+		DO: EmbedNav ToBrellegiasMarker {ToBrellegiasMarker}
 
 	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Sergeant Trebuus`]}
-				CallState {UseNPC} {ToKirtal}
+		DO: DoAll				
+				DoExpr {setvar[targetNPCType,$FOCI]}
+				DoExpr {setvar[targetNPC,`Brellegia's Marker`]}
+				CallState {UseNPC} {ToAangesilusMarker}
 
 ~~ }
 
 
-STATE: {ToKirtal} ~~ {
+STATE: {ToAangesilusMarker} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
-		DO: EmbedNav ToKirtal {ToKirtal}
+		DO: EmbedNav ToAangesilusMarker {ToAangesilusMarker}
 
 	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Aun Kirtal`]}
-				CallState {UseNPC} {ToAurin}
+		DO: DoAll				
+				DoExpr {setvar[targetNPCType,$NPC]}
+				DoExpr {setvar[targetNPC,`Aangesilus' Marker`]}
+				CallState {UseNPC} {ToSwiftsMarker}
 
 ~~ }
 
 
-STATE: {ToAurin}
+STATE: {ToSwiftsMarker}
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Lieutenant Aurin`]}
-				CallState {UseNPC} {ToTakamaki}
-
-~~ }
-
-
-STATE: {ToTakamaki} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
+				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF: Always
-		DO: EmbedNav ToTakamaki {ToTakamaki}
+		DO: EmbedNav ToSwiftsMarker {ToSwiftsMarker}
 
 	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Lieutenant Takamaki`]}
-				CallState {UseNPC} {ToIrashi}
+		DO: DoAll				
+				DoExpr {setvar[targetNPCType,$NPC]}
+				DoExpr {setvar[targetNPC,`Swift's Marker`]}
+				CallState {UseNPC} {Finished}
 
 ~~ }
-
-
-STATE: {ToIrashi} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Corporal Irashi`]}
-				CallState {UseNPC} {ToEorlinde}
-
-~~ }
-
-
-STATE: {ToEorlinde} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToEorlinde {ToEorlinde}
-
-	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Lord Eorlinde`]}
-				CallState {UseNPC} {ToGriffon}
-
-~~ }
-
-
-STATE: {ToGriffon} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Griffon`]}
-				CallState {UseNPC} {ToAkiko}
-
-~~ }
-
-
-STATE: {ToAkiko} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToAkiko {ToAkiko}
-
-	IF: NavEmpty
-		DO: DoAll
-				DoExpr {setvar[targetNPC,`Hanamoto Aki'ko`]}
-				CallState {UseNPC} {ToOutsideTent}
-
-~~ }
-
-
-STATE: {ToOutsideTent} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToOutsideTent {ToOutsideTent}
-
-	IF: NavEmpty
-		DO: SetState {Finished}
-
-~~ }
-
 
 STATE: {Finished} ~~ {
 
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
-				DoExpr {echo[`Finished flagging at Hoshino`, $COLOR_INFO]}
+				DoExpr {echo[`Finished flagging at Viridian Rise`, $COLOR_INFO]}
 
 	~~ Reset all options to what they originally were
 	IF: Always
 		DO: DoAll
 				EmbedNav Empty {[None]}
-
 				SetOpt {EnableNav} {$OriginalEnableNav}
-				SetOpt {OpenDoors} {$OriginalOpenDoors}
 				SetOpt {NavCloseStopRange} {$OriginalNavCloseStopRange}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 
@@ -311,35 +288,28 @@ STATE: {Finished} ~~ {
 NAV: Empty once ~~ {
 ~~ }
 
-NAV: ToFreng once ~~ {
-	pnt -42.9861611048381 80.6656923135122 0.0500208298365275
+NAV: ToInsideVR once ~~ {
+	pnt 41.5304166793823 -43.2820833206177 0.23488195737203
+	pnt 41.5680349032084 -43.2439946174622 0.255030012130737
+	pnt 41.5877389589945 -43.2353172302246 0.260679133733114
 ~~ }
 
-NAV: ToTrebuus once ~~ {
-	pnt -42.9676364262899 80.6588991006215 0.0500208298365275
+NAV: ToShalrionMarker once ~~ {
+	pnt 41.9692934672038 -43.1950701713562 0.466687520345052
+	pnt 42.0336471557617 -43.2011946996053 0.472096252441406
 ~~ }
 
-NAV: ToKirtal once ~~ {
-	pnt -42.9558551152547 80.7066286087036 0.0500208298365275
+NAV: ToBrellegiasMarker once ~~ {
+	pnt 41.9664510726929 -43.1998651822408 0.466687520345052
 ~~ }
 
-NAV: ToTakamaki once ~~ {
-	pnt -42.9723550796509 80.700259065628 0.0500208298365275
-	pnt -42.9860733668009 80.7001898765564 0.0487708330154419
-	pnt -42.9928945541382 80.7039801756541 0.0487708330154419
+NAV: ToAangesilusMarker once ~~ {
+	pnt 41.912236849467 -43.1481485366821 0.466687520345052
+	pnt 41.9002194722493 -43.0984342892965 0.466687520345052
+	pnt 41.8884893417358 -43.0885818163554 0.466687520345052
 ~~ }
 
-NAV: ToEorlinde once ~~ {
-	pnt -42.9921155929565 80.6947569529216 0.0487708330154419
-~~ }
-
-NAV: ToAkiko once ~~ {
-	pnt -43.0095975240072 80.6923855145772 0.0487708330154419
-~~ }
-
-NAV: ToOutsideTent once ~~ {
-	pnt -43.0027503967285 80.693311214447 0.0487708330154419
-	pnt -42.9856477737427 80.7004572232564 0.0487708330154419
-	pnt -42.9655810038249 80.7001403649648 0.0500208298365275
-	pnt -42.9421462376912 80.6835847218831 0.0506753126780192
+NAV: ToSwiftsMarker once ~~ {
+	pnt 41.9102724075317 -43.0500065485636 0.466687520345052
+	pnt 41.9054677963257 -43.0185555458069 0.471928246815999
 ~~ }

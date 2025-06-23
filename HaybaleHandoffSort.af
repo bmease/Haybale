@@ -114,5 +114,5 @@ STATE: {Finished} ~~ {
 
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }

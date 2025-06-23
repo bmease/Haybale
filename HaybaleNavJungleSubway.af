@@ -53,7 +53,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalNavPriorityBoost, vtgetsetting[NavPriorityBoost]]}
 				DoExpr {setvar[OriginalApproachDistance, vtgetsetting[ApproachDistance]]}
 
-				DoExpr {setvar[metaname, `CheCommandNavJungleSubway`]}
+				DoExpr {setvar[metaname, `HaybaleNavJungleSubway`]}
 				DoExpr {setvar[AphusLasselRecallSpell, 2931]}
 
 				DoExpr {setvar[ANNEX, `Annex`]}
@@ -61,7 +61,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[Top, `Top`]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@CCDebug, `echo[\`[DEBUG] Che Nav Jungle Subway v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Jungle Subway v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	IF: Always
 		DO: SetState {ParseArguments}
@@ -75,25 +75,25 @@ STATE: {ParseArguments} ~~ {
 		DO:	SetState {Finished}
 
 	~~ Warn if arguments are not defined
-	IF: Expr {testvar[CCArguments]==false}
+	IF: Expr {testvar[HBArguments]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Arguments are not defined!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Arguments are not defined!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Warn if arguments are missing for this meta
-	IF: Expr {dicthaskey[$CCArguments, $metaname]==false}
+	IF: Expr {dicthaskey[$HBArguments, $metaname]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Arguments are missing for this meta!\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Arguments are missing for this meta!\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Get arguments for this meta
 	IF: Always
-		DO: DoExpr {$arguments=dictgetitem[$CCArguments, $metaname]}
+		DO: DoExpr {$arguments=dictgetitem[$HBArguments, $metaname]}
 
 	~~ Warn if destination argument is missing
 	IF: Expr {dicthaskey[$arguments, `destination`]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Destination is missing from arguments\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Destination is missing from arguments\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Get destination
@@ -115,7 +115,7 @@ STATE: {ToAphusLassel} ~~ {
 	~~ Warn if Aphus Lassel Recall is not known
 	IF: Not Expr {getisspellknown[$AphusLasselRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know the Aphus Lassel Recall\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know the Aphus Lassel Recall\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
@@ -149,7 +149,7 @@ STATE: {ToTownNetwork} ~~ {
 	~~ Navigate into the Town Network portal
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Town Network\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Town Network\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToTownNetwork {ToTownNetwork}
 
 	~~ Finished using portal go to ToWing
@@ -168,7 +168,7 @@ STATE: {TownNetworkDropToAnnex} ~~ {
 	~~ Navigate to Annex
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Annex\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Annex\`, $COLOR_INFO]`, `false`]}
 				EmbedNav TownNetworkDropToAnnex {TownNetworkDropToAnnex}
 
 	~~ Finished navigating
@@ -185,7 +185,7 @@ STATE: {AnnexToSubway} ~~ {
 	~~ Navigate to Subway
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Subway\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Subway\`, $COLOR_INFO]`, `false`]}
 				EmbedNav AnnexToSubway {AnnexToSubway}
 
 	~~ Finished navigating
@@ -219,7 +219,7 @@ STATE: {NavigateToJungleSubwayPit} ~~ {
 
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Jungle Subway Pit\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Jungle Subway Pit\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToJungleSubsPit {ToJungleSubsPit}
 
 	IF: NavEmpty
@@ -248,7 +248,7 @@ STATE: {ToJungleSubsPortals} ~~ {
 
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Jungle Subs Portals\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Jungle Subs Portals\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToJungleSubsPortals {ToJungleSubsPortals}
 
 	IF: NavEmpty
@@ -299,7 +299,7 @@ STATE: {NavigatePortls} ~~ {
 	~~ Warn if no wing is found for destination
 	IF: Expr {dicthaskey[$DESTINATION_WING, $destination]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] No wing found for destination\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] No wing found for destination\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ This would be a lot cleaner if you could use variables for EmbedNav
@@ -321,7 +321,7 @@ STATE: {ToLowerPortals} ~~ {
 
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Lower Portals\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Lower Portals\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToLowerPortals {ToLowerPortals}
 
 	IF: NavEmpty
@@ -350,7 +350,7 @@ STATE: {ToCenterLowerLevel} ~~ {
 
 	IF: Always
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Center of Lower Level\`, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Center of Lower Level\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToCenterLowerLevel {ToCenterLowerLevel}
 
 	IF: NavEmpty
@@ -364,7 +364,7 @@ STATE: {ToPortal} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO: DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to \`+$destination, $COLOR_INFO]`, `false`]}
+		DO: DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to \`+$destination, $COLOR_INFO]`, `false`]}
 
 	IF: Expr {$destination==`South Direlands`}
 		DO: EmbedNav ToSouthDirelands {ToSouthDirelands}
@@ -419,7 +419,7 @@ STATE: {ToPortal} ~~ {
 	
 	IF: ChatMatch {You must complete a quest to interact with that portal.}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I need to complete a quest to use the portal to \`+$destination]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I need to complete a quest to use the portal to \`+$destination]`, `false`]}
 				SetState {Finished}
 
 	~~ Finished navigating
@@ -431,7 +431,7 @@ STATE: {ToPortal} ~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished navigating to \`+$destination]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to \`+$destination]`, `false`]}
 				
 	~~ Reset all options to what they originally were
 	IF: Always
@@ -446,7 +446,7 @@ STATE: {Finished} ~~ {
 
 	~~ Return to the meta that called this one
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 NAV: ToTownNetwork once ~~ {

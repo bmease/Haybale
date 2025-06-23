@@ -81,7 +81,7 @@ STATE: {Default} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {Dispatch}
 
 	~~ IF:	MobsInDist_Name 1 7 {Geraine}
@@ -106,7 +106,7 @@ STATE: {Dispatch} ~~ {
 	~~ Warn if no state is found for destination
 	IF: Expr {dicthaskey[$DESTINATION_STATE, $capturegroup_destination]==false}
 		DO: DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] No state found for destination\`, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] No state found for destination\`, $COLOR_WARN]`, `false`]}
 				SetState {Finished}
 
 	~~ Dispatch to the right state
@@ -143,8 +143,8 @@ STATE: {GeraineBossFight} ~~ {
 STATE: {Geraine1} ~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 1`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 1`}
 
 	IF: Always
 		DO:	DoAll
@@ -269,8 +269,8 @@ STATE: {Geraine1Jumps} ~~ {
 STATE: {Geraine2}	~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 2`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 2`}
 
 	IF: Always
 		DO:	DoAll
@@ -321,8 +321,8 @@ STATE: {Geraine2Combat}	~~ {
 STATE: {Geraine3}	~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 3`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 3`}
 
 	IF: Always
 		DO:	DoAll
@@ -398,8 +398,8 @@ STATE: {Geraine3Jumps}	~~ {
 STATE: {Geraine4}	~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 4`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 4`}
 
 	IF: Always
 		DO:	DoAll
@@ -486,8 +486,8 @@ STATE: {Geraine4Jumps}	~~ {
 STATE: {Geraine5}	~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 5`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 5`}
 
 	IF: Always
 		DO:	DoAll
@@ -530,8 +530,8 @@ STATE: {Geraine5}	~~ {
 STATE: {Geraine6}	~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 6`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 6`}
 
 	IF: Always
 		DO:	DoAll
@@ -568,8 +568,8 @@ STATE: {Geraine6}	~~ {
 STATE: {Geraine7} ~~ {
 
 	~~ Inform everyone in the group to do the appropriate geraine
-	IF: Expr {@CCLeader==$CHARACTER_NAME}
-		DO: ChatExpr {`/`+@CCChatCommand+` #geraine 7`}
+	IF: Expr {@HBLeader==$CHARACTER_NAME}
+		DO: ChatExpr {`/`+@HBChatCommand+` #geraine 7`}
 
 	IF: Always
 		DO:	DoAll
@@ -620,7 +620,7 @@ STATE: {NotFlagged}	~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished navigating to Geraine's Host\`]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to Geraine's Host\`]`, `false`]}
 
 	~~ Return all vt settings to the original values
 	~~ IF: Always
@@ -631,7 +631,7 @@ STATE: {Finished} ~~ {
 
 	~~ Return to the meta that called this one
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

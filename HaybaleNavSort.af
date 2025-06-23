@@ -42,6 +42,11 @@ STATE: {Default} ~~ {
 
 	IF: Always
 		DO: DoAll
+				Chat {/ub opt set VTank.PatchExpressionEngine true}
+				Chat {/ub opt set InventoryManager.IGThink true}
+
+	IF: Always
+		DO: DoAll
 				DoExpr {setvar[NUMBER, 1]}
 				DoExpr {setvar[MONSTER, 5]}
 				DoExpr {setvar[OBJECT, 7]}
@@ -49,206 +54,76 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[VENDOR, 25]}
 				DoExpr {setvar[NPC, 37]}
 
-				DoExpr {setvar[COLOR_DEBUG, 17]}
-				DoExpr {setvar[COLOR_INFO, 5]}
-				DoExpr {setvar[COLOR_WARN, 31]}
-				DoExpr {setvar[COLOR_ERROR, 21]}
+				DoExpr {setvar[COLOR_SYSTEM, 5]}
 
-				DoExpr {setvar[LEVEL_DEBUG, 10]}
-				DoExpr {setvar[LEVEL_INFO, 20]}
-				DoExpr {setvar[LEVEL_WARN, 30]}
-				DoExpr {setvar[LEVEL_ERROR, 40]}
+				DoExpr {setvar[CHARACTER_NAME, getcharstringprop[1]]}
 
-				DoExpr {setvar[STRING_PROP_NAME, 1]}
-
-				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
-				DoExpr {setvar[OriginalOpenDoors, vtgetsetting[OpenDoors]]}
-
-	IF:	Expr {$LEVEL_DEBUG>=@CCDebug}
+	IF:	Expr {$Debug==1}
 		DO:	DoAll
-				DoExpr {echo[`[DEBUG] Che Nav Neftet Flag v0.0.2 by Che de Pa of Sundering`, $COLOR_DEBUG]}
+				ChatExpr {`/tell `+$CHARACTER_NAME+`, Che Nav Sort de Che v0.0.1 by Che de Pa of Sundering`}
+
+	~~ Navigate to Haven if not there
+	IF:	Not BlockE 01AC0000
+		DO:	SetState {ToHaven}
+
+	~~ Navigate to Sort de Che if in Haven
+	IF:	BlockE 01AC0000
+		DO:	SetState {ToSort}
+~~ }
+
+
+STATE: {ToHaven} ~~ {
+	IF: Expr {$Debug==1}
+		DO: DoAll
+				DoExpr {echo[`Navigating to Haven`, $COLOR_SYSTEM]}
 
 	IF: Always
 		DO: DoAll
 				SetOpt {EnableNav} {True}
-				SetOpt {OpenDoors} {False}
 
-	~~ Bail out if not Neftet
-	IF:	Not BlockE 87630000
-		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_WARN>=@CCDebug, `echo[\`[WARN] Must be in Neftet! Finishing!\`, $COLOR_WARN]`, `false`]}
-				SetState {Finished}
+	IF: Always
+		DO: EmbedNav ToHaven {ToHaven}
 
-	~~ If in Neftet start flagging
-	IF:	BlockE 87630000
-		DO:	SetState {ToHassim}
-
+	IF:	All
+			NavEmpty
+			CellE 01AC011F
+		DO: SetState {ToSort}
 ~~ }
 
 
-STATE: {UseNPC} ~~ {
+STATE: {ToSort} ~~ {
+	IF: Expr {$Debug==1}
+		DO: DoAll
+				DoExpr {echo[`Navigating to Sort de Che`, $COLOR_SYSTEM]}
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF:	Any
-			All
-				ChatCapture {^(?<tellname>.*?) tells you, \"(?<npctext>.*)\"$} {}
-				Expr {$capturegroup_tellname==$name}
-			All
-				ChatCapture {^(?<tellname>.*?) gives you (?<npctext>.*)$} {}
-				Expr {$capturegroup_tellname==$name}
-		DO: Return
-
-	~~ Use NPC
 	IF: Always
 		DO: DoAll
-				DoExpr {actiontryuseitem[wobjectfindnearestbyobjectclass[$NPC]]}
-				DoExpr {$name=wobjectgetstringprop[wobjectfindnearestbyobjectclass[$NPC], $STRING_PROP_NAME]}
-				SetState {UseNPC}
-
-~~ }
-
-
-STATE: {ToHassim} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
+				SetOpt {EnableNav} {True}
 
 	IF: Always
-		DO: EmbedNav ToHassim {ToHassim}
+		DO: EmbedNav ToSort {ToSort}
 
-	IF: NavEmpty
-		DO: CallState {UseNPC} {ToAdarl}
-
-~~ }
-
-
-STATE: {ToAdarl} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToAdarl {ToAdarl}
-
-	IF: NavEmpty
-		DO: CallState {UseNPC} {ToTularin}
-
-~~ }
-
-
-STATE: {ToTularin} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToTularin {ToTularin}
-
-	IF: NavEmpty
-		DO: CallState {UseNPC} {ToIbreh}
-
-~~ }
-
-
-STATE: {ToIbreh} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToIbreh {ToIbreh}
-
-	IF: NavEmpty
-		DO: CallState {UseNPC} {ToUnell}
-
-~~ }
-
-
-STATE: {ToUnell} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Always
-		DO: EmbedNav ToUnell {ToUnell}
-
-	IF: NavEmpty
-		DO: CallState {UseNPC} {ReadContracts}
-
-~~ }
-
-
-STATE: {ReadContracts} ~~ {
-
-	IF:	ChatMatch {![Rr]eset}
-		DO:	DoAll
-				DoExpr {$CCReset=true}
-				SetState {Finished}
-
-	IF: Expr {getitemcountininventorybynamerx[(Hunting\: Lost City of Neftet)]>0}
-		DO: DoAll
-				DoExpr {actiontryuseitem[wobjectfindininventorybynamerx[(Hunting\: Lost City of Neftet)]]}
-				SetState {ReadContracts}
-
-	IF: Expr {getitemcountininventorybynamerx[(Hunting\: Lost City of Neftet)]==0}
+	IF:	All
+			NavEmpty
+			~~ CellE 01AC011E
 		DO: SetState {Finished}
-
-~~}
-
+~~ }
 
 STATE: {Finished} ~~ {
-
-	IF: Expr {$LEVEL_INFO>=@CCDebug}
+	IF: Expr {$Debug==1}
 		DO: DoAll
-				DoExpr {echo[`[INFO] Finished flagging at Frozen Valley`, $COLOR_INFO]}
-
-	~~ Reset all options to what they originally were
-	IF: Always
-		DO: DoAll
-				SetOpt {EnableNav} {$OriginalEnableNav}
-				SetOpt {OpenDoors} {$OriginalOpenDoors}
+				DoExpr {echo[`Finished navigating to Sort de Che`, $COLOR_SYSTEM]}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
-
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 
-NAV: ToHassim once ~~ {
-	pnt 6.30780512491862 -22.2773750623067 0.0427337686220805
-~~}
+NAV: ToHaven once ~~ {
+	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Sending}
+~~ }
 
-
-NAV: ToAdarl once ~~ {
-	pnt 6.30377686818441 -22.2077711105347 0.0378355701764425
-~~}
-
-
-NAV: ToTularin once ~~ {
-	pnt 6.26204706827799 -22.148576037089 0.0343580881754557
-~~}
-
-
-NAV: ToIbreh once ~~ {
-	pnt 6.19922065734863 -22.180136680603 0.0333541631698608
-~~}
-
-
-NAV: ToUnell once ~~ {
-	pnt 6.1958324432373 -22.1366603215535 0.0344658056894938
-	pnt 6.13728838761648 -22.1689302444458 0.0344134648640951
-~~}
+NAV: ToSort once ~~ {
+	pnt -101.002791070938 35.5555841684341 2.08333134651184E-05
+	pnt -100.998311837514 35.6096369187037 2.08333134651184E-05
+~~ }

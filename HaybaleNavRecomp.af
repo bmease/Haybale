@@ -57,7 +57,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[COLOR_INFO, 5]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@CCDebug, `echo[\`[DEBUG] Che Nav Recomp v0.1.0 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Recomp v0.1.0 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	~~ Autopack before doing anything
 	IF: Always
@@ -77,7 +77,7 @@ STATE: {Default} ~~ {
 STATE: {ToHaven} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
 		DO: DoAll
@@ -97,7 +97,7 @@ STATE: {ToHaven} ~~ {
 STATE: {ToMeiLing} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Mei Ling\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Mei Ling\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
 		DO: DoAll
@@ -116,7 +116,7 @@ STATE: {ToMeiLing} ~~ {
 STATE: {BuyFromMeiLing} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Buying from Mei Ling\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Buying from Mei Ling\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
 		DO: DoAll
@@ -135,7 +135,7 @@ STATE: {BuyFromMeiLing} ~~ {
 
 STATE: {ToZion} ~~ {
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Zion Blackcloak\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Zion Blackcloak\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
 		DO: EmbedNav ToZion {ToZion}
@@ -151,7 +151,7 @@ STATE: {ToZion} ~~ {
 STATE: {BuyFromZion} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Buying from Zion Blackcloak\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Buying from Zion Blackcloak\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
 		DO: DoAll
@@ -170,10 +170,10 @@ STATE: {BuyFromZion} ~~ {
 
 STATE: {Finished} ~~ {
 	IF: Always
-		DO:	DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished recomping\`]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recomping\`]`, `false`]}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 

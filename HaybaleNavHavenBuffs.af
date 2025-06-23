@@ -52,7 +52,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@CCDebug, `echo[\`[DEBUG] Che Nav Haven Buffs v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Haven Buffs v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	IF: Always
 		DO: SetState {NavToDestination}
@@ -87,7 +87,7 @@ STATE: {ToHaven} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
 
 	~~ Set EnableNav to navigate
 	IF: Always
@@ -111,7 +111,7 @@ STATE: {ToTristone} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Empowered Tri-stone\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Empowered Tri-stone\`, $COLOR_INFO]`, `false`]}
 
 	~~ Navigate to Empowered Tristone
 	IF: Always
@@ -134,7 +134,7 @@ STATE: {ToAurlanna} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Statue of Aurlanna\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Statue of Aurlanna\`, $COLOR_INFO]`, `false`]}
 
 	~~ Navigate to Statue of Aurlanna
 	IF: Always
@@ -157,7 +157,7 @@ STATE: {ToStatue} ~~ {
 		DO:	SetState {Finished}
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Navigating to Statue of Sandra 'srand' Powers\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Statue of Sandra 'srand' Powers\`, $COLOR_INFO]`, `false`]}
 
 	~~ Navigate to Statue of Sandra 'srand' Powers
 	IF: Always
@@ -181,7 +181,7 @@ STATE: {UseItem} ~~ {
 
 	IF: Expr {testvar[using]==false}
 		DO:	DoAll
-				DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Using \`+$item, $COLOR_INFO]`, `false`]}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Using \`+$item, $COLOR_INFO]`, `false`]}
 				DoExpr {$using=true}
 
 	~~ Use item
@@ -206,10 +206,10 @@ STATE: {UseItem} ~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[$LEVEL_INFO>=@CCDebug, `echo[\`[INFO] Finished Haven Buffs\`, $COLOR_INFO]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Finished Haven Buffs\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
-		DO:	DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Finished Haven Buffs\`]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished Haven Buffs\`]`, `false`]}
 
 	~~ Reset all options to what they originally were
 	IF: Always
@@ -222,7 +222,7 @@ STATE: {Finished} ~~ {
 		DO: DoExpr {listmap[listcreate[`NPC`, `TYPE_OBJECT`, `OriginalEnableNav`], `clearvar[$1]`]}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 
 ~~ }
 

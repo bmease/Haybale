@@ -42,11 +42,6 @@ STATE: {Default} ~~ {
 
 	IF: Always
 		DO: DoAll
-				Chat {/ub opt set VTank.PatchExpressionEngine true}
-				Chat {/ub opt set InventoryManager.IGThink true}
-
-	IF: Always
-		DO: DoAll
 				DoExpr {setvar[NUMBER, 1]}
 				DoExpr {setvar[MONSTER, 5]}
 				DoExpr {setvar[OBJECT, 7]}
@@ -54,76 +49,69 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[VENDOR, 25]}
 				DoExpr {setvar[NPC, 37]}
 
-				DoExpr {setvar[COLOR_SYSTEM, 5]}
+				DoExpr {setvar[COLOR_DEBUG, 17]}
+				DoExpr {setvar[COLOR_INFO, 5]}
+				DoExpr {setvar[COLOR_WARN, 31]}
+				DoExpr {setvar[COLOR_ERROR, 21]}
 
-				DoExpr {setvar[CHARACTER_NAME, getcharstringprop[1]]}
+				DoExpr {setvar[LEVEL_DEBUG, 10]}
+				DoExpr {setvar[LEVEL_INFO, 20]}
+				DoExpr {setvar[LEVEL_WARN, 30]}
+				DoExpr {setvar[LEVEL_ERROR, 40]}
 
-	IF:	Expr {$Debug==1}
+				DoExpr {setvar[OriginalEnableNav, vtgetsetting[EnableNav]]}
+
+	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoAll
-				ChatExpr {`/tell `+$CHARACTER_NAME+`, Che Nav Sort de Che v0.0.1 by Che de Pa of Sundering`}
+				DoExpr {echo[`[DEBUG] Che Nav Neftet v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
-	~~ Navigate to Haven if not there
-	IF:	Not BlockE 01AC0000
-		DO:	SetState {ToHaven}
-
-	~~ Navigate to Sort de Che if in Haven
-	IF:	BlockE 01AC0000
-		DO:	SetState {ToSort}
-~~ }
-
-
-STATE: {ToHaven} ~~ {
-	IF: Expr {$Debug==1}
-		DO: DoAll
-				DoExpr {echo[`Navigating to Haven`, $COLOR_SYSTEM]}
-
-	IF: Always
-		DO: DoAll
-				SetOpt {EnableNav} {True}
-
-	IF: Always
-		DO: EmbedNav ToHaven {ToHaven}
-
-	IF:	All
-			NavEmpty
-			CellE 01AC011F
-		DO: SetState {ToSort}
-~~ }
-
-
-STATE: {ToSort} ~~ {
-	IF: Expr {$Debug==1}
-		DO: DoAll
-				DoExpr {echo[`Navigating to Sort de Che`, $COLOR_SYSTEM]}
-
-	IF: Always
-		DO: DoAll
-				SetOpt {EnableNav} {True}
-
-	IF: Always
-		DO: EmbedNav ToSort {ToSort}
-
-	IF:	All
-			NavEmpty
-			~~ CellE 01AC011E
+	~~ Finish if in Neftet
+	IF: BlockE 87630000
 		DO: SetState {Finished}
+
+	~~ Navigate to Neftet if not there
+	IF:	Not BlockE 87630000
+		DO:	SetState {ToNeftet}
+
 ~~ }
+
+
+STATE: {ToNeftet} ~~ {
+
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
+		DO: DoAll
+				DoExpr {echo[`[INFO] Navigating to Neftet`, $COLOR_INFO]}
+
+	IF: Always
+		DO: DoAll
+				SetOpt {EnableNav} {True}
+
+	IF: Always
+		DO: EmbedNav ToNeftet {ToNeftet}
+
+	IF:	All
+			NavEmpty
+			CellE 8763000E
+		DO: SetState {Finished}
+
+~~ }
+
 
 STATE: {Finished} ~~ {
-	IF: Expr {$Debug==1}
+	IF: Expr {$LEVEL_INFO>=@HBDebug}
 		DO: DoAll
-				DoExpr {echo[`Finished navigating to Sort de Che`, $COLOR_SYSTEM]}
+				DoExpr {echo[`[INFO] Finished navigating to Neftet`, $COLOR_INFO]}
+
+	~~ Reset all options to what they originally were
+	IF: Always
+		DO: DoAll
+				SetOpt {EnableNav} {$OriginalEnableNav}
 
 	IF: Always
-		DO: ChatExpr {`/vt meta load `+$CCReturnMeta}
+		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}
 ~~ }
 
 
-NAV: ToHaven once ~~ {
-	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Sending}
-~~ }
-
-NAV: ToSort once ~~ {
-	pnt -101.002791070938 35.5555841684341 2.08333134651184E-05
-	pnt -100.998311837514 35.6096369187037 2.08333134651184E-05
+NAV: ToNeftet once ~~ {
+	rcl -101.027787327766 35.5967526912689 2.08333134651184E-05 {Lost City of Neftet Recall}
 ~~ }
