@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <view width="240" height="440" title="Setup">
     <control type="layout">
-        <control type="button" name="btnCharacter1" left="20" top="20" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{0+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter1" left="20" top="20" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{0+$ProfileOffset}}" />
         <control type="button" name="btnCharacter1-delete" left="190" top="20" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 0`]" />
 
-        <control type="button" name="btnCharacter2" left="20" top="50" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{1+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter2" left="20" top="50" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{1+$ProfileOffset}}" />
         <control type="button" name="btnCharacter2-delete" left="190" top="50" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 1`]" />
 
-        <control type="button" name="btnCharacter3" left="20" top="80" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{2+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter3" left="20" top="80" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{2+$ProfileOffset}}" />
         <control type="button" name="btnCharacter3-delete" left="190" top="80" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 2`]" />
 
-        <control type="button" name="btnCharacter4" left="20" top="110" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{3+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter4" left="20" top="110" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{3+$ProfileOffset}}" />
         <control type="button" name="btnCharacter4-delete" left="190" top="110" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 3`]" />
 
-        <control type="button" name="btnCharacter5" left="20" top="140" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{4+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter5" left="20" top="140" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{4+$ProfileOffset}}" />
         <control type="button" name="btnCharacter5-delete" left="190" top="140" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 4`]" />
 
-        <control type="button" name="btnCharacter6" left="20" top="170" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{5+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter6" left="20" top="170" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{5+$ProfileOffset}}" />
         <control type="button" name="btnCharacter6-delete" left="190" top="170" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 5`]" />
 
-        <control type="button" name="btnCharacter7" left="20" top="200" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{6+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter7" left="20" top="200" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{6+$ProfileOffset}}" />
         <control type="button" name="btnCharacter7-delete" left="190" top="200" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 6`]" />
 
-        <control type="button" name="btnCharacter8" left="20" top="230" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{7+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter8" left="20" top="230" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{7+$ProfileOffset}}" />
         <control type="button" name="btnCharacter8-delete" left="190" top="230" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 7`]" />
 
-        <control type="button" name="btnCharacter9" left="20" top="260" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@CCProfileKeys{{8+$ProfileOffset}}" />
+        <control type="button" name="btnCharacter9" left="20" top="260" width="165" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#profile load `+@HBProfileKeys{{8+$ProfileOffset}}" />
         <control type="button" name="btnCharacter9-delete" left="190" top="260" width="30" height="25" text="X" actionexpr="chatbox[`#removepos 8`]" />
 
 

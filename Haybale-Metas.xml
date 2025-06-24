@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <view width="240" height="350" title="Metas">
     <control type="layout">
-        <control type="button" name="btnMeta1" left="20" top="20" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{0+$MetaOffset}}" />
-        <control type="button" name="btnMeta2" left="20" top="50" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{1+$MetaOffset}}" />
-        <control type="button" name="btnMeta3" left="20" top="80" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{2+$MetaOffset}}" />
-        <control type="button" name="btnMeta4" left="20" top="110" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{3+$MetaOffset}}" />
-        <control type="button" name="btnMeta5" left="20" top="140" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{4+$MetaOffset}}" />
-        <control type="button" name="btnMeta6" left="20" top="170" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{5+$MetaOffset}}" />
-        <control type="button" name="btnMeta7" left="20" top="200" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{6+$MetaOffset}}" />
-        <control type="button" name="btnMeta8" left="20" top="230" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{7+$MetaOffset}}" />
-        <control type="button" name="btnMeta9" left="20" top="260" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@CCMetaKeys{{8+$MetaOffset}}" />
+        <control type="button" name="btnMeta1" left="20" top="20" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{0+$MetaOffset}}" />
+        <control type="button" name="btnMeta2" left="20" top="50" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{1+$MetaOffset}}" />
+        <control type="button" name="btnMeta3" left="20" top="80" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{2+$MetaOffset}}" />
+        <control type="button" name="btnMeta4" left="20" top="110" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{3+$MetaOffset}}" />
+        <control type="button" name="btnMeta5" left="20" top="140" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{4+$MetaOffset}}" />
+        <control type="button" name="btnMeta6" left="20" top="170" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{5+$MetaOffset}}" />
+        <control type="button" name="btnMeta7" left="20" top="200" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{6+$MetaOffset}}" />
+        <control type="button" name="btnMeta8" left="20" top="230" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{7+$MetaOffset}}" />
+        <control type="button" name="btnMeta9" left="20" top="260" width="200" height="25" text="" setstate="ChatCommand" actionexpr="$command=`#meta load `+@HBMetaKeys{{8+$MetaOffset}}" />
 
         <control type="button" name="btnPrevious" left="20" top="300" width="80" height="25" text="Previous" setstate="MetaPreviousPage" />
         <control type="button" name="btnNext" left="140" top="300" width="80" height="25" text="Next" setstate="MetaNextPage" />
