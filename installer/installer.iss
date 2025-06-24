@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Haybale"
-#define MyAppVersion "0.9.0"
+#define MyAppVersion "2.0.0"
 #define MyAppPublisher "Che de Pa of Sundering"
 #define MyAppURL "https://github.com/bmease/Haybale"
 
@@ -51,7 +51,7 @@ Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagFrozenValley.met
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagRynthid.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavChair.met"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavHavenBuffs.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavJungleSubway.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
