@@ -113,6 +113,9 @@ STATE: {Default} ~~ {
 				~~ Distance away a character must be to announce stuck
 				DoExpr {setpvar[HBStuckDistanceThreshold, ifthen[testpvar[HBStuckDistanceThreshold], `@HBStuckDistanceThreshold`, `20`]]}
 
+				~~ Whether to attempt to handle getting unstuck
+				DoExpr {setpvar[HBAttemptHandleStuck, ifthen[testpvar[HBAttemptHandleStuck], `@HBAttemptHandleStuck`, `true`]]}
+
 				~~ Leader to announce things to. Defaults to first character in @HBCharacterList and will update when follow commands are issued
 				DoExpr {setpvar[HBLeader, ifthen[testpvar[HBLeader], `@HBLeader`, `ifthen[listcount[@HBCharacterList]>0, \`listgetitem[@HBCharacterList, 0]\`, \`false\`]`]]}
 
@@ -435,6 +438,7 @@ STATE: {Init} ~~ {
 
 				DoExpr {setvar[CorpseBlacklist, listcreate[]]}
 				DoExpr {setvar[StuckTimer, stopwatchstart[stopwatchcreate[]]]}
+				DoExpr {setvar[StuckCount, 0]}
 				DoExpr {$InitialPosition=getplayercoordinates[]}
 				DoExpr {$InitialDistance=0}
 
@@ -690,7 +694,7 @@ STATE: {Idle} ~~ {
 				ChatExpr {`/t `+@HBLeader+`, I am stuck and you are `+floor[$finalDistance]+` meters away!`}
 				~~ ChatExpr {`/f InitialDistance: `+floor[$finalDistance]}
 				~~ ChatExpr {`/f finalDistance: `+floor[$finalDistance]}
-				SetState {Idle}
+				DoExpr {ifthen[@HBAttemptHandleStuck, `vtsetmetastate[HandleStuck]`, `vtsetmetastate[Idle]`]}
 
 	~~ Restart stuck stopwatch
 	IF: All
@@ -1242,6 +1246,51 @@ STATE: {Idle} ~~ {
 			Never
 		DO: None
 
+
+~~ }
+
+
+STATE: {HandleStuck} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Idle}
+
+	~~ Disable all options
+	IF: Expr {testvar[OptionsSet]==false}
+		DO: CallState {DisableOptions} {HandleStuck}
+
+	~~ Move Backwards and StrafeLeft
+	IF: All
+			Expr {testvar[moving]==false}
+			Expr {$StuckCount%2==true}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Attempting to get unstuck by moving left.\`]`, `false`]}
+				DoExpr {setmotion[`Backward`, true]}
+				DoExpr {setmotion[`StrafeLeft`, true]}
+				DoExpr {$StuckCount=$StuckCount+1}
+				DoExpr {$moving=true}
+				SetState {HandleStuck}
+
+	~~ Move Backwards and StrafeRight
+	IF: All
+			Expr {testvar[moving]==false}
+			Expr {$StuckCount%2==false}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Attempting to get unstuck by moving right.\`]`, `false`]}
+				DoExpr {setmotion[`Backward`, true]}
+				DoExpr {setmotion[`StrafeRight`, true]}
+				DoExpr {$StuckCount=$StuckCount+1}
+				DoExpr {$moving=true}
+				SetState {HandleStuck}
+
+	~~ After one second return to normal operation
+	IF:	SecsInStateGE 1
+		DO: DoAll
+				DoExpr {setmotion[`Backward`, false]}
+				DoExpr {setmotion[`StrafeLeft`, false]}
+				DoExpr {setmotion[`StrafeRight`, false]}
+				DoExpr {clearvar[moving]}
+				CallState {EnableOptions} {Idle}
 
 ~~ }
 
