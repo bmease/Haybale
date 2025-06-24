@@ -250,7 +250,7 @@ STATE: {InitMoufP} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Fiun Outpost`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
+				DoExpr {$QuestMetaName=`HaybaleNavTownNetwork`}
 				SetState {CallMeta}
 
 ~~ }
@@ -271,7 +271,7 @@ STATE: {InitLiberationUziz} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Al-Arqas`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
+				DoExpr {$QuestMetaName=`HaybaleNavTownNetwork`}
 				SetState {CallMeta}
 
 ~~ }
@@ -292,7 +292,7 @@ STATE: {InitPurgingCorruption} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavSubway`, dictcreate[`destination`, `Candeth Keep`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavSubway`}
+				DoExpr {$QuestMetaName=`HaybaleNavSubway`}
 				SetState {CallMeta}
 
 ~~ }
@@ -313,7 +313,7 @@ STATE: {InitDreamReaver} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Khayyaban`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
+				DoExpr {$QuestMetaName=`HaybaleNavTownNetwork`}
 				SetState {CallMeta}
 
 ~~ }
@@ -334,7 +334,7 @@ STATE: {InitSerpentBurialGrounds} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavTownNetwork`, dictcreate[`destination`, `Stonehold`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavTownNetwork`}
+				DoExpr {$QuestMetaName=`HaybaleNavTownNetwork`}
 				SetState {CallMeta}
 
 ~~ }
@@ -359,7 +359,7 @@ STATE: {InitHaltDericost} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavPortalspaceActivator`}
+				DoExpr {$QuestMetaName=`HaybaleNavPortalspaceActivator`}
 				SetState {CallMeta}
 
 ~~ }
@@ -416,7 +416,7 @@ STATE: {InitNanjouStockade} ~~ {
 				DoExpr {dictadditem[$HBArguments, `HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `Hoshino`]]}
 				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
 				DoExpr {$HBReturnMeta=$metaname}
-				DoExpr {$QuestMetaName=`ChecommandNavPortalspaceActivator`}
+				DoExpr {$QuestMetaName=`HaybaleNavPortalspaceActivator`}
 				SetState {CallMeta}
 
 ~~ }
