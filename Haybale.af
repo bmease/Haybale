@@ -719,10 +719,8 @@ STATE: {Idle} ~~ {
 			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]}
 			Not Expr {listcontains[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 		DO: DoAll
-				~~ coordinateparse in VTank does not output the height so we turn off the PatchExpressionEngine to use VTank instead of UtilityBelt
-				Chat {/ub opt set VTank.PatchExpressionEngine false}
-				ChatExpr {`Found Blue at `+coordinatetostring[coordinateparse[coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[37, `Fiery Remains`]]]]]}  ~~ Can't use getvar for some reason throws error. 37=NPC
-				Chat {/ub opt set VTank.PatchExpressionEngine true}
+				~~ coordinateparse in VTank does not output the height so we use /vt mexec chatbox to run it through VTank
+				Chat {/vt mexec chatbox[`Found Blue at `+coordinatetostring[coordinateparse[coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[37, `Fiery Remains`]]]]]]}  ~~ Can't use getvar for some reason throws error. 37=NPC
 
 				ChatExpr {`/goarrow to `+coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 
