@@ -4534,9 +4534,11 @@ STATE: {UseNPC} ~~ {
 				DoExpr {$equipped=true}
 
 	~~ Warn if no NPC nearby
-	IF: Any
-			Expr {wobjectfindnearestbyobjectclass[$NPC]==false}
-			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]>=@HBNPCThreshold} ~~ no NPC within threshold
+	IF: All
+			Expr {isportaling[]==false}
+			Any
+				Expr {wobjectfindnearestbyobjectclass[$NPC]==false}
+				Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]>=@HBNPCThreshold} ~~ no NPC within threshold
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No NPC within range!\`]`, `false`]}
 				SetState {LeaderCheck}
