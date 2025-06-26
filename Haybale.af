@@ -3516,15 +3516,28 @@ STATE: {PassWait} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {listmap[listcreate[`item`], `clearvar[$1]`]}
+				DoExpr {listmap[listcreate[`item`, `hasItem`], `clearvar[$1]`]}
 				SetState {Idle}
 
-	~~ Use the item when given
-	IF: ChatMatch {gives you}
+	~~ Finished using item
+	IF: All
+			Expr {$hasItem==true}
+			ChatMatch {You cast}
 		DO: DoAll
-				DoExpr {actiontryuseitem[listgetitem[wobjectfindallinventorybynamerx[$item], 0]]}
+				DoExpr {listmap[listcreate[`hasItem`], `clearvar[$1]`]}
 				SetState {PassGive}
 
+	~~ Received the item
+	IF: ChatMatch {gives you}
+		DO: DoAll
+				DoExpr {$hasItem=true}
+				SetState {PassWait}
+
+	~~ Use item
+	IF: Expr {$hasItem==true}
+		DO: DoAll
+				DoExpr {actiontryuseitem[listgetitem[wobjectfindallinventorybynamerx[$item], 0]]}
+				SetState {PassWait}
 ~~ }
 
 
