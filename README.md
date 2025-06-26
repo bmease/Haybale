@@ -15,6 +15,7 @@
 - Auto-looting and auto-giving for over 40 Legendary Quests, with reminders when they become available.
 - Automatically flag and run all 40 Legendary Quests — click once, grab coffee, return to a quest!
 - Automatic use of Rynthid Weapons and Viridian Rise portals.
+- Schedule other metas to run at certain times.
 - Seamlessly launch other metas and profiles from within the graphical interface.
 - Smart portal handling — detects and uses portals or relevant NPCs without the guesswork.
 - Follower stuck detection with automatic unstuck attempts.
