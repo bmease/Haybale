@@ -719,12 +719,14 @@ STATE: {Idle} ~~ {
 			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]}
 			Not Expr {listcontains[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 		DO: DoAll
-				~~ coordinateparse in VTank does not output the height so we use /vt mexec chatbox to run it through VTank
-				Chat {/vt mexec chatbox[`Found Blue at `+coordinatetostring[coordinateparse[coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[37, `Fiery Remains`]]]]]]}  ~~ Can't use getvar for some reason throws error. 37=NPC
+				~~ Utility Belt returns coordinates with Z so we truncate the string to only show cardinal directions
+				DoExpr {$coords=coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]{{0:-7}}}
+				DoExpr {ifthen[getfellowshipisleader[]==true, `chatbox[\`Found Blue at \`+$coords]`, `chatbox[\`/t \`+@HBLeader+\`, Found Blue at \`+$coords]`]}
 
-				ChatExpr {`/goarrow to `+coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
+				ChatExpr {`/goarrow to `+$coords}
 
 				DoExpr {listadd[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
+				DoExpr {clearvar[coords]}
 				SetState {Idle}
 
 	~~ Start stopwatch when Rynthid Weapons greentext appears
