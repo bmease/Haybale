@@ -4543,6 +4543,18 @@ STATE: {UseNPC} ~~ {
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No NPC within range!\`]`, `false`]}
 				SetState {LeaderCheck}
 
+	~~ Warn if you can't interact with that NPC.
+	IF: All
+			Expr {isportaling[]==false}
+			Any
+				ChatMatch {You must complete a quest to interact with that portal.}
+				ChatMatch {You completed the quest this portal requires too long ago!}
+				ChatMatch {You must be a member of the}
+				ChatMatch {[Nn]othing happens}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to use NPC!\`]`, `false`]}
+				SetState {LeaderCheck}
+
 	~~ Stop using NPC if you receieve a response
 	IF:	Any
 			All
