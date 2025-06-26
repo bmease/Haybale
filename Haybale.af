@@ -444,6 +444,7 @@ STATE: {Init} ~~ {
 				DoExpr {setvar[StuckCount, 0]}
 				DoExpr {$InitialPosition=getplayercoordinates[]}
 				DoExpr {$InitialDistance=0}
+				DoExpr {setvar[StartedAt, ifthen[testvar[StartedAt], `$StartedAt`, `getunixtime[]`]]}
 
 				DoExpr {setvar[BlueSeen, listcreate[]]}
 
@@ -3001,7 +3002,7 @@ STATE: {HandleFace} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
 
-	~~ Handle `#check help`
+	~~ Handle `#face help`
 	IF: Expr {(help)#getvar[capturegroup_facedirection]}
 		DO: DoAll
 				DoExpr {echo[`#face north`, $COLOR_INFO]}
@@ -3730,6 +3731,7 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {echo[`#check landblock: check what landblock each character is in.`, $COLOR_INFO]}
 				DoExpr {echo[`#check landcell: check what landcell each character is in.`, $COLOR_INFO]}
 				DoExpr {echo[`#check settings: check the settings (Toggle Vitals, Buff, Combat, Nav, Loot) of all characters.`, $COLOR_INFO]}
+				DoExpr {echo[`#check uptime: check the current amount of time all characters have been running.`, $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Handle `#check buffs`
@@ -3772,6 +3774,19 @@ STATE: {HandleCheck} ~~ {
 		DO: DoAll
 				ChatExpr {`/t `+@HBLeader+`, Toggle Vitals: `+ifthen[@HBVitals, `On`, `Off`]+`, Buff: `+ifthen[vtgetsetting[EnableBuffing], `On`, `Off`]+`, Combat: `+ifthen[vtgetsetting[EnableCombat], `On`, `Off`]+`, Nav: `+ifthen[vtgetsetting[EnableNav], `On`, `Off`]+`, Loot: `+ifthen[vtgetsetting[EnableLooting], `On`, `Off`]}
 				SetState {Idle}
+
+	~~ Handle `#check uptime`
+	IF: Expr {(uptime)#getvar[capturegroup_checktext]}
+		DO: DoAll
+				DoExpr {$total_seconds=getunixtime[]-$StartedAt}
+				DoExpr {$hours=floor[$total_seconds/3600]}
+				DoExpr {$remaining_seconds=$total_seconds%3600}
+				DoExpr {$minutes=floor[$remaining_seconds/60]}
+				DoExpr {$seconds=$remaining_seconds%60}
+				ChatExpr {`/t `+@HBLeader+`, `+$hours+` hours `+$minutes+` minutes `+ceiling[$seconds]+` seconds`]}
+				DoExpr {listmap[listcreate[`total_seconds`, `hours`, `remaining_seconds`, `minutes`, `seconds`], `clearvar[$1]`]}
+				SetState {Idle}
+
 
 	~~ Handle no match for checktext
 	IF: Expr {$LEVEL_WARN>=@HBDebug}
