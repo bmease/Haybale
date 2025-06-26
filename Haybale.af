@@ -140,6 +140,9 @@ STATE: {Default} ~~ {
 				~~ Announce VR Blue
 				DoExpr {setpvar[HBAnnounceVRBlue, ifthen[testpvar[HBAnnounceVRBlue], `@HBAnnounceVRBlue`, `true`]]}
 
+				~~ Automatically update GoArrow with coordinates in chat
+				DoExpr {setpvar[HBAutoUpdateGoArrow, ifthen[testpvar[HBAutoUpdateGoArrow], `@HBAutoUpdateGoArrow`, `true`]]}
+
 				~~ Use Rynthid Weapons Portal
 				DoExpr {setpvar[HBUseRynthidWeaponsPortal, ifthen[testpvar[HBUseRynthidWeaponsPortal], `@HBUseRynthidWeaponsPortal`, `true`]]}
 
@@ -727,6 +730,15 @@ STATE: {Idle} ~~ {
 
 				DoExpr {listadd[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 				DoExpr {clearvar[coords]}
+				SetState {Idle}
+
+	~~ Automatically update GoArrow coordinates when seen in chat
+	IF: All
+			Expr {@HBAutoUpdateGoArrow==true}
+			ChatCapture {(?<coordinates>[0-9]{{1,3}}(?:\.[0-9]{{1,3}})?[NS],[ ]*[0-9]{{1,3}}(?:\.[0-9]{{1,3}})?[EW])} {}
+		DO: DoAll
+				ChatExpr {`/goarrow to `+$capturegroup_coordinates}
+				DoExpr {clearvar[capturegroup_coordinates]}
 				SetState {Idle}
 
 	~~ Start stopwatch when Rynthid Weapons greentext appears
