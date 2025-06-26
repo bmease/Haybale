@@ -152,9 +152,6 @@ STATE: {Default} ~~ {
 				~~ Maximum fellowship size
 				DoExpr {setpvar[HBMaxFellowshipSize, ifthen[testpvar[HBMaxFellowshipSize], `@HBMaxFellowshipSize`, `9`]]}
 
-				~~ Use Auto Timers
-				DoExpr {setpvar[HBAutoTimers, ifthen[testpvar[HBAutoTimers], `@HBAutoTimers`, `true`]]}
-
 				~~ Metas (UB does not support dictionaries in pvars so using two lists instead)
 				DoExpr {setpvar[HBMetaKeys, ifthen[testpvar[HBMetaKeys], `@HBMetaKeys`, `listcreate[]`]]}
 				DoExpr {setpvar[HBMetaValues, ifthen[testpvar[HBMetaValues], `@HBMetaValues`, `listcreate[]`]]}
@@ -215,20 +212,16 @@ STATE: {Default} ~~ {
 				~~ Whether the Jump view is open or closed
 				DoExpr {setpvar[HBViewsJump, ifthen[testpvar[HBViewsJump], `@HBViewsJump`, `false`]]}
 
+				~~ Use Auto Timers
+				DoExpr {setpvar[HBAutoTimers, ifthen[testpvar[HBAutoTimers], `@HBAutoTimers`, `true`]]}
 
-				DoExpr {setvar[AutoTimers, listcreate[]]}
-				DoExpr {listadd[$AutoTimers, listcreate[11, 00, 00, `AM`, listcreate[`HaybaleNavRecomp`, `HaybaleNavChair`]]]}
+				~~ AutoTimers setup for running metas at specific times
+				~~ Hours, Minutes, Seconds, [AM|PM], list of metas to call without file extension
+				~~
+				~~ Example:
+				~~ /ub mexec listadd[@HBAutoTimersMetas, listcreate[11, 00, 00, `AM`, listcreate[`HaybaleNavRecomp`, `HaybaleNavChair`]]]
+				DoExpr {setpvar[HBAutoTimersMetas, ifthen[testpvar[HBAutoTimersMetas], `@HBAutoTimersMetas`, `listcreate[]`]]}
 
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 20, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 21, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 22, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 23, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 24, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 25, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 26, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 27, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 28, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
-				~~ DoExpr {listadd[$AutoTimers, listcreate[2, 29, 00, `AM`, listcreate[`HaybaleNavRecomp`]]]}
 
 				~~ Nav Routes
 				~~ Keys are landcells in hexidecimal format, values are the name of the nav file without the file extension
@@ -776,7 +769,7 @@ STATE: {Idle} ~~ {
 	~~ Handle Auto Timers
 	IF: All
 			Expr {@HBAutoTimers==true}
-			Expr {$FoundTimers=listfilter[$AutoTimers, `cnumber[getdatetimelocal[hh]]==$1{{0}}&&cnumber[getdatetimelocal[mm]]==$1{{1}}&&cnumber[getdatetimelocal[ss]]==$1{{2}}&&getdatetimelocal[tt]==$1{{3}}`]}
+			Expr {$FoundTimers=listfilter[@HBAutoTimersMetas, `cnumber[getdatetimelocal[hh]]==$1{{0}}&&cnumber[getdatetimelocal[mm]]==$1{{1}}&&cnumber[getdatetimelocal[ss]]==$1{{2}}&&getdatetimelocal[tt]==$1{{3}}`]}
 			Expr {listcount[$FoundTimers]>0}
 		DO: SetState {HandleAutoTimers}
 
