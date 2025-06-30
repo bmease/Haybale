@@ -70,6 +70,9 @@ STATE: {Default} ~~ {
 
 				DoExpr {setvar[STRING_PROP_NAME, 1]}
 				DoExpr {setvar[STRING_PROP_DESCRIPTION, 16]}
+				DoExpr {setvar[INT_PROP_JUMP_SKILL, 22]}
+				DoExpr {setvar[INT_PROP_RUN_SKILL, 24]}
+				DoExpr {setvar[INT_PROP_ENLIGHTENMENT, 390]}
 
 				DoExpr {setvar[COLOR_DEBUG, 17]}
 				DoExpr {setvar[COLOR_INFO, 5]}
@@ -1091,6 +1094,16 @@ STATE: {Idle} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleFace}
+
+	~~ Handle Jumping To text
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#jump to (?<jumptext>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {HandleJumpTo}
+
 
 	~~ Handle Jumping text
 	IF: All
@@ -3139,6 +3152,71 @@ STATE: {Jump} ~~ {
 ~~ }
 
 
+STATE: {HandleJumpTo} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`jumpSkill`, `runSkill`, `maxJumpHeight`, `runSpeed`, `shiftJumpSpeed`, `target`, `heading`, `distance`, `height`, `shiftPower`, `power`, `maxPower`, `shiftMaxHeight`, `maxHeight`, `capturegroup_jumptext`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Ignore if jumping to yourself
+	IF: Expr {$capturegroup_jumptext==$CHARACTER_NAME}
+		DO: DoAll
+				DoExpr {clearvar[capturegroup_jumptext]}
+				SetState {Idle}
+
+	~~ Calculate all necessary information
+	IF: Always
+		DO: DoAll
+				DoExpr {$jumpSkill=getcharskill_buffed[$INT_PROP_JUMP_SKILL]+getcharintprop[$INT_PROP_ENLIGHTENMENT]}
+				DoExpr {$runSkill=getcharskill_buffed[$INT_PROP_RUN_SKILL]+getcharintprop[$INT_PROP_ENLIGHTENMENT]}
+
+				DoExpr {$maxJumpHeight=$jumpSkill/($jumpSkill+1300)*22.2+.05}
+				DoExpr {$runSpeed=(($runSkill/($runSkill+200)*11)+4)}
+				DoExpr {$shiftJumpSpeed=4}
+
+				DoExpr {$target=listpop[wobjectfindalllandscapebynamerx[$capturegroup_jumptext], 0]}
+				DoExpr {$heading=round[getheadingto[$target]]%360}
+				DoExpr {$distance=coordinatedistanceflat[wobjectgetphysicscoordinates[wobjectgetplayer[]], wobjectgetphysicscoordinates[$target]]}
+				DoExpr {$height=240*(coordinategetz[wobjectgetphysicscoordinates[$target]]-coordinategetz[getplayercoordinates[]])}
+
+				DoExpr {$shiftPower=round[1000*((($shiftJumpSpeed*$height/$distance)+(4.9*$distance/$shiftJumpSpeed))*(($shiftJumpSpeed*$height/$distance)+(4.9*$distance/$shiftJumpSpeed))/(19.6*$maxJumpHeight)]}
+				DoExpr {$power=round[1000*((($runSpeed*$height/$distance)+(4.9*$distance/$runSpeed))*(($runSpeed*$height/$distance)+(4.9*$distance/$runSpeed))/(19.6*$maxJumpHeight)]}
+				DoExpr {$maxPower=1000}
+
+				DoExpr {$shiftMaxHeight=$shiftPower/1000*$maxJumpHeight/9.8*$shiftJumpSpeed}
+				DoExpr {$maxHeight=$power/1000*$maxJumpHeight/9.8*$runSpeed}
+
+	~~ Can perform a shift jump
+	IF: All
+			Expr {$shiftPower<=$maxPower}  ~~ Powered required is less than max power
+			Expr {$height<=$shiftMaxHeight}  ~~ Peak height is less than the height of the target
+		DO: DoAll
+				DoExpr {$Jumptext=`sw `+$heading+` `+$shiftPower}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Performing a shift jump with \`+$shiftPower/10+\`% power to heading \`+$heading, $COLOR_INFO]`, `false`]}
+				DoExpr {listmap[listcreate[`jumpSkill`, `runSkill`, `maxJumpHeight`, `runSpeed`, `shiftJumpSpeed`, `target`, `heading`, `distance`, `height`, `shiftPower`, `power`, `maxPower`, `shiftMaxHeight`, `maxHeight`, `capturegroup_jumptext`], `clearvar[$1]`]}
+				SetState {Jump}
+
+	~~ Can perform a regular jump
+	IF: All
+			Expr {$power<=$maxPower}  ~~ Powered required is less than max power
+			Expr {$height<=$maxHeight}  ~~ Peak height is less than the height of the target
+		DO: DoAll
+				DoExpr {$Jumptext=`w `+$heading+` `+$power}
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Performing a regular jump with \`+$power/10+\`% power to heading \`+$heading, $COLOR_INFO]`, `false`]}
+				DoExpr {listmap[listcreate[`jumpSkill`, `runSkill`, `maxJumpHeight`, `runSpeed`, `shiftJumpSpeed`, `target`, `heading`, `distance`, `height`, `shiftPower`, `power`, `maxPower`, `shiftMaxHeight`, `maxHeight`, `capturegroup_jumptext`], `clearvar[$1]`]}
+				SetState {Jump}
+
+	~~ Warn if unable to perform a jump
+	IF: Always
+		DO: DoAll
+				DoExpr {listmap[listcreate[`jumpSkill`, `runSkill`, `maxJumpHeight`, `runSpeed`, `shiftJumpSpeed`, `target`, `heading`, `distance`, `height`, `shiftPower`, `power`, `maxPower`, `shiftMaxHeight`, `maxHeight`, `capturegroup_jumptext`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to perform the jump\`]`, `false`]}
+				SetState {Idle}
+
+~~ }
+
+
 STATE: {JumpStack} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
@@ -5047,6 +5125,19 @@ STATE: {GiveSelect} ~~ {
 				DoExpr {$item=wobjectgetname[wobjectgetselection[]]}
 				DoExpr {uisetlabel[uigetcontrol[GiveSelect, Item], $item]}
 				SetState {Idle}
+
+~~ }
+
+
+STATE: {JumpToSelect} ~~ {
+
+	~~ Issue the `#jump to` commmand for the selected item
+	IF: Always
+		DO: DoAll
+				DoExpr {$item=wobjectgetname[wobjectgetselection[]]}
+				DoExpr {$command=`#jump to `+$item}
+				DoExpr {clearvar[item]}
+				SetState {ChatCommand}
 
 ~~ }
 
