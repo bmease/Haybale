@@ -41,8 +41,8 @@
 STATE: {Default} ~~ {
 
 	~~ Utility Belt Options
-	IF: Expr {uboptget[`VTank.PatchExpressionEngine`]==false}
-		DO: DoExpr {uboptset[`VTank.PatchExpressionEngine`, true]}
+	IF: Always
+		DO: Chat {/ub opt set VTank.PatchExpressionEngine true}
 
 	IF: Expr {uboptget[`Jumper.ThinkComplete`]==false}
 		DO: DoExpr {uboptset[`Jumper.ThinkComplete`, true]}
