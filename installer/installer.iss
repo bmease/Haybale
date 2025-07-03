@@ -23,7 +23,7 @@ AllowNoIcons=yes
 LicenseFile=\\wsl.localhost\Ubuntu\home\brad\Code\Haybale\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
-OutputBaseFilename=Haybale-v{#MyAppVersion}
+OutputBaseFilename=Haybale-v{#MyAppVersion}-Installer
 SolidCompression=yes
 WizardStyle=modern
 ; Prevent InnoSetup recalling the last used installation groupname and folder.
