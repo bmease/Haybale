@@ -1324,12 +1324,21 @@ STATE: {HandleAutoTimers} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {$timer=listpop[$FoundTimers, 0]}
-				DoExpr {$MetaCallQueue=$timer{{4}}}
+				DoExpr {$MetaCallQueue=listcopy[$timer{{4}}]}
 				SetState {CallMeta}
 
 ~~ }
 
 STATE: {CallMeta} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Idle}
+
+	~~ Warn if $MetaCallQueue is empty
+	IF: Expr {listcount[$MetaCallQueue]==0}
+		DO: DoAll
+				DoExpr {echo[`[WARN] CallMeta called with empty $MetaCallQueue`, $COLOR_WARN]}
+				SetState {Idle}
 
 	~~ Call a meta with the return meta being Haybale
 	IF: Expr {listcount[$MetaCallQueue]>0}
