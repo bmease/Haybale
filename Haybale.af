@@ -254,7 +254,7 @@ STATE: {Default} ~~ {
 				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Uber P`, `Letter from Mouf`]} ~~ Rescuing Mouf P
 				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Mr. P`, listcreate[`Letter from Mouf and Uber P`, `Pet Mouf Igloo`]]} ~~ Rescuing Mouf P
 				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Kraytuss Nallah`, `Bone Fragment from Shikken Moriyaki`]} ~~ Serpent Burial Grounds
-				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Collector Golem`, listcreate[`Glowing Statue Shard`, `Essence of the Sundered`, `Empowered Empyrean Robe`]]} ~~ Saving Asheron
+				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Collector Golem`, listcreate[`Glowing Statue Shard`, `Empowered Empyrean Robe`, `Essence of the Sundered`]]} ~~ Saving Asheron
 				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Fanzen San the Translator`, listcreate[`Complete Page of Lost Lore`, `Orders for Zrikux`]]} ~~ Lost Lore, Falacot Depot
 				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Popkin of the Gate`, `The Story of the Lost Sisters`]} ~~ Lost Lore
 				DoExpr {dictadditem[$AUTOGIVE_PROFILE, `Ruby Annex`, `Shroud of Bloodlust`]} ~~ Shroud of Emotion
