@@ -4315,6 +4315,7 @@ STATE: {TrycastSummonPortal} ~~ {
 	IF: Expr {getvar[currentAttemptCount]>=getvar[maxCastAttempts]} ~~ Maximum number of cast attempts reached
 		DO: DoAll
 				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Failed to cast the spell after `+getvar[currentAttemptCount]+` attempts\`]`, `false`]}
+				ChatExpr {`/`+@CCChatCommand+` #portal cancel`}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 
 	~~ Cast the recall spell
@@ -4347,7 +4348,7 @@ STATE: {LocateSummonedPortal} ~~ {
 	IF: All			
 			Expr {getvar[checkedForGateways]==true}
 			Expr {listcount[getvar[gatewayList]]>0}
-			Expr {setvar[currentGateway,listpop[getvar[gatewayList]]]&&getheading[getvar[currentGateway]]==getvar[castingCharacterHeading]&&setvar[foundGatewayId, wobjectgetid[$currentGateway]]} ~~ Loop through surrounding gateways and find the one that matches the heading of the character who casted the spell
+			Expr {setvar[currentGateway,listpop[getvar[gatewayList]]]&&getheading[getvar[currentGateway]]==getvar[castingCharacterHeading]&&setvar[foundGatewayId, abs[wobjectgetid[$currentGateway]]]} ~~ Loop through surrounding gateways and find the one that matches the heading of the character who casted the spell
 		DO: DoAll
 				ChatExpr {`/`+@CCChatCommand+` #portal found ` + getvar[foundGatewayId]}
 				SetState {ListenForSummonPortal}
@@ -4358,6 +4359,7 @@ STATE: {LocateSummonedPortal} ~~ {
 			Expr {getvar[foundGatewayId]==false} ~~ Gateway not found
 		DO: DoAll
 				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No gateway found!\`]`, `false`]}
+				ChatExpr {`/`+@CCChatCommand+` #portal cancel`}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 ~~ }
 
@@ -4367,12 +4369,22 @@ STATE: {ListenForSummonPortal} ~~ {
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#portal cancel\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+		DO: CallState {CleanUpHandleSummonPortal} {LeaderCheck}
+
+	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#portal found (?<portalid>.*)\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
 		DO: SetState {UseSummonedPortal}
+	
+
 
 ~~ }
 
@@ -4396,7 +4408,7 @@ STATE: {UseSummonedPortal} ~~ {
 			Expr {isportaling[]==false}
 			Expr {getvar[capturegroup_portalid]!=false} ~~ Gateway exists
 		DO: DoAll
-				DoExpr {actiontryuseitem[wobjectfindbyid[cnumber[getvar[capturegroup_portalid]]]]}
+				DoExpr {actiontryuseitem[wobjectfindbyid[cnumber[`-` + getvar[capturegroup_portalid]]]]}
 				SetState {UseSummonedPortal}
 
 	~~ Finished using the Summoned Portal; go to LeaderCheck
