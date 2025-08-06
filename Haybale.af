@@ -4700,7 +4700,7 @@ STATE: {ListenForSummonPortal} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 
 	IF:	All
@@ -4708,7 +4708,7 @@ STATE: {ListenForSummonPortal} ~~ {
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
-				Expr {listcontains[@CCCharacterList, $capturegroup_name]}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {UseSummonedPortal}
 
 
