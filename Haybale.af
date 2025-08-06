@@ -1733,13 +1733,13 @@ STATE: {HandleNavigation} ~~ {
 	~~ Handle `#navto primary summon`
 	IF: Expr {(primary summon)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=157} ~~ Primary Summon Portal
+				DoExpr {$HBRecallSpell=157} ~~ Primary Summon Portal
 				SetState {HandleSummonPortal}
 
 	~~ Handle `#navto secondary`
 	IF: Expr {(secondary summon)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
-				DoExpr {$CCRecallSpell=2648} ~~ Secondary Summon Portal
+				DoExpr {$HBRecallSpell=2648} ~~ Secondary Summon Portal
 				SetState {HandleSummonPortal}
 
 
@@ -4601,9 +4601,9 @@ STATE: {HandleSummonPortal} ~~ {
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	~~ Return to Idle if the spell isn't known
-	IF: Not Expr {getisspellknown[$CCRecallSpell]}
+	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, I do not know this spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this spell\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Disable all options
@@ -4641,15 +4641,15 @@ STATE: {TrycastSummonPortal} ~~ {
 
 	IF: Expr {getvar[currentAttemptCount]>=getvar[maxCastAttempts]} ~~ Maximum number of cast attempts reached
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, Failed to cast the spell after `+getvar[currentAttemptCount]+` attempts\`]`, `false`]}
-				ChatExpr {`/`+@CCChatCommand+` #portal cancel`}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Failed to cast the spell after `+getvar[currentAttemptCount]+` attempts\`]`, `false`]}
+				ChatExpr {`/`+@HBChatCommand+` #portal cancel`}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 
 	~~ Cast the recall spell
 	IF: Expr {$wasCastSuccessfull==false}
 		DO: DoAll
 				DoExpr {setvar[currentAttemptCount, getvar[currentAttemptCount]+1]}
-				DoExpr {$wasCastSuccessfull=actiontrycastbyid[$CCRecallSpell]}
+				DoExpr {$wasCastSuccessfull=actiontrycastbyid[$HBRecallSpell]}
 				SetState {TrycastSummonPortal}
 
 	~~ Cast the recall spell
@@ -4677,7 +4677,7 @@ STATE: {LocateSummonedPortal} ~~ {
 			Expr {listcount[getvar[gatewayList]]>0}
 			Expr {setvar[currentGateway,listpop[getvar[gatewayList]]]&&getheading[getvar[currentGateway]]==getvar[castingCharacterHeading]&&setvar[foundGatewayId, abs[wobjectgetid[$currentGateway]]]} ~~ Loop through surrounding gateways and find the one that matches the heading of the character who casted the spell
 		DO: DoAll
-				ChatExpr {`/`+@CCChatCommand+` #portal found ` + getvar[foundGatewayId]}
+				ChatExpr {`/`+@HBChatCommand+` #portal found ` + getvar[foundGatewayId]}
 				SetState {ListenForSummonPortal}
 
 	IF: All
@@ -4685,8 +4685,8 @@ STATE: {LocateSummonedPortal} ~~ {
 			Expr {listcount[getvar[gatewayList]]==0} ~~ No gateways found
 			Expr {getvar[foundGatewayId]==false} ~~ Gateway not found
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+@CCLeader+\`, No gateway found!\`]`, `false`]}
-				ChatExpr {`/`+@CCChatCommand+` #portal cancel`}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No gateway found!\`]`, `false`]}
+				ChatExpr {`/`+@HBChatCommand+` #portal cancel`}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 ~~ }
 
@@ -4741,7 +4741,7 @@ STATE: {UseSummonedPortal} ~~ {
 	~~ Finished using the Summoned Portal; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@CCConfirm==true, `chatbox[\`/t \`+$capturegroup_name+\`, Finished using Summoned Portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+$capturegroup_name+\`, Finished using Summoned Portal\`]`, `false`]}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 
 ~~ }
