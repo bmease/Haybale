@@ -98,7 +98,7 @@ STATE: {Default} ~~ {
 	~~ Initialize HB variables
 	IF: Always
 		DO: DoAll
-				DoExpr {setvar[HBVersion, `2.1.0`]}
+				DoExpr {setvar[HBVersion, `2.2.0`]}
 
 				DoExpr {setpvar[HBDebug, ifthen[testpvar[HBDebug], `@HBDebug`, `$LEVEL_DEBUG`]]}
 				DoExpr {setpvar[HBConfirm, ifthen[testpvar[HBConfirm], `@HBConfirm`, `true`]]}
@@ -4628,7 +4628,7 @@ STATE: {HandleSummonPortal} ~~ {
 	~~ Cast the recall spell
 	IF: All
 			Expr {getvar[capturegroup_name]==false]} ~~ Only the character who issued the command can summon a portal. Didn't capture a name because it was 'say' or 'think'
-		DO: DoAll			
+		DO: DoAll
 				DoExpr {setvar[maxCastAttempts, 3]} ~~ Set the maximum number of cast attempts
 				DoExpr {setvar[currentAttemptCount, 0]} ~~ Set a variable to indicate if the spell was cast successfully
 				SetState {TrycastSummonPortal}
@@ -4672,7 +4672,7 @@ STATE: {LocateSummonedPortal} ~~ {
 				DoExpr {setvar[gatewayList, wobjectfindallbynamerx[Gateway]]}
 				SetState {LocateSummonedPortal}
 
-	IF: All			
+	IF: All
 			Expr {getvar[checkedForGateways]==true}
 			Expr {listcount[getvar[gatewayList]]>0}
 			Expr {setvar[currentGateway,listpop[getvar[gatewayList]]]&&getheading[getvar[currentGateway]]==getvar[castingCharacterHeading]&&setvar[foundGatewayId, abs[wobjectgetid[$currentGateway]]]} ~~ Loop through surrounding gateways and find the one that matches the heading of the character who casted the spell
