@@ -8,6 +8,8 @@
         <control type="button" name="Portal Recall" left="5" top="55" width="100" height="20" text="Portal Recall" setstate="ChatCommand" actionexpr="setvar[command, `#navto portal recall`]" />
         <control type="button" name="Primary" left="5" top="80" width="100" height="20" text="Primary" setstate="ChatCommand" actionexpr="setvar[command, `#navto primary`]" />
         <control type="button" name="Secondary" left="5" top="105" width="100" height="20" text="Secondary" setstate="ChatCommand" actionexpr="setvar[command, `#navto secondary`]" />
+        <control type="button" name="Primary Summon" left="5" top="130" width="100" height="20" text="Primary Summon" setstate="ChatCommand" actionexpr="setvar[command, `#navto primary summon`]" />
+        <control type="button" name="Secondary Summon" left="5" top="155" width="100" height="20" text="Secondary Summon" setstate="ChatCommand" actionexpr="setvar[command, `#navto secondary summon`]" />
 
         <!-- Column 2 -->
         <control type="button" name="Facility Hub" left="115" top="5" width="100" height="20" text="Facility Hub" setstate="ChatCommand" actionexpr="setvar[command, `#navto facility hub`]" />
