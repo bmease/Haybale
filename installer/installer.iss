@@ -50,16 +50,21 @@ Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleHandoffSort.met"; DestDir: "
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagRynthid.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagVR.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagHoshino.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavChair.met"; DestDir: "{app}"; Flags: ignoreversion
 ; Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavHavenBuffs.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavJungleSubway.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavGerainesHosts.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavHoshino.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavPortalspaceActivator.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavRecomp.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavSort.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavSubway.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavTownNetwork.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleNavQuest.met"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -76,7 +81,7 @@ begin
   begin
     InstallPath := ExpandConstant('{app}');
     PathFile := ExpandConstant('{userappdata}\{#MyAppName}\install_path.txt');
-    
+
     SaveStringToFile(PathFile, InstallPath, False);
   end;
 end;
