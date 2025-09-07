@@ -144,7 +144,7 @@ STATE: {Default} ~~ {
 				DoExpr {setpvar[HBAnnounceVRBlue, ifthen[testpvar[HBAnnounceVRBlue], `@HBAnnounceVRBlue`, `true`]]}
 
 				~~ Automatically update GoArrow with coordinates in chat
-				DoExpr {setpvar[HBAutoUpdateGoArrow, ifthen[testpvar[HBAutoUpdateGoArrow], `@HBAutoUpdateGoArrow`, `true`]]}
+				DoExpr {setpvar[HBAutoUpdateGoArrow, ifthen[testpvar[HBAutoUpdateGoArrow], `@HBAutoUpdateGoArrow`, `false`]]}
 
 				~~ Use Rynthid Weapons Portal
 				DoExpr {setpvar[HBUseRynthidWeaponsPortal, ifthen[testpvar[HBUseRynthidWeaponsPortal], `@HBUseRynthidWeaponsPortal`, `true`]]}
@@ -723,7 +723,8 @@ STATE: {Idle} ~~ {
 				DoExpr {$coords=coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]{{0:-7}}}
 				DoExpr {ifthen[getfellowshipisleader[]==true, `chatbox[\`Found Blue at \`+$coords]`, `chatbox[\`/t \`+@HBLeader+\`, Found Blue at \`+$coords]`]}
 
-				ChatExpr {`/goarrow to `+$coords}
+				~~ Update GoArrow Coordinates
+				DoExpr {ifthen[@HBAutoUpdateGoArrow==true, `echo[\`/goarrow to \`+$coords]`, `false`]}
 
 				DoExpr {listadd[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 				DoExpr {clearvar[coords]}
