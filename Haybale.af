@@ -2968,7 +2968,8 @@ STATE: {HandleKilltask} ~~ {
 	~~ Handle `#flag frozen valley`
 	IF: Expr {(frozen valley)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
-				DoExpr {listadd[$MetaCallQueue, `HaybaleNavFrozenValley`]}
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavPortalspaceActivator`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagFrozenValley`]}
 				SetState {CallMeta}
 
