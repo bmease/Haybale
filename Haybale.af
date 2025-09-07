@@ -1521,6 +1521,7 @@ STATE: {HandleNavigation} ~~ {
 				DoExpr {echo[`#navto shoushi: Navigate to Shoushi`, $COLOR_INFO]}
 				DoExpr {echo[`#navto tou-tou: Navigate to Tou-Tou`, $COLOR_INFO]}
 				DoExpr {echo[`#navto yanshi: Navigate to Yanshi`, $COLOR_INFO]}
+				DoExpr {echo[`#navto wai jhou: Navigate to Wai Jhou`, $COLOR_INFO]}
 				DoExpr {echo[`Town Network (Gharu'ndim):`, $COLOR_INFO]}
 				DoExpr {echo[`#navto al-arqas: Navigate to Al-Arqas`, $COLOR_INFO]}
 				DoExpr {echo[`#navto al-jalima: Navigate to Al-Jalima`, $COLOR_INFO]}
@@ -1928,6 +1929,13 @@ STATE: {HandleNavigation} ~~ {
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
 				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Yanshi`]]}
+				SetState {CallMeta}
+
+	~~ Handle `#navto wai jhou`
+	IF: Expr {(wai jhou)#getvar[capturegroup_navdestination]}
+		DO:	DoAll
+				DoExpr {listadd[$MetaCallQueue, `HaybaleNavTownNetwork`]}
+				DoExpr {$HBArguments=dictcreate[`HaybaleNavTownNetwork`, dictcreate[`destination`, `Wai Jhou`]]}
 				SetState {CallMeta}
 
 

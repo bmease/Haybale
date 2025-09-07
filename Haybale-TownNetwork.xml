@@ -45,6 +45,7 @@
         <control type="button" name="Shoushi" left="225" top="230" width="100" height="20" text="Shoushi" setstate="ChatCommand" actionexpr="setvar[command, \#navto shoushi]" />
         <control type="button" name="Tou-Tou" left="225" top="255" width="100" height="20" text="Tou-Tou" setstate="ChatCommand" actionexpr="setvar[command, \#navto tou\-tou]" />
         <control type="button" name="Yanshi" left="225" top="280" width="100" height="20" text="Yanshi" setstate="ChatCommand" actionexpr="setvar[command, \#navto yanshi]" />
+        <control type="button" name="Wai Jhou" left="225" top="305" width="100" height="20" text="Wai Jhou" setstate="ChatCommand" actionexpr="setvar[command, \#navto wai jhou]" />
 
         <control type="button" name="Empyrean" left="225" top="360" width="100" height="20" text="Empyrean >>" setstate="ShowEmpyreanPortalspaceActivator" />
 
