@@ -140,6 +140,9 @@ STATE: {Default} ~~ {
 				~~ Are the followers staying
 				DoExpr {setpvar[HBStay, ifthen[testpvar[HBStay], `@HBStay`, `true`]]}
 
+				~~ Recall spell to get to Haven Lifestone Recall=1636, Lifestone Sending=1635
+				DoExpr {setpvar[HBHavenRecallSpell, ifthen[testpvar[HBHavenRecallSpellId], `@HBHavenRecallSpellId`, `1636`]]}
+
 				~~ Announce VR Blue
 				DoExpr {setpvar[HBAnnounceVRBlue, ifthen[testpvar[HBAnnounceVRBlue], `@HBAnnounceVRBlue`, `true`]]}
 

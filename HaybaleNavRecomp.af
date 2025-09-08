@@ -57,18 +57,18 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[COLOR_INFO, 5]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Recomp v0.1.0 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Haybale Nav Recomp v1.0.0 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	~~ Autopack before doing anything
 	IF: Always
 		DO: Chat {/mt autopack}
 
 	~~ Navigate to Haven if not there
-	IF:	Not CellE 01AC011F
+	IF:	Not BlockE 01AC0000
 		DO:	SetState {ToHaven}
 
 	~~ Navigate to Mei Ling if in Haven
-	IF:	CellE 01AC011F
+	IF:	BlockE 01AC0000
 		DO:	SetState {ToMeiLing}
 
 ~~ }
@@ -83,8 +83,13 @@ STATE: {ToHaven} ~~ {
 		DO: DoAll
 				SetOpt {EnableNav} {True}
 
-	IF: Always
-		DO: EmbedNav ToHaven {ToMeiLing}
+	~~ Navigate to Haven
+	IF: Expr {@HBHavenRecallSpell==1636}
+		DO: EmbedNav ToHavenSending {ToHaven}
+
+	~~ Navigate to Haven
+	IF: Expr {@HBHavenRecallSpell==1635}
+		DO: EmbedNav ToHavenRecall {ToHaven}
 
 	IF:	All
 			NavEmpty
@@ -179,13 +184,17 @@ STATE: {Finished} ~~ {
 
 
 
-NAV: ToHaven once ~~ {
+NAV: ToHavenSending once ~~ {
 	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Sending}
+~~ }
+
+NAV: ToHavenRecall once ~~ {
+	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Recall}
 ~~ }
 
 
 NAV: ToMeiLing once ~~ {
-	pnt -100.975732088089 35.5507949988047 2.08333134651184E-05
+	~~ pnt -100.975732088089 35.5507949988047 2.08333134651184E-05
 	pnt -101.02227900823 35.5558451732 2.08333134651184E-05
 	pnt -100.933522558212 35.6320655206839 2.08333134651184E-05
 	pnt -100.94122227033 35.6399822572867 2.08333134651184E-05

@@ -52,7 +52,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Haven Buffs v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Haybale Nav Haven Buffs v1.0.0 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	IF: Always
 		DO: SetState {NavToDestination}
@@ -71,11 +71,11 @@ STATE: {NavToDestination} ~~ {
 				SetOpt {NavCloseStopRange} {0.0083333}
 
 	~~ Navigate to Haven if not there
-	IF: Not CellE 01AC011F
+	IF: Not BlockE 01AC0000
 		DO:	SetState {ToHaven}
 
 	~~ Navigate to Empowered Tristone if in Haven
-	IF: CellE 01AC011F
+	IF: BlockE 01AC0000
 		DO:	SetState {ToTristone}
 
 ~~ }
@@ -94,14 +94,19 @@ STATE: {ToHaven} ~~ {
 		DO: SetOpt {EnableNav} {True}
 
 	~~ Navigate to Haven
-	IF: Always
-		DO: EmbedNav ToHaven {ToHaven}
+	IF: Expr {@HBHavenRecallSpell==1636}
+		DO: EmbedNav ToHavenSending {ToHaven}
+
+	~~ Navigate to Haven
+	IF: Expr {@HBHavenRecallSpell==1635}
+		DO: EmbedNav ToHavenRecall {ToHaven}
 
 	~~ Finished navigating
 	IF:	All
 			NavEmpty
-			CellE 01AC011F
+			BlockE 01AC0000
 		DO: SetState {ToTristone}
+
 ~~ }
 
 
@@ -229,8 +234,12 @@ STATE: {Finished} ~~ {
 
 
 
-NAV: ToHaven once ~~ {
+NAV: ToHavenSending once ~~ {
 	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Sending}
+~~ }
+
+NAV: ToHavenRecall once ~~ {
+	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Recall}
 ~~ }
 
 NAV: ToAurlanna once ~~ {

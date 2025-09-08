@@ -52,7 +52,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[metaname, `HaybaleNavPortalspaceActivator`]}
 
 	IF:	Always
-		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Che Nav Empyrean Portalspace Activator v0.0.1 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
+		DO:	DoExpr {ifthen[$LEVEL_DEBUG>=@HBDebug, `echo[\`[DEBUG] Haybale Nav Empyrean Portalspace Activator v1.0.0 by Che de Pa of Sundering\`, $COLOR_DEBUG]`, `false`]}
 
 	IF: Always
 		DO: SetState {ParseArguments}
@@ -153,13 +153,18 @@ STATE: {ToHaven} ~~ {
 		DO: SetOpt {EnableNav} {True}
 
 	~~ Navigate to Haven
-	IF: Always
-		DO: EmbedNav ToHaven {ToHaven}
+	IF: Expr {@HBHavenRecallSpell==1636}
+		DO: EmbedNav ToHavenSending {ToHaven}
+
+	~~ Navigate to Haven
+	IF: Expr {@HBHavenRecallSpell==1635}
+		DO: EmbedNav ToHavenRecall {ToHaven}
+
 
 	~~ Finished navigating
 	IF:	All
 			NavEmpty
-			CellE 01AC011F
+			BlockE 01AC0000
 		DO: SetState {ToEmpyreanPortalspaceActivator}
 ~~ }
 
@@ -254,9 +259,14 @@ STATE: {Finished} ~~ {
 
 
 
-NAV: ToHaven once ~~ {
+NAV: ToHavenSending once ~~ {
 	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Sending}
 ~~ }
+
+NAV: ToHavenRecall once ~~ {
+	rcl -100.950540002187 35.6048201084137 2.08333134651184E-05 {Lifestone Recall}
+~~ }
+
 
 NAV: ToEmpyreanPortalspaceActivator once ~~ {
 	~~ pnt -100.975732088089 35.5507949988047 2.08333134651184E-05
