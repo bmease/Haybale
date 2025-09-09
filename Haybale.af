@@ -98,7 +98,7 @@ STATE: {Default} ~~ {
 	~~ Initialize HB variables
 	IF: Always
 		DO: DoAll
-				DoExpr {setvar[HBVersion, `2.2.0`]}
+				DoExpr {setvar[HBVersion, `2.2.1`]}
 
 				DoExpr {setpvar[HBDebug, ifthen[testpvar[HBDebug], `@HBDebug`, `$LEVEL_DEBUG`]]}
 				DoExpr {setpvar[HBConfirm, ifthen[testpvar[HBConfirm], `@HBConfirm`, `true`]]}
