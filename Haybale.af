@@ -1469,6 +1469,7 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(help)#getvar[capturegroup_navdestination]}
 		DO: DoAll
 				DoExpr {echo[`#navto aerlinthe: Navigate to Aerlinthe (requires spell)`, $COLOR_INFO]}
+				DoExpr {echo[`#navto allegiance hometown: Navigate to Allegiance Hometown`, $COLOR_INFO]}
 				DoExpr {echo[`#navto aphus lassel: Navigate to Aphus Lassel (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto asherons castle: Navigate to Asheron's Castle`, $COLOR_INFO]}
 				DoExpr {echo[`#navto bur: Navigate to Bur (requires spell)`, $COLOR_INFO]}
@@ -1480,11 +1481,16 @@ STATE: {HandleNavigation} ~~ {
 				DoExpr {echo[`#navto facility hub: Navigate to Facility Hub (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto haven buffs: Navigate to Haven and use all buffing items`, $COLOR_INFO]}
 				DoExpr {echo[`#navto hoshino: Navigate to Hoshino tent (requires flagging)`, $COLOR_INFO]}
+				DoExpr {echo[`#navto house: Navigate to House`, $COLOR_INFO]}
+				DoExpr {echo[`#navto house mansion_recall: Navigate to Allegiance Mansion`, $COLOR_INFO]}
 				DoExpr {echo[`#navto gear knight: Navigate to Gear Knights (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto glenden wood: Navigate to Glenden Wood (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto graveyard: Navigate to Graveyard (requires spell)`, $COLOR_INFO]}
+				DoExpr {echo[`#navto marketplace: Navigate to Marketplace`, $COLOR_INFO]}
 				DoExpr {echo[`#navto mount lethe: Navigate to Mount Lethe (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto neftet: Navigate to Neftet (requires spell)`, $COLOR_INFO]}
+				DoExpr {echo[`#navto pkarena: Navigate to Player Killer Arena`, $COLOR_INFO]}
+				DoExpr {echo[`#navto pklarena: Navigate to Player Killer Lite Arena`, $COLOR_INFO]}
 				DoExpr {echo[`#navto singularity caul: Navigate to Singularity Caul (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto rynthid: Navigate to Rynthid (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto viridian rise: Navigate to Viridian Rise (requires spell)`, $COLOR_INFO]}
@@ -2330,6 +2336,44 @@ STATE: {HandleNavigation} ~~ {
 				DoExpr {listadd[$MetaCallQueue, `HaybaleNavJungleSubway`]}
 				DoExpr {$HBArguments=dictcreate[`HaybaleNavJungleSubway`, dictcreate[`destination`, `Frozen Valley Camp`]]}
 				SetState {CallMeta}
+
+	~~ Command Recalls
+
+	~~ Handle `#navto allegiance hometown`
+	IF: Expr {(allegiance hometown)#getvar[capturegroup_navdestination]}
+		DO: DoAll
+				DoExpr {$HBRecallCommand=`allegiance hometown`}
+				SetState {HandleCommandRecall}
+
+	~~ Handle `#navto house recall`
+	IF: Expr {(house recall)#getvar[capturegroup_navdestination]}
+		DO: DoAll
+				DoExpr {$HBRecallCommand=`house recall`}
+				SetState {HandleCommandRecall}
+
+	~~ Handle `#navto house mansion_recall`
+	IF: Expr {(house mansion_recall)#getvar[capturegroup_navdestination]}
+		DO: DoAll
+				DoExpr {$HBRecallCommand=`house mansion_recall`}
+				SetState {HandleCommandRecall}
+
+	~~ Handle `#navto marketplace`
+	IF: Expr {(marketplace)#getvar[capturegroup_navdestination]}
+		DO: DoAll
+				DoExpr {$HBRecallCommand=`marketplace`}
+				SetState {HandleCommandRecall}
+
+	~~ Handle `#navto pkarena`
+	IF: Expr {(pkarena)#getvar[capturegroup_navdestination]}
+		DO: DoAll
+				DoExpr {$HBRecallCommand=`pkarena`}
+				SetState {HandleCommandRecall}
+
+	~~ Handle `#navto pklarena`
+	IF: Expr {(pklarena)#getvar[capturegroup_navdestination]}
+		DO: DoAll
+				DoExpr {$HBRecallCommand=`pklarena`}
+				SetState {HandleCommandRecall}
 
 
 	~~ Handle no match for navdestination
@@ -4608,6 +4652,50 @@ STATE: {HandleRecall} ~~ {
 				SetState {LeaderCheck}
 
 ~~}
+
+
+STATE: {HandleCommandRecall} ~~{
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Disable all options
+	IF: Expr {testvar[OptionsSet]==false}
+		DO: CallState {DisableOptions} {HandleCommandRecall}
+
+	~~ Close recalls view
+	IF: Expr {uiviewvisible[Recalls]}
+		DO: DoAll
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto >>`]}
+				DestroyView {Recalls}
+
+	~~ Warn if unable to recall
+	IF: All
+			Expr {isportaling[]==false}
+			Any
+				ChatMatch {Only Player Killer characters may use this command}  ~~ FIXME: Not matching this text?
+				ChatMatch {Only Player Killer Lite characters may use this command}  ~~ FIXME: Not matching this text?
+				SecsInStateGE 20
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to recall!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
+				SetState {LeaderCheck}
+
+	~~ Issue the recall command
+	IF: Expr {isportaling[]==false}
+		DO: ChatExpr {`/`+$HBRecallCommand}
+
+	~~ Finished recalling; go to LeaderCheck
+	IF: Expr {isportaling[]==true}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
+				SetState {LeaderCheck}
+
+~~ }
+
 
 STATE: {HandleSummonPortal} ~~ {
 	IF:	ChatMatch {![Rr]eset}

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<view width="441" height="181" title="Meta - Recalls">
+<view width="441" height="210" title="Meta - Recalls">
     <control type="layout">
 
         <!-- Column 1 -->
@@ -10,6 +10,8 @@
         <control type="button" name="Secondary" left="5" top="105" width="100" height="20" text="Secondary" setstate="ChatCommand" actionexpr="setvar[command, `#navto secondary`]" />
         <control type="button" name="Primary Summon" left="5" top="130" width="100" height="20" text="Primary Summon" setstate="ChatCommand" actionexpr="setvar[command, `#navto primary summon`]" />
         <control type="button" name="Secondary Summon" left="5" top="155" width="100" height="20" text="Secondary Summon" setstate="ChatCommand" actionexpr="setvar[command, `#navto secondary summon`]" />
+        j
+        <control type="button" name="Allegiance Hometown" left="5" top="185" width="100" height="20" text="Hometown" setstate="ChatCommand" actionexpr="setvar[command, `#navto allegiance hometown`]" />
 
         <!-- Column 2 -->
         <control type="button" name="Facility Hub" left="115" top="5" width="100" height="20" text="Facility Hub" setstate="ChatCommand" actionexpr="setvar[command, `#navto facility hub`]" />
@@ -18,6 +20,8 @@
         <control type="button" name="Ulgrim's" left="115" top="80" width="100" height="20" text="Ulgrim's" setstate="ChatCommand" actionexpr="setvar[command, `#navto ulgrims`]" />
         <control type="button" name="Candeth" left="115" top="105" width="100" height="20" text="Candeth" setstate="ChatCommand" actionexpr="setvar[command, `#navto candeth`]" />
 
+        <control type="button" name="Allegiance Mansion" left="115" top="185" width="100" height="20" text="Mansion" setstate="ChatCommand" actionexpr="setvar[command, `#navto house mansion_recall`]" />
+
         <!-- Column 3 -->
         <control type="button" name="Aerlinthe" left="225" top="5" width="100" height="20" text="Aerlinthe" setstate="ChatCommand" actionexpr="setvar[command, `#navto aerlinthe`]" />
         <control type="button" name="Aphus Lassel" left="225" top="30" width="100" height="20" text="Aphus Lassel" setstate="ChatCommand" actionexpr="setvar[command, `#navto aphus lassel`]" />
@@ -25,6 +29,8 @@
         <control type="button" name="Mount Lethe" left="225" top="80" width="100" height="20" text="Mount Lethe" setstate="ChatCommand" actionexpr="setvar[command, `#navto mount lethe`]" />
         <control type="button" name="Sanctuary" left="225" top="105" width="100" height="20" text="Sanctuary" setstate="ChatCommand" actionexpr="setvar[command, `#navto sanctuary`]" />
         <control type="button" name="Singularity Caul" left="225" top="130" width="100" height="20" text="Singularity Caul" setstate="ChatCommand" actionexpr="setvar[command, `#navto singularity caul`]" />
+
+        <control type="button" name="House" left="225" top="185" width="100" height="20" text="House" setstate="ChatCommand" actionexpr="setvar[command, `#navto house`]" />
 
         <!-- Column 4 -->
         <control type="button" name="Gear Knight" left="335" top="5" width="100" height="20" text="Gear Knight" setstate="ChatCommand" actionexpr="setvar[command, `#navto gear knight`]" />
@@ -35,6 +41,8 @@
 
         <control type="button" name="Viridian Rise" left="335" top="130" width="100" height="20" text="Viridian Rise" setstate="ChatCommand" actionexpr="setvar[command, `#navto viridian rise`]" />
         <control type="button" name="Viridian Rise Tree" left="335" top="155" width="100" height="20" text="Viridian Rise Tree" setstate="ChatCommand" actionexpr="setvar[command, `#navto viridian rise tree`]" />
+
+        <control type="button" name="Marketplace" left="335" top="185" width="100" height="20" text="Marketplace" setstate="ChatCommand" actionexpr="setvar[command, `#navto marketplace`]" />
 
     </control>
 </view>
