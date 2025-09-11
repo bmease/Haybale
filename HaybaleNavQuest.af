@@ -122,6 +122,7 @@ STATE: {Dispatch} ~~ {
 				DoExpr {dictadditem[$DESTINATION_STATE, `first sister`, `InitFirstSister`]}
 				DoExpr {dictadditem[$DESTINATION_STATE, `mhoire castle`, `InitMhoireCastle`]}
 				DoExpr {dictadditem[$DESTINATION_STATE, `nanjou stockade`, `InitNanjouStockade`]}
+				DoExpr {dictadditem[$DESTINATION_STATE, `lost lore`, `InitLostLore`]}
 
 	~~ Warn if no state is found for destination
 	IF: Expr {dicthaskey[$DESTINATION_STATE, $destination]==false}
@@ -374,7 +375,7 @@ STATE: {InitFirstSister} ~~ {
 	IF: BlockE 87630000
 		DO: SetState {ToKaltus}
 
-	~~ Navigate to Sanctuary
+	~~ Navigate to Neftet
 	IF: Always
 		DO: DoAll
 				DoExpr {$HBRecallSpell=5541} ~~ Lost City of Neftet Recall
@@ -418,6 +419,25 @@ STATE: {InitNanjouStockade} ~~ {
 				DoExpr {$HBReturnMeta=$metaname}
 				DoExpr {$QuestMetaName=`HaybaleNavPortalspaceActivator`}
 				SetState {CallMeta}
+
+~~ }
+
+
+STATE: {InitLostLore} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Finished}
+
+	~~ If in Sanctuary navigate to the Lost Ruins
+	IF: BlockE F4180000
+		DO: SetState {ToLostRuins}
+
+
+	~~ Navigate to Sanctuary
+	IF: Always
+		DO: DoAll
+				DoExpr {$HBRecallSpell=2023} ~~ Sanctuary Recall
+				CallState {HandleRecall} {ToLostRuins}
 
 ~~ }
 
@@ -702,6 +722,24 @@ STATE: {ToShorikan} ~~ {
 		DO: DoAll
 				DoExpr {$item=`Shorikan`}
 				CallState {UseItem} {Finished}
+
+~~ }
+
+
+STATE: {ToLostRuins} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Finished}
+
+	~~ Navigate to LostRuins
+	IF: Always
+		DO: DoAll
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Lost Ruins\`, $COLOR_INFO]`, `false`]}
+				EmbedNav ToLostRuins {ToLostRuins}
+
+	~~ Finish when there
+	IF: NavEmpty
+		DO: SetState {Finished}
 
 ~~ }
 
@@ -1344,4 +1382,35 @@ NAV: ToShorikan once ~~ {
 	pnt -41.7094504992167 78.0965596318245 0.305001068115234
 	pnt -41.709450117747 78.0811796943347 0.31002082824707
 	pnt -41.6863938331604 78.0824452380339 0.31002082824707
+~~ }
+
+NAV: ToLostRuins once ~~ {
+	pnt 93.4037500063578 -82.5470833301544 0.707520802815755
+	pnt 93.4017905394236 -82.4913334528605 0.707520802815755
+	pnt 93.4001797517141 -82.4404058456421 0.707520802815755
+	pnt 93.3998922189077 -82.4080542882284 0.702733612060547
+	pnt 93.4019628365835 -82.3543375968933 0.669285519917806
+	pnt 93.4015881061554 -82.3231335639954 0.666687456766764
+	pnt 93.4683078130086 -82.3262565294902 0.666687456766764
+	pnt 93.5596640904744 -82.3554817199707 0.66627082824707
+	pnt 93.6406675020854 -82.3941319147746 0.66627082824707
+	pnt 93.7189939498901 -82.4376184463501 0.664812469482422
+	pnt 93.7990320841471 -82.4746180216471 0.662937482198079
+	pnt 93.8702440897624 -82.4996447563171 0.664812469482422
+	pnt 93.9248252868652 -82.5093830744425 0.66627082824707
+	pnt 93.9499128977458 -82.5104900042216 0.66627082824707
+	pau 93.4037500063578 -82.5470833301544 0.707520802815755 1000
+	cht 93.4037500063578 -82.5470833301544 0.707520802815755 {/mt face 90}
+	pau 93.4037500063578 -82.5470833301544 0.707520802815755 1000
+	cht 93.4037500063578 -82.5470833301544 0.707520802815755 {/mt jumpw 1}
+	pnt 94.1593897183736 -82.5111060142517 0.54127082824707
+	pnt 94.2972845713298 -82.5315184593201 0.54127082824707
+	pnt 94.3906114578247 -82.5384253978729 0.537937482198079
+	pnt 94.4871728897095 -82.5455717881521 0.537937482198079
+	pnt 94.6242764790853 -82.5566790421804 0.54127082824707
+	pnt 94.6940759023031 -82.5587607224782 0.541687456766764
+	pnt 94.7692728678385 -82.5645817597707 0.541687456766764
+	pnt 94.8177949905396 -82.5628249486287 0.541687456766764
+	pnt 94.8236267089844 -82.5615550994873 0.541687456766764
+	ptl 93.4037500063578 -82.5470833301544 0.707520802815755 94.8316208521525 -82.5577262560526 0.540792405605316 14 {Lost Ruins}
 ~~ }

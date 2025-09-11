@@ -27,7 +27,7 @@
         <control type="button" name="LiberationOfUziz" left="115" top="230" width="100" height="20" text="Liberation of Uziz" setstate="ChatCommand" actionexpr="setvar[command, \#quest liberation of uziz]" />
 
         <!-- Column 3 -->
-        <!-- <control type="button" name="LostLore" left="225" top="5" width="100" height="20" text="Lost Lore" setstate="ChatCommand" actionexpr="setvar[command, \#quest lost lore]" /> -->
+        <control type="button" name="LostLore" left="225" top="5" width="100" height="20" text="Lost Lore" setstate="ChatCommand" actionexpr="setvar[command, \#quest lost lore]" />
         <!-- <control type="button" name="LugianAssault" left="225" top="30" width="100" height="20" text="Lugian Assault" setstate="ChatCommand" actionexpr="setvar[command, \#quest lugian assault]" /> -->
         <control type="button" name="MhoireCastle" left="225" top="55" width="100" height="20" text="Mhoire Castle" setstate="ChatCommand" actionexpr="setvar[command, \#quest mhoire castle]" />
         <control type="button" name="NanjouStockade" left="225" top="80" width="100" height="20" text="Nanjou Stockade" setstate="ChatCommand" actionexpr="setvar[command, \#quest nanjou stockade]" />
