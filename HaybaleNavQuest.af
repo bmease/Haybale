@@ -123,6 +123,7 @@ STATE: {Dispatch} ~~ {
 				DoExpr {dictadditem[$DESTINATION_STATE, `mhoire castle`, `InitMhoireCastle`]}
 				DoExpr {dictadditem[$DESTINATION_STATE, `nanjou stockade`, `InitNanjouStockade`]}
 				DoExpr {dictadditem[$DESTINATION_STATE, `lost lore`, `InitLostLore`]}
+				DoExpr {dictadditem[$DESTINATION_STATE, `geraines study`, `InitGerainesStudy`]}
 
 	~~ Warn if no state is found for destination
 	IF: Expr {dicthaskey[$DESTINATION_STATE, $destination]==false}
@@ -442,6 +443,27 @@ STATE: {InitLostLore} ~~ {
 ~~ }
 
 
+STATE: {InitGerainesStudy} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Finished}
+
+	~~ If in Frozey Valley start running to Geraine's Study
+	IF: BlockE 7AE80000
+		DO: SetState {ToGerainesStudy}
+
+	~~ Navigate to Frozen Valley
+	IF: Always
+		DO: DoAll
+				DoExpr {dictadditem[$HBArguments, `HaybaleNavPortalspaceActivator`, dictcreate[`destination`, `FrozenValley`]]}
+				DoExpr {$QuestOriginalHBReturnMeta=$HBReturnMeta}
+				DoExpr {$HBReturnMeta=$metaname}
+				DoExpr {$QuestMetaName=`HaybaleNavPortalspaceActivator`}
+				SetState {CallMeta}
+
+~~ }
+
+
 STATE: {ToFrigidGrotto} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
@@ -731,11 +753,29 @@ STATE: {ToLostRuins} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Finished}
 
-	~~ Navigate to LostRuins
+	~~ Navigate to Lost Ruins
 	IF: Always
 		DO: DoAll
 				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Lost Ruins\`, $COLOR_INFO]`, `false`]}
 				EmbedNav ToLostRuins {ToLostRuins}
+
+	~~ Finish when there
+	IF: NavEmpty
+		DO: SetState {Finished}
+
+~~ }
+
+
+STATE: {ToGerainesStudy} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Finished}
+
+	~~ Navigate to Geraine's Study
+	IF: Always
+		DO: DoAll
+				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Geraine's Study\`, $COLOR_INFO]`, `false`]}
+				EmbedNav ToGerainesStudy {ToGerainesStudy}
 
 	~~ Finish when there
 	IF: NavEmpty
@@ -1384,6 +1424,7 @@ NAV: ToShorikan once ~~ {
 	pnt -41.6863938331604 78.0824452380339 0.31002082824707
 ~~ }
 
+
 NAV: ToLostRuins once ~~ {
 	pnt 93.4037500063578 -82.5470833301544 0.707520802815755
 	pnt 93.4017905394236 -82.4913334528605 0.707520802815755
@@ -1413,4 +1454,38 @@ NAV: ToLostRuins once ~~ {
 	pnt 94.8177949905396 -82.5628249486287 0.541687456766764
 	pnt 94.8236267089844 -82.5615550994873 0.541687456766764
 	ptl 93.4037500063578 -82.5470833301544 0.707520802815755 94.8316208521525 -82.5577262560526 0.540792405605316 14 {Lost Ruins}
+~~ }
+
+
+NAV: ToGerainesStudy once ~~ {
+	pnt -4.3249230782191 83.7489207903544 0.500020853678385
+	pnt -4.35965181986491 83.730343580246 0.500020853678385
+	pnt -4.43010953267415 83.7118955731392 0.498502985636393
+	pnt -4.66934560139974 83.5750422159831 0.47294807434082
+	pnt -4.81823886235555 83.4991469065348 0.459660816192627
+	pnt -4.91693614323934 83.4224627176921 0.448714542388916
+	pnt -5.04862314860026 83.3109159469604 0.435058784484863
+	pnt -5.13573571244876 83.2457101186117 0.43895263671875
+	pnt -5.23203252156576 83.2113722483317 0.447026220957438
+	pnt -5.34820423126221 83.1833213170369 0.466388193766276
+	pnt -5.48579117457072 83.1588479042053 0.488582070668538
+	pnt -5.6045402208964 83.1439506848653 0.510623200734456
+	pnt -5.71188275019328 83.1117378870646 0.539755312601725
+	pnt -5.83149837652842 83.0569016297658 0.584761492411296
+	pnt -5.96405162811279 83.0032553990682 0.630172983805339
+	pnt -6.06732610066732 82.9444881916046 0.668984095255534
+	pnt -6.1951847076416 82.9257622718811 0.676786549886068
+	pnt -6.31254730224609 82.9376153548559 0.670815722147624
+	pnt -6.38136285146078 82.9425882101059 0.666687456766764
+	pnt -6.40726985931397 82.9487902561823 0.666687456766764
+	pnt -6.40083433787028 82.9180962880452 0.666687456766764
+	pnt -6.40129852294922 82.9003620545069 0.659311993916829
+	pnt -6.39877452850342 82.8644818862279 0.640992609659831
+	pnt -6.39923934936523 82.7904591639837 0.596578979492188
+	pnt -6.39282162984212 82.7672233581543 0.595020802815755
+	pnt -6.37030000686646 82.7653176466624 0.595020802815755
+	pnt -6.32389392852783 82.7661038080851 0.595020802815755
+	pnt -6.31590166091919 82.7806794961294 0.595020802815755
+	pnt -6.31674064000448 82.7964177966118 0.595020802815755
+	ptl -6.31674064000448 82.7964177966118 0.595020802815755 -6.32206665674845 82.8085689981778 0.594737470149994 14 {Geraine's Study}
 ~~ }
