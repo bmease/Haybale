@@ -5,7 +5,7 @@
         <!-- Column 1 -->
         <!-- <control type="button" name="Bloodstone" left="5" top="5" width="100" height="20" text="Bloodstone" setstate="ChatCommand" actionexpr="setvar[command, \#quest bloodstone investigation]" /> -->
         <control type="button" name="CountPhainor" left="5" top="30" width="100" height="20" text="Count Phainor's" setstate="ChatCommand" actionexpr="setvar[command, \#quest count phainors amulet]" />
-        <!-- <control type="button" name="Deewains" left="5" top="55" width="100" height="20" text="Deewains" setstate="ChatCommand" actionexpr="setvar[command, \#quest deewains]" /> -->
+        <control type="button" name="Deewains" left="5" top="55" width="100" height="20" text="Deewains" setstate="ChatCommand" actionexpr="setvar[command, \#quest deewains]" />
         <!-- <control type="button" name="Curator" left="5" top="80" width="100" height="20" text="Curator" setstate="ChatCommand" actionexpr="setvar[command, \#quest curator]" /> -->
         <control type="button" name="DreamReaver" left="5" top="105" width="100" height="20" text="Dream Reaver" setstate="ChatCommand" actionexpr="setvar[command, \#quest dream reaver]" />
         <!-- <control type="button" name="EmpyreanRescue" left="5" top="130" width="100" height="20" text="Empyrean Rescue" setstate="ChatCommand" actionexpr="setvar[command, \#quest empyrean rescue]" /> -->
