@@ -45,6 +45,18 @@ Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Massilor's Crypt.nav"; DestDir: 
 Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Path of Rage.nav"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HB-South Gate.nav"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Western Power Forge.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E030120.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E030404.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E03046A.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E03044E.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E030533.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E0304DD.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E0307C6.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E0304DC.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E03035C.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E030552.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E030632.nav"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E03087B.nav"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\Haybale.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleHandoffSort.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion

@@ -242,6 +242,18 @@ STATE: {Default} ~~ {
 				DoExpr {dictadditem[$HBRoutes, `5652038A`, `HB-Halt Dericost Mnemosynes`]}
 				DoExpr {dictadditem[$HBRoutes, `56520245`, `HB-Halt Dericost`]}
 				DoExpr {dictadditem[$HBRoutes, `79E9033A`, `HB-Bloodstone Investigation 3`]}
+				DoExpr {dictadditem[$HBRoutes, `7E030120`, `HB-Deewains 7E030120`]}
+				DoExpr {dictadditem[$HBRoutes, `7E030404`, `HB-Deewains 7E030404`]}
+				DoExpr {dictadditem[$HBRoutes, `7E03046A`, `HB-Deewains 7E03046A`]}
+				DoExpr {dictadditem[$HBRoutes, `7E03044E`, `HB-Deewains 7E03044E`]}
+				DoExpr {dictadditem[$HBRoutes, `7E030533`, `HB-Deewains 7E030533`]}
+				DoExpr {dictadditem[$HBRoutes, `7E0304DD`, `HB-Deewains 7E0304DD`]}
+				DoExpr {dictadditem[$HBRoutes, `7E0307C6`, `HB-Deewains 7E0307C6`]}
+				DoExpr {dictadditem[$HBRoutes, `7E0304DC`, `HB-Deewains 7E0304DC`]}
+				DoExpr {dictadditem[$HBRoutes, `7E03035C`, `HB-Deewains 7E03035C`]}
+				DoExpr {dictadditem[$HBRoutes, `7E030552`, `HB-Deewains 7E030552`]}
+				DoExpr {dictadditem[$HBRoutes, `7E030632`, `HB-Deewains 7E030632`]}
+				DoExpr {dictadditem[$HBRoutes, `7E03087B`, `HB-Deewains 7E03087B`]}
 
 	~~ Setup Auto Giving
 	IF: Always
