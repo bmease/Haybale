@@ -1037,7 +1037,10 @@ STATE: {ToDarkCavern} ~~ {
 
 	~~ Finish when there
 	IF: NavEmpty
-		DO: SetState {Finished}
+		DO: DoAll
+				DoExpr {setpvar[HBStay, true]}  ~~ Disable following so we don't get stuck in LeaderCheck upon entering the dungeon
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Disabling following!\`, $COLOR_WARN]`, `false`]}
+				SetState {Finished}
 
 ~~ }
 
