@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<view width="535" height="40" title="GiveSelect">
+<view width="560" height="35" title="GiveSelect">
     <control type="layout">
 
-        <control type="button" name="Give" left="5" top="5" width="35" height="25" text="Give" setstate="SetGiveItem" />
+        <control type="button" name="Give" left="5" top="5" width="60" height="25" text="Give One" setstate="ToggleGiveAll" />
 
-        <control type="button" name="Item" left="40" top="5" width="200" height="25" text="" setstate="SetGiveItem" />
+        <control type="button" name="Item" left="65" top="5" width="200" height="25" text="" setstate="SetGiveItem" />
 
-        <control type="button" name="To" left="240" top="5" width="35" height="25" text="To" setstate="SetGiveRecipient" />
+        <control type="button" name="To" left="265" top="5" width="35" height="25" text="To" setstate="SetGiveRecipient" />
 
-        <control type="button" name="Recipient" left="275" top="5" width="200" height="25" text="" setstate="SetGiveRecipient" />
+        <control type="button" name="Recipient" left="300" top="5" width="200" height="25" text="" setstate="SetGiveRecipient" />
 
-        <control type="button" name="Complete" left="480" top="5" width="50" height="25" text="Go" setstate="GiveSelectComplete" />
+        <control type="button" name="Complete" left="505" top="5" width="50" height="25" text="Go" setstate="GiveSelectComplete" />
 
     </control>
 </view>

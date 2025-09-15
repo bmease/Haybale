@@ -1148,6 +1148,15 @@ STATE: {Idle} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {AutoGive}
 
+	~~ Handle Giving multiple items
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#giveall (?<itemtext>.+?)(?: to (?<giveto>.*))?\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {HandleGiveAll}
+
 	~~ Handle Giving items
 	IF: All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#give (?<itemtext>.+?)(?: to (?<giveto>.*))?\"$} {}
@@ -3439,6 +3448,41 @@ STATE: {HandleGive} ~~ {
 ~~ }
 
 
+STATE: {HandleGiveAll} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`capturegroup_itemtext`, `capturegroup_giveto`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	IF: Expr {(help)#getvar[capturegroup_itemtext]}
+		DO: DoAll
+				DoExpr {echo[`#giveall <item name> to <person name>: All characters give all the items in inventory to the person.`, $COLOR_INFO]}
+				DoExpr {echo[`#giveall <item name>: All characters give all the items in inventory to the person who issued the command.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_itemtext`, `capturegroup_giveto`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ If the optional match for giveto is empty set it to the person who issued the command
+	IF: Expr {testvar[capturegroup_giveto]==false}
+		DO: DoExpr {$capturegroup_giveto=ifthen[$capturegroup_name, `$capturegroup_name`, `$CHARACTER_NAME`]}
+
+	~~ If giveto is your character you don't need to do anything
+	IF: Expr {$capturegroup_giveto==$CHARACTER_NAME}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_itemtext`, `capturegroup_giveto`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Set the $item and $name and clear variables
+	IF: Always
+		DO: DoAll
+				DoExpr {$item=$capturegroup_itemtext}
+				DoExpr {$name=$capturegroup_giveto}
+				DoExpr {listmap[listcreate[`capturegroup_itemtext`, `capturegroup_giveto`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {GiveAll}
+
+~~ }
+
+
 STATE: {AutoGive} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
@@ -3534,6 +3578,54 @@ STATE: {Give} ~~ {
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I can't find \`+$name]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
+
+~~ }
+
+
+STATE: {GiveAll} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Disable all options
+	IF: Expr {testvar[OptionsSet]==false}
+		DO: CallState {DisableOptions} {GiveAll}
+
+	~~ If set equip item before giving
+	IF: Expr {@HBEquipOnTurnin!=false}
+		DO: DoAll
+				DoExpr {actiontryuseitem[@HBEquipOnTurnin]}
+
+	~~ Warn if no items to give
+	IF: All
+			Expr {wobjectfindininventorybynamerx[`^`+$item+`$`]==false}
+			Not Expr {$giving==true}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
+				CallState {EnableOptions} {Idle}
+
+	~~ Warn if unable to give
+	IF: ChatMatch {doesn't know what to do with that.$}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to give \`+$item]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
+				CallState {EnableOptions} {Idle}
+
+	~~ Finish if given a success message from Utility Belt
+	IF:	ChatMatch {^You think, "ItemGiver finished:}
+		DO:	DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
+				CallState {EnableOptions} {Idle}
+
+	~~ Give all items to name
+	IF: Always
+		DO: DoAll
+				DoExpr {setvar[giving, true]}
+				ChatExpr {`/ub give `+$item+` to `+$name}
 
 ~~ }
 
@@ -5420,6 +5512,8 @@ STATE: {GiveSelect} ~~ {
 				CreateView {GiveSelect} {:Haybale-GiveSelect.xml}
 				DoExpr {$item=wobjectgetname[wobjectgetselection[]]}
 				DoExpr {uisetlabel[uigetcontrol[GiveSelect, Item], $item]}
+				DoExpr {setvar[giveall, false]}
+				DoExpr {uisetlabel[uigetcontrol[GiveSelect, Give], ifthen[$giveall, `Give All`, `Give One`]]}
 				SetState {Idle}
 
 ~~ }
@@ -5434,6 +5528,18 @@ STATE: {JumpToSelect} ~~ {
 				DoExpr {$command=`#jump to `+$item}
 				DoExpr {clearvar[item]}
 				SetState {ChatCommand}
+
+~~ }
+
+
+STATE: {ToggleGiveAll} ~~ {
+
+	~~ Toggle the value of $giveall and update the Give Select panel
+	IF: Always
+		DO: DoAll
+				DoExpr {setvar[giveall, ifthen[$giveall, `false`, `true`]]}
+				DoExpr {uisetlabel[uigetcontrol[GiveSelect, Give], ifthen[$giveall, `Give All`, `Give One`]]}
+				SetState {Idle}
 
 ~~ }
 
@@ -5462,19 +5568,23 @@ STATE: {SetGiveRecipient} ~~ {
 
 STATE: {GiveSelectComplete} ~~ {
 
+	~~ Set the give command to be either give or giveall depending on what is selected
+	IF: Always
+		DO: DoExpr {setvar[givecmd, ifthen[$giveall, `giveall `, `give `]]}
+
 	~~ Issue the `#give` command for the selected item only
 	IF: Expr {testvar[recipient]==false}
 		DO: DoAll
-				DoExpr {$command=`#give `+$item}
-				DoExpr {listmap[listcreate[`item`, `recipient`], `clearvar[$1]`]}
+				DoExpr {$command=`#`+$givecmd+$item}
+				DoExpr {listmap[listcreate[`item`, `recipient`, `giveall`, `givecmd`], `clearvar[$1]`]}
 				DestroyView {GiveSelect}
 				SetState {ChatCommand}
 
 	~~ Issue the `#give` command for the selected item and the selected recipient
 	IF: Always
 		DO: DoAll
-				DoExpr {$command=`#give `+$item+` to `+$recipient}
-				DoExpr {listmap[listcreate[`item`, `recipient`], `clearvar[$1]`]}
+				DoExpr {$command=`#`+$givecmd+$item+` to `+$recipient}
+				DoExpr {listmap[listcreate[`item`, `recipient`, `giveall`, `givecmd`], `clearvar[$1]`]}
 				DestroyView {GiveSelect}
 				SetState {ChatCommand}
 
