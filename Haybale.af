@@ -5135,15 +5135,21 @@ STATE: {HandleLockpick} ~~ {
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Request data for the item
+	IF: Always
+		DO: DoExpr {wobjectrequestdata[$item]}
+
 	~~ Warn if the item is already unlocked
-	IF: Expr {wobjectgetboolprop[$item, $BOOL_PROP_LOCKED]==false}
+	IF: All
+			Expr {wobjecthasdata[$item]}
+			Expr {wobjectgetboolprop[$item, $BOOL_PROP_LOCKED]==false}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item is already unlocked!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
 
 	~~ Distpatch to LockpickItem
-	IF: Always
+	IF: Expr {wobjecthasdata[$item]}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {LockpickItem}
