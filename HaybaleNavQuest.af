@@ -960,9 +960,7 @@ STATE: {ToFoundryofIzexi} ~~ {
 				EmbedNav ToFoundryofIzexi {ToFoundryofIzexi}
 
 	~~ Finish when there
-	IF: All
-			NavEmpty
-			ExitPortal
+	IF: NavEmpty
 		DO: SetState {Finished}
 
 ~~ }
