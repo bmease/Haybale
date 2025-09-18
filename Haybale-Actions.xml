@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
-<view width="85" height="230" title="Actions">
+<view width="95" height="210" title="Actions">
     <control type="layout">
 
-        <control type="button" name="Loot" left="5" top="5" width="75" height="15" text="Loot" setstate="ChatCommand" actionexpr="setvar[command, `#loot`]" />
-        <control type="button" name="Give" left="5" top="30" width="75" height="15" text="Give" setstate="ChatCommand" actionexpr="setvar[command, `#give`]" />
-        <control type="button" name="Pickup" left="5" top="55" width="75" height="15" text="Pickup" setstate="ChatCommand" actionexpr="setvar[command, `#pickup`]" />
-        <control type="button" name="Vendor" left="5" top="80" width="75" height="15" text="Vendor"  setstate="ChatCommand" actionexpr="setvar[command, `#action vendor`]" />
+        <control type="button" name="Loot" left="5" top="5" width="85" height="15" text="Loot" setstate="ChatCommand" actionexpr="setvar[command, `#loot`]" />
+        <control type="button" name="Give" left="5" top="25" width="85" height="15" text="Give" setstate="ChatCommand" actionexpr="setvar[command, `#give`]" />
+        <control type="button" name="Vendor" left="5" top="45" width="85" height="15" text="Vendor" setstate="ChatCommand" actionexpr="setvar[command, `#action vendor`]" />
+        <control type="button" name="Route" left="5" top="65" width="85" height="15" text="Route"  setstate="ChatCommand" actionexpr="setvar[command, `#route`]" />
 
-        <!-- <control type="button" name="ShowSelect" left="5" top="105" width="75" height="15" text="Select >>" setstate="ShowSelect" /> -->
-
-        <control type="button" name="Loot" left="5" top="105" width="75" height="15" text="Use Select" setstate="UseSelect" />
-        <control type="button" name="Give" left="5" top="130" width="75" height="15" text="Loot Select" setstate="LootSelect" />
-        <control type="button" name="Pickup" left="5" top="155" width="75" height="15" text="Give Select" setstate="GiveSelect" />
-        <control type="button" name="Count" left="5" top="180" width="75" height="15" text="Pickup Select" setstate="PickupSelect" />
-        <control type="button" name="Count" left="5" top="205" width="75" height="15" text="Count Select" setstate="CountSelect" />
+        <control type="button" name="UseSelect" left="5" top="85" width="85" height="15" text="Use Select" setstate="UseSelect" />
+        <control type="button" name="LootSelect" left="5" top="105" width="85" height="15" text="Loot Select" setstate="LootSelect" />
+        <control type="button" name="GiveSelect" left="5" top="125" width="85" height="15" text="Give Select" setstate="GiveSelect" />
+        <control type="button" name="PickupSelect" left="5" top="145" width="85" height="15" text="Pickup Select" setstate="PickupSelect" />
+        <control type="button" name="LockpickSelect" left="5" top="165" width="85" height="15" text="Lockpick Select" setstate="LockpickSelect" />
+        <control type="button" name="CountSelect" left="5" top="185" width="85" height="15" text="Count Select" setstate="CountSelect" />
 
     </control>
 </view>

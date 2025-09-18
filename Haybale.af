@@ -67,12 +67,16 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[CORPSE, 27]}
 				DoExpr {setvar[NPC, 37]}
 				DoExpr {setvar[FOCI, 38]}
+				DoExpr {setvar[DOOR, 26]}
+				DoExpr {setvar[CONTAINER, 10]}
 
 				DoExpr {setvar[STRING_PROP_NAME, 1]}
 				DoExpr {setvar[STRING_PROP_DESCRIPTION, 16]}
 				DoExpr {setvar[INT_PROP_JUMP_SKILL, 22]}
 				DoExpr {setvar[INT_PROP_RUN_SKILL, 24]}
 				DoExpr {setvar[INT_PROP_ENLIGHTENMENT, 390]}
+				DoExpr {setvar[BOOL_PROP_LOCKED, 3]}
+				DoExpr {setvar[LOCKPICK_SKILL, 23]}
 
 				DoExpr {setvar[COLOR_DEBUG, 17]}
 				DoExpr {setvar[COLOR_INFO, 5]}
@@ -211,6 +215,18 @@ STATE: {Default} ~~ {
 
 				~~ If the character should jump when looting
 				DoExpr {setpvar[HBJumpLoot, ifthen[testpvar[HBJumpLoot], `@HBJumpLoot`, `false`]]}
+
+				~~ If true do not attempt picking locks
+				DoExpr {setpvar[HBLockpickDisable, ifthen[testpvar[HBLockpickDisable], `@HBLockpickDisable`, `false`]]}
+
+				~~ Buffed skill a character needs to lockpick things
+				DoExpr {setpvar[HBLockpickSkill, ifthen[testpvar[HBLockpickSkill], `@HBLockpickSkill`, `450`]]}
+
+				~~ Number of tries before stopping lockpicking
+				DoExpr {setpvar[HBLockpickLimit, ifthen[testpvar[HBLockpickLimit], `@HBLockpickLimit`, `50`]]}
+
+				~~ List of lockpicks in order of preference
+				DoExpr {setpvar[HBLockpicks, ifthen[testpvar[HBLockpicks], `@HBLockpicks`, `listcreate[\`Limitless Lockpick\`, \`Everlasting Lockpick\`, \`Carved Gemstone Lockpick\`, \`Peerless Lockpick\`, \`Superb Lockpick\`, \`Excellent Lockpick\`, \`Good Lockpick\`, \`Reliable Lockpick\`, \`Plain Lockpick\`, \`Crude Lockpick\`, \`Flimsy Lockpick\`]`]]}
 
 				~~ Whether the Actions view is open or closed
 				DoExpr {setpvar[HBViewsActions, ifthen[testpvar[HBViewsActions], `@HBViewsActions`, `false`]]}
@@ -1241,6 +1257,15 @@ STATE: {Idle} ~~ {
 		DO: DoAll
 				ChatExpr {$capturegroup_echotext}
 				SetState {Idle}
+
+	~~ Handle Lockpick
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#lockpick (?<picktext>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {HandleLockpick}
 
 	~~ Handle Version
 	IF: ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#version\"$} {}
@@ -4987,6 +5012,142 @@ STATE: {HandleCount} ~~ {
 ~~ }
 
 
+STATE: {HandleLockpick} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Display help for #lockpick
+	IF: Expr {(help)#getvar[capturegroup_picktext]}
+		DO: DoAll
+				DoExpr {echo[`#lockpick <item name>: Characters with lockpick attempt to pick the item.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ If character doesn't have lockpick skill or is below threshold or is disabled return to Idle
+	IF: Any
+			Expr {@HBLockpickDisable==true}
+			Expr {getcharskill_buffed[$LOCKPICK_SKILL]<@HBLockpickSkill}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Warn if item is not on landscape
+	IF: Expr {listcount[wobjectfindalllandscapebynamerx[$capturegroup_picktext]]==0}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to lockpick not found on landscape!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Set $item to the nearest door with name
+	IF: All
+			Expr {testvar[item]==false}
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$DOOR, $capturegroup_picktext]]==$OBJECT}
+		DO: DoExpr {$item=wobjectfindnearestbynameandobjectclass[$DOOR, $capturegroup_picktext]}
+
+	~~ Set $item to the nearest container with name
+	IF: All
+			Expr {testvar[item]==false}
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$CONTAINER, $capturegroup_picktext]]==$OBJECT}
+		DO: DoExpr {$item=wobjectfindnearestbynameandobjectclass[$CONTAINER, $capturegroup_picktext]}
+
+	~~ Warn if item is not a door or container
+	IF: Expr {testvar[item]==false}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to lockpick is not a door or a container!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Warn if the item is already unlocked
+	IF: Expr {wobjectgetboolprop[$item, $BOOL_PROP_LOCKED]==false}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item is already unlocked!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Distpatch to LockpickItem
+	IF: Always
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {LockpickItem}
+
+~~ }
+
+
+STATE: {LockpickItem} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Find all available lockpicks
+	IF: Always
+		DO: DoAll
+				DoExpr {$allLockpicks=listmap[@HBLockpicks, `wobjectfindininventorybynamerx[$1]`]}
+				DoExpr {$hasLockpicks=listfilter[$allLockpicks, `ifthen[$1==0, \`false\`, \`true\`]`]}
+
+	~~ Warn if out of available lockpicks
+	IF: Expr {listcount[$hasLockpicks]==0}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I am out of lockpicks!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Find best lockpick to use
+	IF: Expr {testvar[lockpick]==false}
+		DO: DoAll
+				DoExpr {$lockpick=listpop[$hasLockpicks, 0]}
+				DoExpr {$count=0}
+
+	~~ Clear $lockpick and reset to find new lockpick if the current one is used up
+	IF: Expr {getobjectinternaltype[$lockpick]==false}
+		DO: DoAll
+				DoExpr {clearvar[lockpick]}
+				SetState {LockpickItem}
+
+	~~ Stop picking if you exceed the lockpicking try limit
+	IF: Expr {$count>=@HBLockpickLimit}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to open in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Stop picking if item is a door and it's open
+	IF: All
+			Expr {wobjectgetobjectclass[$item]==$DOOR}
+			Expr {wobjectgetisdooropen[$item]}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking door in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Stop picking if item's lock property is false
+	IF: Expr {wobjectgetboolprop[$item, $BOOL_PROP_LOCKED]==false}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Stop picking if you have successfully picked the lock
+	IF: ChatMatch {^You have successfully picked the lock}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Repeatedly pick the item
+	IF: Always
+		DO: DoAll
+				DoExpr {actiontryapplyitem[$lockpick, $item]}
+				DoExpr {$count=$count+1}
+				SetState {LockpickItem}
+
+~~ }
+
+
 STATE: {HandleTimers} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
@@ -5452,6 +5613,19 @@ STATE: {PickupSelect} ~~ {
 		DO: DoAll
 				DoExpr {$item=wobjectgetname[wobjectgetselection[]]}
 				DoExpr {$command=`#pickup `+$item}
+				DoExpr {clearvar[item]}
+				SetState {ChatCommand}
+
+~~ }
+
+
+STATE: {LockpickSelect} ~~ {
+
+	~~ Issue the `#lockpick` commmand for the selected item
+	IF: Always
+		DO: DoAll
+				DoExpr {$item=wobjectgetname[wobjectgetselection[]]}
+				DoExpr {$command=`#lockpick `+$item}
 				DoExpr {clearvar[item]}
 				SetState {ChatCommand}
 
