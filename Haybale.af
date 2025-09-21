@@ -4426,13 +4426,16 @@ STATE: {UsePortalNPC} ~~ {
 		DO:	SetState {Idle}
 
 	~~ The NPC does not have data, we need to query for it
-	IF: Expr {wobjecthasdata[wobjectfindnearestbyobjectclass[$NPC]]==false}
+	IF: All
+			Expr {isportaling[]==false}
+			Expr {wobjecthasdata[wobjectfindnearestbyobjectclass[$NPC]]==false}
 		DO: DoAll
 				DoExpr {wobjectrequestdata[wobjectfindnearestbyobjectclass[$NPC]]}
 				SetState {UsePortalNPC}
 
 	~~ No NPC in range with `portal` in description
 	IF: All
+			Expr {isportaling[]==false}
 			Expr {wobjecthasdata[wobjectfindnearestbyobjectclass[$NPC]]==true}
 			Not Expr {istrue[wobjectgetstringprop[wobjectfindnearestbyobjectclass[$NPC], $STRING_PROP_DESCRIPTION]#portal]}
 		DO: DoAll
