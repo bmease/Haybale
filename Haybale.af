@@ -5387,19 +5387,23 @@ STATE: {ReadContracts} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {$HBReset=true}
-				SetState {Finished}
+				DoExpr {clearvar[contractrx]}
+				SetState {Idle}
+
+	IF: Always
+		DO: DoExpr {setvar[contractrx, `(Hunting\: Lost City of Neftet)|(Investigating the Bloodstones)|(Nalicana\'s Test)|(Contract for)`]}
 
 	~~ If Remaining contracts try using them
-	IF: Expr {getitemcountininventorybynamerx[`(Hunting\: Lost City of Neftet)|(Contract for)`]>0}
+	IF: Expr {getitemcountininventorybynamerx[$contractrx]>0}
 		DO: DoAll
-				DoExpr {actiontryuseitem[wobjectfindininventorybynamerx[`(Hunting\: Lost City of Neftet)|(Contract for)`]]}
+				DoExpr {actiontryuseitem[wobjectfindininventorybynamerx[$contractrx]]}
 				SetState {ReadContracts}
 
 	~~ No contracts left return to Idle
-	IF: Expr {getitemcountininventorybynamerx[`(Hunting\: Lost City of Neftet)|(Contract for)`]==0}
+	IF: Expr {getitemcountininventorybynamerx[$contractrx]==0}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished reading contracts\`]`, `false`]}
+				DoExpr {clearvar[contractrx]}
 				SetState {Idle}
 
 ~~ }
