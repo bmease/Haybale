@@ -5184,7 +5184,10 @@ STATE: {LockpickItem} ~~ {
 	IF: Expr {testvar[lockpick]==false}
 		DO: DoAll
 				DoExpr {$lockpick=listpop[$hasLockpicks, 0]}
-				DoExpr {$count=0}
+
+	~~ Set count to zero on the first run
+	IF: Expr {testvar[count]==false}
+		DO: DoExpr {setvar[count, 0]}
 
 	~~ Clear $lockpick and reset to find new lockpick if the current one is used up
 	IF: Expr {getobjectinternaltype[$lockpick]==false}
