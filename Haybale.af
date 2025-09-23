@@ -5183,7 +5183,9 @@ STATE: {LockpickItem} ~~ {
 	~~ Find best lockpick to use
 	IF: Expr {testvar[lockpick]==false}
 		DO: DoAll
-				DoExpr {$lockpick=listpop[$hasLockpicks, 0]}
+				DoExpr {$allBest=wobjectfindallinventorybytemplatetype[wobjectgettemplatetype[listpop[$hasLockpicks, 0]]]}  ~~ Find all the best lockpicks with that wcid
+				DoExpr {$allBestOrdered=listsort[$allBest, `ifthen[wobjectgetintprop[$1, 92]>wobjectgetintprop[$2, 92], \`1\`, \`-1\`]`]}  ~~ Sort by number of uses left
+				DoExpr {$lockpick=listpop[$allBestOrdered, 0]}
 
 	~~ Set count to zero on the first run
 	IF: Expr {testvar[count]==false}
