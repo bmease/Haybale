@@ -426,6 +426,8 @@ STATE: {Default} ~~ {
 				DoExpr {listadd[$AUTO_TRASH_ITEMS, `Entryway Key`]} ~~ Lum
 				DoExpr {listadd[$AUTO_TRASH_ITEMS, `Cellar Key`]} ~~ Lum
 				DoExpr {listadd[$AUTO_TRASH_ITEMS, `Lord Cynreft Mhoire's Key`]} ~~ Graveyard Colo
+				DoExpr {listadd[$AUTO_TRASH_ITEMS, `In Rememberance`]} ~~ Srand Statue
+
 
 	~~ Setup Auto Combine
 	IF: Always
