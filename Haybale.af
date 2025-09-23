@@ -74,6 +74,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[STRING_PROP_DESCRIPTION, 16]}
 				DoExpr {setvar[INT_PROP_JUMP_SKILL, 22]}
 				DoExpr {setvar[INT_PROP_RUN_SKILL, 24]}
+				DoExpr {setvar[INT_PROP_MAX_STRUCTURE, 92]}
 				DoExpr {setvar[INT_PROP_ENLIGHTENMENT, 390]}
 				DoExpr {setvar[BOOL_PROP_LOCKED, 3]}
 				DoExpr {setvar[LOCKPICK_SKILL, 23]}
@@ -5184,8 +5185,9 @@ STATE: {LockpickItem} ~~ {
 	IF: Expr {testvar[lockpick]==false}
 		DO: DoAll
 				DoExpr {$allBest=wobjectfindallinventorybytemplatetype[wobjectgettemplatetype[listpop[$hasLockpicks, 0]]]}  ~~ Find all the best lockpicks with that wcid
-				DoExpr {$allBestOrdered=listsort[$allBest, `ifthen[wobjectgetintprop[$1, 92]>wobjectgetintprop[$2, 92], \`1\`, \`-1\`]`]}  ~~ Sort by number of uses left
+				DoExpr {$allBestOrdered=listsort[$allBest, `setvar[a, wobjectgetintprop[$1, $INT_PROP_MAX_STRUCTURE]];setvar[b, wobjectgetintprop[$2, $INT_PROP_MAX_STRUCTURE]];iif[$a==$b, 0, iif[$a>$b, 1, -1]]`]}  ~~ Sort by number of uses left
 				DoExpr {$lockpick=listpop[$allBestOrdered, 0]}
+				DoExpr {listmap[listcreate[`a`, `b`, `allBest`, `allBestOrdered`], `clearvar[$1]`]}
 
 	~~ Set count to zero on the first run
 	IF: Expr {testvar[count]==false}
