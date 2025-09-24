@@ -767,7 +767,7 @@ STATE: {Idle} ~~ {
 				DoExpr {ifthen[getfellowshipisleader[]==true, `chatbox[\`Found Blue at \`+$coords]`, `chatbox[\`/t \`+@HBLeader+\`, Found Blue at \`+$coords]`]}
 
 				~~ Update GoArrow Coordinates
-				DoExpr {ifthen[@HBAutoUpdateGoArrow==true, `echo[\`/goarrow to \`+$coords]`, `false`]}
+				DoExpr {ifthen[@HBAutoUpdateGoArrow==true, `chatbox[\`/goarrow to \`+$coords]`, `false`]}
 
 				DoExpr {listadd[$BlueSeen, wobjectgetid[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]}
 				DoExpr {clearvar[coords]}
