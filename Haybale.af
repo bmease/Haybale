@@ -3079,7 +3079,7 @@ STATE: {HandleKilltask} ~~ {
 				DoExpr {echo[`#killtask rynthid: Flags with all NPCs in Rynthid`, $COLOR_INFO]}
 				SetState {Idle}
 
-	~~ Handle `#flag frozen valley`
+	~~ Handle `#killtask frozen valley`
 	IF: Expr {(frozen valley)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `HaybaleNavPortalspaceActivator`]}
@@ -3087,30 +3087,36 @@ STATE: {HandleKilltask} ~~ {
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagFrozenValley`]}
 				SetState {CallMeta}
 
-	~~ Handle `#flag neftet`
+	~~ Handle `#killtask neftet`
 	IF: Expr {(neftet)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `HaybaleNavNeftet`]}
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagNeftet`]}
 				SetState {CallMeta}
 
-	~~ Handle `#flag rynthid`
+	~~ Handle `#killtask rynthid`
 	IF: Expr {(rynthid)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagRynthid`]}
 				SetState {CallMeta}
 
-	~~ Handle `#flag hoshino`
+	~~ Handle `#killtask hoshino`
 	IF: Expr {(hoshino)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `HaybaleNavHoshino`]}
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagHoshino`]}
 				SetState {CallMeta}
 
-	~~ Handle `#flag hoshino`
+	~~ Handle `#killtask hoshino`
 	IF: Expr {(vr)#getvar[capturegroup_flagaction]}
 		DO:	DoAll
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagVR`]}
+				SetState {CallMeta}
+
+	~~ Handle `#killtask tou tou`
+	IF: Expr {(tou tou)#getvar[capturegroup_flagaction]}
+		DO:	DoAll
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagTouTou`]}
 				SetState {CallMeta}
 
 	~~ Handle no match for flagaction

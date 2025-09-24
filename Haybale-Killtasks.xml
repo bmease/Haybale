@@ -5,7 +5,7 @@
         <!-- Column 1 -->
         <control type="button" name="Frozen Valley" left="5" top="5" width="100" height="20" text="Frozen Valley" setstate="ChatCommand" actionexpr="setvar[command, `#killtask frozen valley`]" />
         <control type="button" name="Neftet" left="5" top="30" width="100" height="20" text="Neftet" setstate="ChatCommand" actionexpr="setvar[command, `#killtask neftet`]" />
-        <!-- <control type="button" name="Tou Tou" left="5" top="55" width="100" height="20" text="Tou Tou" setstate="ChatCommand" actionexpr="setvar[command, `#killtask tou tou`]" /> -->
+        <control type="button" name="Tou Tou" left="5" top="55" width="100" height="20" text="Tou Tou" setstate="ChatCommand" actionexpr="setvar[command, `#killtask tou tou`]" />
 
         <!-- Column 2 -->
         <control type="button" name="Rynthid" left="115" top="5" width="100" height="20" text="Rynthid" setstate="ChatCommand" actionexpr="setvar[command, `#killtask rynthid`]" />
