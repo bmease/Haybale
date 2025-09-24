@@ -6154,6 +6154,10 @@ STATE: {ToggleChatCommand} ~~ {
 				DoExpr {uisetlabel[uigetcontrol[Settings, ChatCommand], `Chat: Fellow`]}
 				SetState {Idle}
 
+	~~ If @HBChatCommand is anything else just return to Idle
+	IF: Always
+		DO: SetState {Idle}
+
 ~~ }
 
 
@@ -6162,7 +6166,7 @@ STATE: {ChatCommand} ~~ {
 	~~ Warn if sending chat commands to Fellow and not in a fellow
 	IF: All
 			Expr {@HBChatCommand==`Fellow`}
-			Expr {getfellowshipstatus[]!=1}
+			Expr {getfellowshipstatus[]!=true}
 		DO: DoAll
 				DoExpr {echo[`[WARN] Not in fellow but sending commands to fellow!`, $COLOR_WARN]}
 				SetState {Idle}
