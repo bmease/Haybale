@@ -235,6 +235,9 @@ STATE: {UseItem} ~~ {
 			All
 				ChatCapture {^(?<tellname>.*?) cast (?<npctext>.*)$} {}
 				Expr {$capturegroup_tellname==$item}
+			All
+				ChatCapture {^(?<tellname>.*?) teleports you (?<npctext>.*)$} {}
+				Expr {$capturegroup_tellname==$item}
 		DO:	DoAll
 				DoExpr {clearvar[using]}
 				DoExpr {clearvar[item]}
@@ -1210,7 +1213,6 @@ STATE: {ToSanctuaryRecluse} ~~ {
 	~~ Finish when there
 	IF: NavEmpty
 		DO: SetState {Finished}
-
 
 ~~ }
 
