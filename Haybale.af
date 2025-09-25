@@ -4057,6 +4057,9 @@ STATE: {UseLandscape} ~~ {
 			All
 				ChatCapture {^(?<tellname>.*?) cast (?<npctext>.*)$} {}
 				Expr {$capturegroup_tellname==$Item}
+			All
+				ChatCapture {^(?<tellname>.*?) teleports you (?<npctext>.*)$} {}
+				Expr {$capturegroup_tellname==$name}
 			ChatMatch {^You've earned}
 			ChatMatch {^You may complete this quest}
 			ChatMatch {^A plaque on}
@@ -5440,6 +5443,9 @@ STATE: {UseNPC} ~~ {
 				Expr {$capturegroup_tellname==$name}
 			All
 				ChatCapture {^(?<tellname>.*?) cast (?<npctext>.*)$} {}
+				Expr {$capturegroup_tellname==$name}
+			All
+				ChatCapture {^(?<tellname>.*?) teleports you (?<npctext>.*)$} {}
 				Expr {$capturegroup_tellname==$name}
 			ChatMatch {^You've earned}
 			ChatMatch {^You may complete this quest}
