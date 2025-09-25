@@ -41,7 +41,9 @@
 STATE: {Default} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO: DoAll
@@ -67,7 +69,9 @@ STATE: {Default} ~~ {
 STATE: {ParseArguments} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Warn if arguments are not defined
 	IF: Expr {testvar[HBArguments]==false}
@@ -105,7 +109,9 @@ STATE: {ParseArguments} ~~ {
 STATE: {Dispatch} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO: DoAll
@@ -174,7 +180,9 @@ STATE: {CallMeta} ~~ {
 STATE: {HandleRecall} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Return to Finished if the spell isn't known
 	IF: Not Expr {getisspellknown[$HBRecallSpell]}
@@ -200,7 +208,9 @@ STATE: {HandleRecall} ~~ {
 STATE: {UseItem} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Expr {testvar[using]==false}
 		DO:	DoAll
@@ -245,7 +255,9 @@ STATE: {UseItem} ~~ {
 STATE: {InitMoufP} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Fiuns Outpost start running to Frigid Grotto
 	IF: BlockE 38F70000
@@ -266,7 +278,9 @@ STATE: {InitMoufP} ~~ {
 STATE: {InitLiberationUziz} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Al-Arqas start running to Ahr-zona portal
 	IF: BlockE 8F580000
@@ -287,7 +301,9 @@ STATE: {InitLiberationUziz} ~~ {
 STATE: {InitPurgingCorruption} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Candeth Keep start running to Curator of Torments Study
 	IF: BlockE 2B120000
@@ -308,7 +324,9 @@ STATE: {InitPurgingCorruption} ~~ {
 STATE: {InitDreamReaver} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Khayyaban start running to Masked Preface
 	IF: BlockE 9F440000
@@ -329,7 +347,9 @@ STATE: {InitDreamReaver} ~~ {
 STATE: {InitSerpentBurialGrounds} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Stonehold start running to Kraytuss
 	IF: BlockE 64D50000
@@ -350,7 +370,9 @@ STATE: {InitSerpentBurialGrounds} ~~ {
 STATE: {InitHaltDericost} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Frozey Valley start running to Lady Daenerah
 	IF: BlockE 7AE80000
@@ -375,7 +397,9 @@ STATE: {InitHaltDericost} ~~ {
 STATE: {InitFirstSister} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Neftet start running to Kaltus
 	IF: BlockE 87630000
@@ -393,7 +417,9 @@ STATE: {InitFirstSister} ~~ {
 STATE: {InitMhoireCastle} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Graveyard Recall navigate to the Guardian Statue
 	IF: BlockE 482D0000
@@ -411,7 +437,9 @@ STATE: {InitMhoireCastle} ~~ {
 STATE: {InitNanjouStockade} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Hoshino navigate to the Shorikan
 	IF: BlockE 49E40000
@@ -432,7 +460,9 @@ STATE: {InitNanjouStockade} ~~ {
 STATE: {InitLostLore} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Sanctuary navigate to the Lost Ruins
 	IF: BlockE F4180000
@@ -451,7 +481,9 @@ STATE: {InitLostLore} ~~ {
 STATE: {InitGerainesStudy} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Frozey Valley start running to Geraine's Study
 	IF: BlockE 7AE80000
@@ -472,7 +504,9 @@ STATE: {InitGerainesStudy} ~~ {
 STATE: {InitCountPhainor} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Kara navigate to Grularr Wa'ydo
 	IF: BlockE BA170000
@@ -497,7 +531,9 @@ STATE: {InitCountPhainor} ~~ {
 STATE: {InitIzexi} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Neftet navigate to Fahneph
 	IF: BlockE 87630000
@@ -515,7 +551,9 @@ STATE: {InitIzexi} ~~ {
 STATE: {InitSaveKarul} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Hoshino navigate to Lt Roothe
 	IF: BlockE 49E40000
@@ -536,7 +574,9 @@ STATE: {InitSaveKarul} ~~ {
 STATE: {InitDeewains} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Snowy Valley navigate to Dark Cavern
 	IF: BlockE 74EA0000
@@ -561,7 +601,9 @@ STATE: {InitDeewains} ~~ {
 STATE: {InitReleasingLight} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Sanctuary navigate to the Shah-hi
 	IF: BlockE F4180000
@@ -579,7 +621,9 @@ STATE: {InitReleasingLight} ~~ {
 STATE: {ToFrigidGrotto} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Frigid Grotto
 	IF: Always
@@ -599,7 +643,9 @@ STATE: {ToFrigidGrotto} ~~ {
 STATE: {ToVirindiEdifice} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Virindi Edifice
 	IF: Always
@@ -619,7 +665,9 @@ STATE: {ToVirindiEdifice} ~~ {
 STATE: {ToCuratorOfTormentsStudy} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Curator of Torments Study
 	IF: Always
@@ -639,7 +687,9 @@ STATE: {ToCuratorOfTormentsStudy} ~~ {
 STATE: {ToMaskedPreface} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Masked Preface
 	IF: Always
@@ -659,7 +709,9 @@ STATE: {ToMaskedPreface} ~~ {
 STATE: {ToKraytussNallah} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Kraytuss Nallah
 	IF: Always
@@ -679,7 +731,9 @@ STATE: {ToKraytussNallah} ~~ {
 STATE: {ToSerpentBurialGrounds} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Serpent Burial Grounds
 	IF: Always
@@ -699,7 +753,9 @@ STATE: {ToSerpentBurialGrounds} ~~ {
 STATE: {ToLadyDaenerah} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Lady Daenerah
 	IF: Always
@@ -719,7 +775,9 @@ STATE: {ToLadyDaenerah} ~~ {
 STATE: {ToMenhirRings} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ If in Al-Arqas navigate to Menhir Ring
 	IF: BlockE 8F580000
@@ -745,7 +803,9 @@ STATE: {ToMenhirRings} ~~ {
 STATE: {ToKaltus} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Kaltus
 	IF: Always
@@ -765,7 +825,9 @@ STATE: {ToKaltus} ~~ {
 STATE: {ToTempleOfMornings} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Temple of Mornings
 	IF: Always
@@ -783,7 +845,9 @@ STATE: {ToTempleOfMornings} ~~ {
 STATE: {ToGuardianStatue} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Gargoyle
 	IF: Always
@@ -803,7 +867,9 @@ STATE: {ToGuardianStatue} ~~ {
 STATE: {UseMhoireCourtyard} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Use Mhoire Castle Courtyard Portal
 	IF:	Always
@@ -823,7 +889,9 @@ STATE: {UseMhoireCourtyard} ~~ {
 STATE: {ToMhoireCastleNortheast} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Mhoire Castle Northeast
 	IF: Always
@@ -843,7 +911,9 @@ STATE: {ToMhoireCastleNortheast} ~~ {
 STATE: {ToShorikan} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Shorikan
 	IF: Always
@@ -863,7 +933,9 @@ STATE: {ToShorikan} ~~ {
 STATE: {ToLostRuins} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Lost Ruins
 	IF: Always
@@ -881,7 +953,9 @@ STATE: {ToLostRuins} ~~ {
 STATE: {ToGerainesStudy} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Geraine's Study
 	IF: Always
@@ -899,7 +973,9 @@ STATE: {ToGerainesStudy} ~~ {
 STATE: {ToGrularrWaydo} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Grularr Wa'ydo
 	IF: Always
@@ -919,7 +995,9 @@ STATE: {ToGrularrWaydo} ~~ {
 STATE: {ToCountPhainorsTomb} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: All
 			Not BlockE 482D0000
@@ -949,7 +1027,9 @@ STATE: {ToCountPhainorsTomb} ~~ {
 STATE: {ToFahneph} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Fahneph
 	IF: Always
@@ -969,7 +1049,9 @@ STATE: {ToFahneph} ~~ {
 STATE: {ToFoundryofIzexi} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Foundry of Izexi
 	IF: Always
@@ -987,7 +1069,9 @@ STATE: {ToFoundryofIzexi} ~~ {
 STATE: {ToLtRoothe} ~~{
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Lt Roothe
 	IF: Always
@@ -1007,7 +1091,9 @@ STATE: {ToLtRoothe} ~~{
 STATE: {ToSamuraiHausu} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Samurai Hausu
 	IF: Always
@@ -1025,7 +1111,9 @@ STATE: {ToSamuraiHausu} ~~ {
 STATE: {ToSnowyValley} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Snowy Valley
 	IF: Always
@@ -1043,7 +1131,9 @@ STATE: {ToSnowyValley} ~~ {
 STATE: {ToDarkCavern} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Snowy Valley
 	IF: Always
@@ -1064,7 +1154,9 @@ STATE: {ToDarkCavern} ~~ {
 STATE: {ToShahHi} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Shah-hi
 	IF: Always
@@ -1084,7 +1176,9 @@ STATE: {ToShahHi} ~~ {
 STATE: {ToBlessedCave} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Navigate to Blessed Cave
 	IF: Always
