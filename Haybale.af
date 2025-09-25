@@ -1288,6 +1288,15 @@ STATE: {Idle} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {AutoCombine}
 
+	~~ Handle Solve
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#solve (?<solvetext>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {HandleSolve}
+
 	~~ Handle Version
 	IF: ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#version\"$} {}
 		DO: DoAll
@@ -5243,6 +5252,110 @@ STATE: {LockpickItem} ~~ {
 				DoExpr {actiontryapplyitem[$lockpick, $item]}
 				DoExpr {$count=$count+1}
 				SetState {LockpickItem}
+
+~~ }
+
+
+STATE: {HandleSolve} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`capturegroup_solvetext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Display help for #lockpick
+	IF: Expr {(help)#getvar[capturegroup_solvetext]}
+		DO: DoAll
+				DoExpr {echo[`#solve study: Solves the tablets for Geraine's Study.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_solvetext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	IF: Expr {(study)#getvar[capturegroup_solvetext]}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_solvetext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {SolveStudy}
+
+~~ }
+
+
+STATE: {SolveStudy} ~~ {
+
+	~~ West Altar: torn down the right side
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72291]]>0}
+		DO: DoExpr {setvar[west, `Circle with line`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72292]]>0}
+		DO: DoExpr {setvar[west, `Crescent`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72293]]>0}
+		DO: DoExpr {setvar[west, `X`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72294]]>0}
+		DO: DoExpr {setvar[west, `Wreath`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72295]]>0}
+		DO: DoExpr {setvar[west, `Wedge`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72296]]>0}
+		DO: DoExpr {setvar[west, `Tilde`]}
+
+
+	~~ Middle Altar: torn down both sides
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72297]]>0}
+		DO: DoExpr {setvar[middle, `Wreath`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72298]]>0}
+		DO: DoExpr {setvar[middle, `X`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72299]]>0}
+		DO: DoExpr {setvar[middle, `Wedge`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72300]]>0}
+		DO: DoExpr {setvar[middle, `Circle with line`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72301]]>0}
+		DO: DoExpr {setvar[middle, `Tilde`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72302]]>0}
+		DO: DoExpr {setvar[middle, `Crescent`]}
+
+
+	~~ East Altar: Torn down the left side
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72303]]>0}
+		DO: DoExpr {setvar[east, `Tilde`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72304]]>0}
+		DO: DoExpr {setvar[east, `Crescent`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72305]]>0}
+		DO: DoExpr {setvar[east, `Wreath`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72306]]>0}
+		DO: DoExpr {setvar[east, `X`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72307]]>0}
+		DO: DoExpr {setvar[east, `Circle with line`]}
+
+	IF: Expr {listcount[wobjectfindallinventorybytemplatetype[72308]]>0}
+		DO: DoExpr {setvar[east, `Wedge`]}
+
+
+	~~ Warn if missing any parchments
+	IF: Any
+			Expr {testvar[west]==false}
+			Expr {testvar[middle]==false}
+			Expr {testvar[east]==false}
+		DO: DoAll
+				DoExpr {echo[`Incomplete parchments, unable to solve!`, $COLOR_WARN]}
+				DoExpr {listmap[listcreate[`west`, `middle`, `east`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Display solution
+	IF: Always
+		DO: DoAll
+				DoExpr {echo[`Solution (From West to East): `+$west+`, `+$middle+`, `+$east, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`west`, `middle`, `east`], `clearvar[$1]`]}
+				SetState {Idle}
 
 ~~ }
 
