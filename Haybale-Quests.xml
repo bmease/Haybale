@@ -15,7 +15,7 @@
         <control type="button" name="Izexi" left="5" top="230" width="100" height="20" text="Foundry of Izexi" setstate="ChatCommand" actionexpr="setvar[command, \#quest izexi]" />
 
         <!-- Column 2 -->
-        <!-- <control type="button" name="FourCorners" left="115" top="5" width="100" height="20" text="Four Corners" setstate="ChatCommand" actionexpr="setvar[command, \#quest four corners]" /> -->
+        <control type="button" name="FourCorners" left="115" top="5" width="100" height="20" text="Four Corners" setstate="ChatCommand" actionexpr="setvar[command, \#quest four corners]" />
         <control type="button" name="GerainesHost" left="115" top="30" width="100" height="20" text="Geraine's Host" setstate="ChatCommand" actionexpr="setvar[command, \#quest geraines host]" />
         <control type="button" name="GerainesStudy" left="115" top="55" width="100" height="20" text="Geraine's Study" setstate="ChatCommand" actionexpr="setvar[command, \#quest geraines study]" />
         <!-- <control type="button" name="GurogCreation" left="115" top="80" width="100" height="20" text="Gurog Creation" setstate="ChatCommand" actionexpr="setvar[command, \#quest gurog creation]" /> -->
