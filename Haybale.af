@@ -4059,7 +4059,7 @@ STATE: {UseLandscape} ~~ {
 				Expr {$capturegroup_tellname==$Item}
 			All
 				ChatCapture {^(?<tellname>.*?) teleports you (?<npctext>.*)$} {}
-				Expr {$capturegroup_tellname==$name}
+				Expr {$capturegroup_tellname==$Item}
 			ChatMatch {^You've earned}
 			ChatMatch {^You may complete this quest}
 			ChatMatch {^A plaque on}
