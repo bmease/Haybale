@@ -816,7 +816,8 @@ STATE: {Idle} ~~ {
 	~~ Handle Auto Timers
 	IF: All
 			Expr {@HBAutoTimers==true}
-			Expr {$FoundTimers=listfilter[@HBAutoTimersMetas, `cnumber[getdatetimelocal[hh]]==$1{{0}}&&cnumber[getdatetimelocal[mm]]==$1{{1}}&&cnumber[getdatetimelocal[ss]]==$1{{2}}&&getdatetimelocal[tt]==$1{{3}}`]}
+			~~ Expr {$FoundTimers=listfilter[@HBAutoTimersMetas, `cnumber[getdatetimelocal[hh]]==$1{{0}}&&cnumber[getdatetimelocal[mm]]==$1{{1}}&&cnumber[getdatetimelocal[ss]]==$1{{2}}&&getdatetimelocal[tt]==$1{{3}}`]}
+			Expr {$FoundTimers=listfilter[@HBAutoTimersMetas, `cnumber[getdatetimelocal[hh]]==$1{{0}}&&cnumber[getdatetimelocal[mm]]==$1{{1}}&&getdatetimelocal[tt]==$1{{3}}`]}
 			Expr {listcount[$FoundTimers]>0}
 		DO: SetState {HandleAutoTimers}
 
