@@ -899,7 +899,7 @@ STATE: {Idle} ~~ {
 				SetState {Idle}
 
 	~~ Display message if receiving a Chorizite Threaded Pack Token
-	IF: ChatMatch {(?:Lord Kresovus|Neelic|Raksaa|Sergeant Trebuus) gives you Chorizite Threaded Pack Token}
+	IF: ChatMatch {^(?:Lord Kresovus|Neelic|Raksaa|Sergeant Trebuus) gives you Chorizite Threaded Pack Token}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I received a Chorizite Threaded Pack Token!\`]`, `false`]}
 				SetState {Idle}
