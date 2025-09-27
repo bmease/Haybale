@@ -229,6 +229,12 @@ STATE: {Default} ~~ {
 				~~ List of lockpicks in order of preference
 				DoExpr {setpvar[HBLockpicks, ifthen[testpvar[HBLockpicks], `@HBLockpicks`, `listcreate[\`Limitless Lockpick\`, \`Everlasting Lockpick\`, \`Carved Gemstone Lockpick\`, \`Peerless Lockpick\`, \`Superb Lockpick\`, \`Excellent Lockpick\`, \`Good Lockpick\`, \`Reliable Lockpick\`, \`Plain Lockpick\`, \`Crude Lockpick\`, \`Flimsy Lockpick\`]`]]}
 
+				~~ Whether to send a message when you die
+				DoExpr {setpvar[HBDeathMessage, ifthen[testpvar[HBDeathMessage], `@HBDeathMessage`, `true`]]}
+
+				~~ Whether to permit everyone in your $CharacterList when you die
+				DoExpr {setpvar[HBDeathPermit, ifthen[testpvar[HBDeathPermit], `@HBDeathPermit`, `true`]]}
+
 				~~ Whether the Actions view is open or closed
 				DoExpr {setpvar[HBViewsActions, ifthen[testpvar[HBViewsActions], `@HBViewsActions`, `false`]]}
 
@@ -720,6 +726,20 @@ STATE: {SetupPreviousPage} ~~ {
 
 
 STATE: {Idle} ~~ {
+
+	~~ Message leader on death
+	IF: All
+			Expr {@HBDeathMessage==true}
+			Death
+		DO: DoAll
+				ChatExpr {`/t `+@HBLeader+`, I have died!`}
+				SetState {Idle}
+
+	~~ Permit on death
+	IF: All
+			Expr {@HBDeathPermit==true}
+			Death
+		DO: SetState {Permit}
 
 	~~ Announce if stuck
 	IF: All
@@ -5585,6 +5605,34 @@ STATE: {Blessing} ~~ {
 				ChatExpr {`/ub use Royal Bouquet on `+$capturegroup_blessingname}
 				DoExpr {clearvar[capturegroup_blessingname]}
 				SetState {Idle}
+
+~~ }
+
+
+STATE: {Permit} ~~ {
+
+	~~ Create the list of people to permit
+	IF: Expr {testvar[permitList]==false}
+		DO: DoExpr {setvar[permitList, listfilter[listcopy[@HBCharacterList], `$1!=$CHARACTER_NAME`]]}
+
+	~~ Finish if no one else to permit
+	IF: Expr {listcount[$permitList]==0}
+		DO: DoAll
+				DoExpr {clearvar[permitList]}
+				SetState {Idle}
+
+	~~ Permit a character in $permitList
+	IF: Always
+		DO: ChatExpr {`/permit add `+listpop[$permitList]}
+
+	~~ Reset after the permit goes through
+	IF: Any
+			ChatMatch {^You have given permission to}
+			ChatMatch {is not online\.$}
+			ChatMatch {is not accepting corpse looting permissions from other players\.$}
+			ChatMatch {^You already have permission to loot your corpse\.$}
+			ChatMatch {already has permission to loot your corpse\.$}
+		DO: SetState {Permit}
 
 ~~ }
 
