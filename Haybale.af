@@ -970,6 +970,15 @@ STATE: {Idle} ~~ {
 				DestroyView {Timer}
 				SetState {Idle}
 
+	~~ Handle periodic command
+	IF: All
+			Expr {testvar[HBPeriodicTimer]!=false}
+			Expr {$HBPeriodicInterval-stopwatchelapsedseconds[$HBPeriodicTimer]<=0}
+		DO: DoAll
+				DoExpr {setvar[HBPeriodicTimer, stopwatchstart[stopwatchcreate[]]]}
+				ChatExpr {$HBPeriodicCommand}
+				SetState {Idle}
+
 	~~ Handle `#setup` for any character in ub netclients
 	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#setup\"$} {}
@@ -1268,6 +1277,15 @@ STATE: {Idle} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleTimers}
+
+	~~ Handle Periodic Commands
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#periodic (?<periodictext>(?:help|show|clear|\d+(?:\.\d+)?))(?:\s+(?<periodiccommand>.+))?\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {HandlePeriodicCommands}
 
 	~~ Handle VTank Options
 	IF:	All
@@ -5389,7 +5407,7 @@ STATE: {HandleTimers} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
 
-	~~ Display help for #count
+	~~ Display help for #timer
 	IF: Expr {(help)#getvar[capturegroup_timertext]}
 		DO: DoAll
 				DoExpr {echo[`#timer <amount> [message]: Start a timer for a specific amount of time. With an optional message that will be displayed when the timer ends.`, $COLOR_INFO]}
@@ -5406,6 +5424,57 @@ STATE: {HandleTimers} ~~ {
 	IF: Not Expr {uiviewvisible[Timer]}
 		DO: DoAll
 				CreateView {Timer} {:Haybale-Timer.xml}
+				SetState {Idle}
+
+~~ }
+
+
+STATE: {HandlePeriodicCommands} ~~ {
+
+	IF:	ChatMatch {![Rr]eset}
+		DO:	SetState {Idle}
+
+	~~ Display help for #periodic
+	IF: Expr {(help)#getvar[capturegroup_periodictext]}
+		DO: DoAll
+				DoExpr {echo[`#periodic help: Show help for the periodic command.`, $COLOR_INFO]}
+				DoExpr {echo[`#periodic clear: Clear the current periodic command and interval.`, $COLOR_INFO]}
+				DoExpr {echo[`#periodic show: Show the current periodic command and interval.`, $COLOR_INFO]}
+				DoExpr {echo[`#periodic <interval> <command>: Set a periodic command with the interval in minutes and a command.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_periodictext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Show information for periodic command when there is an active one
+	IF: All
+			Expr {(show)#getvar[capturegroup_periodictext]}
+			Expr {testvar[HBPeriodicTimer]==true}
+		DO: DoAll
+				DoExpr {echo[`Periodic Command runs every `+$HBPeriodicInterval/60+` minutes`, $COLOR_INFO]}
+				DoExpr {echo[`Command: `+$HBPeriodicCommand, $COLOR_INFO]}
+				SetState {Idle}
+
+	~~ Show information for periodic command when there is not an active one
+	IF: All
+			Expr {(show)#getvar[capturegroup_periodictext]}
+			Expr {testvar[HBPeriodicTimer]==false}
+		DO: DoAll
+				DoExpr {echo[`There is no currently active periodic command.`, $COLOR_INFO]}
+				SetState {Idle}
+
+	~~ Clear periodic command
+	IF: Expr {(clear)#getvar[capturegroup_periodictext]}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`HBPeriodicInterval`, `HBPeriodicCommand`, `HBPeriodicTimer`], `clearvar[$1]`]}
+				DoExpr {echo[`Cleared periodic command`, $COLOR_INFO]}
+				SetState {Idle}
+
+	~~ Set periodic command
+	IF: Always
+		DO: DoAll
+				DoExpr {$HBPeriodicInterval=cnumber[$capturegroup_periodictext]*60}
+				DoExpr {$HBPeriodicCommand=$capturegroup_periodiccommand}
+				DoExpr {setvar[HBPeriodicTimer, stopwatchstart[stopwatchcreate[]]]}
+				DoExpr {echo[`Set periodic command`, $COLOR_INFO]}
 				SetState {Idle}
 
 ~~ }
