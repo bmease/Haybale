@@ -3734,28 +3734,47 @@ STATE: {AutoCombine} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	DoAll
-				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
+				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`, `hasCombined`], `clearvar[$1]`]}
 				SetState {Idle}
 
 	~~ Find all the items the character has for sources
 	IF: Always
 		DO: DoExpr {setvar[hasSources, listfilter[dictkeys[$AUTO_COMBINE_ITEMS], `getinventorycountbytemplatetype[cnumber[$1]]>0`]]}
 
+	~~ Finish and return to Idle if there are no sources
+	IF: All
+			Expr {testvar[hasCombined]==false}
+			Expr {listcount[$hasSources]==0}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine!\`]`, `false`]}
+				SetState {Idle}
+
 	~~ Of all the sources find the items that have targets
 	IF: Expr {listcount[$hasSources]>0}
 		DO: DoExpr {setvar[hasSourcesAndTargets, listfilter[$hasSources, `getinventorycountbytemplatetype[cnumber[dictgetitem[$AUTO_COMBINE_ITEMS, $1]]]>0`]]}
+
+	~~ Finish and return to Idle if there are no targets
+	IF: All
+			Expr {testvar[hasCombined]==false}
+			Expr {listcount[$hasSourcesAndTargets]==0}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine.\`]`, `false`]}
+				SetState {Idle}
 
 	~~ Dispatch the first source and target to Combine state
 	IF: Expr {listcount[$hasSourcesAndTargets]>0}
 		DO: DoAll
 				DoExpr {setvar[source, cnumber[listpop[$hasSourcesAndTargets, 0]]]}
 				DoExpr {setvar[target, cnumber[dictgetitem[$AUTO_COMBINE_ITEMS, cstr[$source]]]]}
+				DoExpr {setvar[hasCombined, true]}
 				CallState {Combine} {AutoCombine}
 
 	~~ Out of items; return to Idle
 	IF: Always
 		DO: DoAll
-				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
+				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`, `hasCombined`], `clearvar[$1]`]}
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished combining items.\`]`, `false`]}
 				SetState {Idle}
 
