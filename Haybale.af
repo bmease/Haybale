@@ -444,6 +444,19 @@ STATE: {Default} ~~ {
 				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `46348`, `46349`]} ~~ Lost Lore: Torn Strip of Parchment with Torn Strip of Parchment
 				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `46350`, `46347`]} ~~ Lost Lore: Torn Strip of Parchment with Partially Restored Page
 
+				~~ Misc.
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6353`, `6353`]} ~~ Pyreal Mote with Pyreal Mote
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6355`, `6355`]} ~~ Pyreal Sliver with Pyreal Sliver
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6354`, `6354`]} ~~ Pyreal Nugget with Pyreal Nugget
+
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6055`, `6055`]} ~~ Cracked Shard with Cracked Shard
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6057`, `6057`]} ~~ Tiny Shard with Tiny Shard
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6056`, `6056`]} ~~ Small Shard with Small Shard
+
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6059`, `6059`]} ~~ Dark Sliver with Dark Sliver
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6060`, `6060`]} ~~ Dark Speck with Dark Speck
+				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6058`, `6058`]} ~~ Dark Shard with Dark Shard
+
 	~~ Open Remote view
 	IF: Always
 		DO:	CreateView {Main} {:Haybale-Main.xml}
@@ -3750,9 +3763,11 @@ STATE: {AutoCombine} ~~ {
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine!\`]`, `false`]}
 				SetState {Idle}
 
-	~~ Of all the sources find the items that have targets
+	~~ Of all the sources find the items that have targets. If the source and target are the same wcid ensure there are greater than 2 of that item in inventory
 	IF: Expr {listcount[$hasSources]>0}
-		DO: DoExpr {setvar[hasSourcesAndTargets, listfilter[$hasSources, `getinventorycountbytemplatetype[cnumber[dictgetitem[$AUTO_COMBINE_ITEMS, $1]]]>0`]]}
+		DO: DoAll
+				DoExpr {setvar[hasSourcesAndTargets, listfilter[$hasSources, `setvar[t, cnumber[dictgetitem[$AUTO_COMBINE_ITEMS, $1]]];ifthen[$1==$t, \`getinventorycountbytemplatetype[$t]>=2\`, \`getinventorycountbytemplatetype[$t]>=1\`]`]]}
+				DoExpr {clearvar[t]}
 
 	~~ Finish and return to Idle if there are no targets
 	IF: All
@@ -3760,7 +3775,7 @@ STATE: {AutoCombine} ~~ {
 			Expr {listcount[$hasSourcesAndTargets]==0}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Dispatch the first source and target to Combine state
@@ -3784,18 +3799,38 @@ STATE: {AutoCombine} ~~ {
 STATE: {Combine} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Idle}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`wosource`, `wotarget`, `success`], `clearvar[$1]`]}
+				SetState {Idle}
 
-	~~ Find World Objects for source and target
-	IF: Always
+	~~ If combining the same wcid choose different source and target world objects
+	IF: All
+			Expr {$source==$target}
+			Expr {listcount[wobjectfindallinventorybytemplatetype[$target]]>=2}
+		DO: DoAll
+				DoExpr {setvar[wosource, listpop[wobjectfindallinventorybytemplatetype[$source], 0]]}
+				DoExpr {setvar[wotarget, listpop[wobjectfindallinventorybytemplatetype[$target], 1]]}
+
+	~~ Warn if the source and target are the same and not enough in inventory
+	IF: All
+			Expr {$source==$target}
+			Expr {listcount[wobjectfindallinventorybytemplatetype[$target]]<2}
+		DO: DoAll
+				~~ DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Warn] Not enough in inventory!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`wosource`, `wotarget`, `success`], `clearvar[$1]`]}
+				Return
+
+	~~ Find World Objects for source and target if they weren't set before
+	IF: All
+			Expr {testvar[wosource]==false}
+			Expr {testvar[wotarget]==false}
 		DO: DoAll
 				DoExpr {setvar[wosource, listpop[wobjectfindallinventorybytemplatetype[$source], 0]]}
 				DoExpr {setvar[wotarget, listpop[wobjectfindallinventorybytemplatetype[$target], 0]]}
 
 	~~ Combine the source and target
 	IF: Always
-		DO: DoAll
-				DoExpr {$success=actiontryapplyitem[$wosource, $wotarget]}
+		DO: DoExpr {$success=actiontryapplyitem[$wosource, $wotarget]}
 
 	~~ Wait for any craft message to happen
 	IF: ChatCapture {.*} {24}
