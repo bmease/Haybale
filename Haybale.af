@@ -1049,7 +1049,7 @@ STATE: {Idle} ~~ {
 
 	~~ Handle Routes
 	IF:	All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#route\"$} {}
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#route(?: (?<routetext>.*))?\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -2854,6 +2854,22 @@ STATE: {HandleRoute} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
+
+	~~ Handle `#route help`
+	IF: Expr {(help)#getvar[capturegroup_routetext]}
+		DO: DoAll
+				DoExpr {echo[`#route: Loads the route for the current landcell.`, $COLOR_INFO]}
+				DoExpr {echo[`#route cancel: Cancels the route.`, $COLOR_INFO]}
+				DoExpr {echo[`#route help: Shows help for the route command.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_routetext`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Handle `#route cancel`
+	IF: Expr {(cancel)#getvar[capturegroup_routetext]}
+		DO: DoAll
+				EmbedNav Empty {[None]}
+				DoExpr {listmap[listcreate[`capturegroup_routetext`], `clearvar[$1]`]}
+				SetState {Idle}
 
 	~~ No routes found, show warning
 	IF: Expr {listcount[listfilter[dictkeys[$HBRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]==0}
