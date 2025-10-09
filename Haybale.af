@@ -3643,6 +3643,15 @@ STATE: {Give} ~~ {
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {Give}
@@ -4011,6 +4020,15 @@ STATE: {PassWait} ~~ {
 				DoExpr {listmap[listcreate[`item`, `hasItem`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Finished using item
 	IF: All
 			Expr {$hasItem==true}
@@ -4147,6 +4165,15 @@ STATE: {UseLandscape} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
+
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -4366,6 +4393,15 @@ STATE: {OpenCorpse} ~~ {
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Has an open corpse
 	IF: Expr {getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT}
 		DO: DoAll
@@ -4388,6 +4424,15 @@ STATE: {LootCorpse} ~~ {
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
+
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ IF: Always
 	~~ 	DO: DoAll
@@ -4497,6 +4542,15 @@ STATE: {UsePortal} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {UsePortal}
@@ -4555,6 +4609,15 @@ STATE: {UsePortalNPC} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ The NPC does not have data, we need to query for it
 	IF: All
 			Expr {isportaling[]==false}
@@ -4594,6 +4657,15 @@ STATE: {UseVRPortal} ~~ {
 
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
+
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -4960,6 +5032,15 @@ STATE: {HandleRecall} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Return to Idle if the spell isn't known
 	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
@@ -4997,6 +5078,15 @@ STATE: {HandleCommandRecall} ~~{
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
 				SetState {Idle}
+
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -5297,6 +5387,15 @@ STATE: {LockpickItem} ~~ {
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Find all available lockpicks
 	IF: Always
 		DO: DoAll
@@ -5555,6 +5654,15 @@ STATE: {UseNPC} ~~ {
 	IF:	ChatMatch {![Rr]eset}
 		DO:	SetState {Idle}
 
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {UseNPC}
@@ -5686,6 +5794,15 @@ STATE: {ReadContracts} ~~ {
 		DO:	DoAll
 				DoExpr {clearvar[contractrx]}
 				SetState {Idle}
+
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	IF: Always
 		DO: DoExpr {setvar[contractrx, `(Hunting\: Lost City of Neftet)|(Investigating the Bloodstones)|(Nalicana\'s Test)|(Contract for)`]}
