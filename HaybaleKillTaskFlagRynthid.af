@@ -94,7 +94,12 @@ STATE: {Default} ~~ {
 
 STATE: {UseNPC} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -120,7 +125,12 @@ STATE: {UseNPC} ~~ {
 
 STATE: {ToHernd} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -136,7 +146,12 @@ STATE: {ToHernd} ~~ {
 
 STATE: {ToLohrn} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -152,7 +167,12 @@ STATE: {ToLohrn} ~~ {
 
 STATE: {ToWido} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -168,7 +188,12 @@ STATE: {ToWido} ~~ {
 
 STATE: {ToRhys} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -184,7 +209,12 @@ STATE: {ToRhys} ~~ {
 
 STATE: {ToRanulf} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -200,7 +230,12 @@ STATE: {ToRanulf} ~~ {
 
 STATE: {ToSylvanus} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -216,7 +251,12 @@ STATE: {ToSylvanus} ~~ {
 
 STATE: {ToMarcus} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -232,7 +272,12 @@ STATE: {ToMarcus} ~~ {
 
 STATE: {ToTilahan} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}

@@ -1403,7 +1403,12 @@ STATE: {Idle} ~~ {
 
 STATE: {HandleStuck} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Disable all options
@@ -1463,7 +1468,12 @@ STATE: {HandleAutoTimers} ~~ {
 
 STATE: {CallMeta} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if $MetaCallQueue is empty
@@ -1484,7 +1494,12 @@ STATE: {CallMeta} ~~ {
 
 STATE: {HandleActions} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Expr {(help)#getvar[capturegroup_actiontext]}
@@ -1591,7 +1606,12 @@ STATE: {HandleActions} ~~ {
 
 STATE: {HandleNavigation} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Expr {(help)#getvar[capturegroup_navdestination]}
@@ -2515,7 +2535,12 @@ STATE: {HandleNavigation} ~~ {
 
 STATE: {HandleQuests} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Expr {(help)#getvar[capturegroup_questdestination]}
@@ -2852,7 +2877,12 @@ STATE: {HandleQuests} ~~ {
 
 STATE: {HandleRoute} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#route help`
@@ -2893,7 +2923,12 @@ STATE: {HandleRoute} ~~ {
 
 STATE: {HandleMetas} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#meta help`
@@ -2929,7 +2964,12 @@ STATE: {HandleMetas} ~~ {
 
 STATE: {MetaAdd} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Add an additional meta to an existing nickname
@@ -2956,7 +2996,12 @@ STATE: {MetaAdd} ~~ {
 
 STATE: {MetaRemove} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if nicknamed meta is not found
@@ -2981,7 +3026,12 @@ STATE: {MetaRemove} ~~ {
 
 STATE: {MetaLoad} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if nicknamed meta is not found
@@ -3009,7 +3059,12 @@ STATE: {MetaLoad} ~~ {
 
 STATE: {HandleProfile} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#profile help`
@@ -3058,7 +3113,12 @@ STATE: {HandleProfile} ~~ {
 
 STATE: {ProfileAdd} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Add a profile
@@ -3074,7 +3134,12 @@ STATE: {ProfileAdd} ~~ {
 
 STATE: {ProfileLoad} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Close the Profiles view if open
@@ -3104,7 +3169,12 @@ STATE: {ProfileLoad} ~~ {
 
 STATE: {ProfileAddLandcell} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Add a profile for a landcell
@@ -3120,7 +3190,12 @@ STATE: {ProfileAddLandcell} ~~ {
 
 STATE: {AutoloadProfile} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if landcell has no entry
@@ -3144,7 +3219,12 @@ STATE: {AutoloadProfile} ~~ {
 
 STATE: {HandleKilltask} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Expr {(help)#getvar[capturegroup_flagaction]}
@@ -3232,7 +3312,12 @@ STATE: {HandleLooting} ~~ {
 
 STATE: {HandleFace} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#face help`
@@ -3299,7 +3384,12 @@ STATE: {HandleFace} ~~ {
 
 STATE: {Face} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Disable all options
@@ -3323,7 +3413,12 @@ STATE: {Face} ~~ {
 
 STATE: {HandleJumping} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#jump tap`
@@ -3355,7 +3450,12 @@ STATE: {HandleJumping} ~~ {
 
 STATE: {Jump} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Disable all options
@@ -3381,7 +3481,12 @@ STATE: {Jump} ~~ {
 
 STATE: {HandleJumpTo} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`jumpSkill`, `runSkill`, `maxJumpHeight`, `runSpeed`, `shiftJumpSpeed`, `target`, `heading`, `distance`, `height`, `shiftPower`, `power`, `maxPower`, `shiftMaxHeight`, `maxHeight`, `capturegroup_jumptext`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3446,7 +3551,12 @@ STATE: {HandleJumpTo} ~~ {
 
 STATE: {JumpStack} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`OriginalNavClosestOpRange`, `OriginalNavPriorityBoost`, `capturegroup_name`, `capturegroup_jumptext`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3478,7 +3588,12 @@ STATE: {JumpStack} ~~ {
 
 STATE: {HandlePickup} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Always
@@ -3491,7 +3606,12 @@ STATE: {HandlePickup} ~~ {
 
 STATE: {Pickup} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3544,7 +3664,12 @@ STATE: {Pickup} ~~ {
 
 STATE: {HandleGive} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`capturegroup_itemtext`, `capturegroup_giveto`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3579,7 +3704,12 @@ STATE: {HandleGive} ~~ {
 
 STATE: {HandleGiveAll} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`capturegroup_itemtext`, `capturegroup_giveto`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3614,7 +3744,12 @@ STATE: {HandleGiveAll} ~~ {
 
 STATE: {AutoGive} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3638,7 +3773,12 @@ STATE: {AutoGive} ~~ {
 
 STATE: {Give} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3722,7 +3862,12 @@ STATE: {Give} ~~ {
 
 STATE: {GiveAll} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3770,7 +3915,12 @@ STATE: {GiveAll} ~~ {
 
 STATE: {AutoCombine} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`, `hasCombined`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3823,7 +3973,12 @@ STATE: {AutoCombine} ~~ {
 
 STATE: {Combine} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`wosource`, `wotarget`, `success`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3868,7 +4023,12 @@ STATE: {Combine} ~~ {
 
 STATE: {HandleTrash} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Expr {(help)#getvar[capturegroup_trashtext]}
@@ -3905,7 +4065,12 @@ STATE: {HandleTrash} ~~ {
 
 STATE: {AutoTrash} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Find the trash items the character has in inventory
@@ -3929,7 +4094,12 @@ STATE: {AutoTrash} ~~ {
 
 STATE: {GiveTrash} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `items`, `giving`, `trashNPC`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -3990,7 +4160,12 @@ STATE: {GiveTrash} ~~ {
 
 STATE: {HandlePass} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `capturegroup_passtext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4015,7 +4190,12 @@ STATE: {HandlePass} ~~ {
 
 STATE: {PassWait} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `hasItem`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4053,7 +4233,12 @@ STATE: {PassWait} ~~ {
 
 STATE: {PassGive} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4091,7 +4276,12 @@ STATE: {PassGive} ~~ {
 
 STATE: {HandleUse} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#use help`
@@ -4113,7 +4303,12 @@ STATE: {HandleUse} ~~ {
 
 STATE: {Use} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Check to see if item is on the landscape
@@ -4147,7 +4342,12 @@ STATE: {Use} ~~ {
 
 STATE: {UseInventory} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Use inventory item a single time since we won't get feedback
@@ -4163,7 +4363,12 @@ STATE: {UseInventory} ~~ {
 
 STATE: {UseLandscape} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -4228,7 +4433,12 @@ STATE: {HandleCheck} ~~ {
 
 	~~ TODO: distance
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Handle `#check help`
@@ -4308,7 +4518,12 @@ STATE: {HandleCheck} ~~ {
 
 STATE: {AutoLoot} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if there are no corpses
@@ -4346,7 +4561,12 @@ STATE: {AutoLoot} ~~ {
 
 STATE: {Loot} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4388,7 +4608,12 @@ STATE: {Loot} ~~ {
 
 STATE: {OpenCorpse} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
@@ -4420,7 +4645,12 @@ STATE: {OpenCorpse} ~~ {
 
 STATE: {LootCorpse} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
@@ -4513,7 +4743,12 @@ STATE: {LootCorpse} ~~ {
 
 STATE: {CloseCorpse} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
@@ -4539,7 +4774,12 @@ STATE: {CloseCorpse} ~~ {
 
 STATE: {UsePortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -4606,7 +4846,12 @@ STATE: {UsePortal} ~~ {
 
 STATE: {UsePortalNPC} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -4655,7 +4900,12 @@ STATE: {UsePortalNPC} ~~ {
 
 STATE: {UseVRPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -4688,7 +4938,12 @@ STATE: {UseVRPortal} ~~ {
 
 STATE: {LeaderCheck} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -4745,7 +5000,12 @@ STATE: {LeaderCheck} ~~ {
 
 STATE: {HandleFellow} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Expr {(help)#getvar[capturegroup_fellowtext]}
@@ -4857,7 +5117,12 @@ STATE: {HandleFellow} ~~ {
 
 STATE: {FellowCreate} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Create the fellow
@@ -4877,7 +5142,12 @@ STATE: {FellowCreate} ~~ {
 
 STATE: {FellowInvite} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Create blacklist
@@ -4918,7 +5188,12 @@ STATE: {FellowInvite} ~~ {
 
 STATE: {FellowNearby} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Abort if not in a fellow
@@ -4970,7 +5245,12 @@ STATE: {FellowNearby} ~~ {
 
 STATE: {FellowAdd} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	IF: Always
@@ -5029,7 +5309,12 @@ STATE: {FellowAdd} ~~ {
 
 STATE: {HandleRecall} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -5074,7 +5359,12 @@ STATE: {HandleRecall} ~~ {
 
 STATE: {HandleCommandRecall} ~~{
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -5125,7 +5415,12 @@ STATE: {HandleCommandRecall} ~~{
 
 
 STATE: {HandleSummonPortal} ~~ {
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	~~ Return to Idle if the spell isn't known
@@ -5164,7 +5459,12 @@ STATE: {HandleSummonPortal} ~~ {
 
 STATE: {TrycastSummonPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	IF: Expr {getvar[currentAttemptCount]>=getvar[maxCastAttempts]} ~~ Maximum number of cast attempts reached
@@ -5189,7 +5489,12 @@ STATE: {TrycastSummonPortal} ~~ {
 
 STATE: {LocateSummonedPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	IF: All
@@ -5220,7 +5525,12 @@ STATE: {LocateSummonedPortal} ~~ {
 
 STATE: {ListenForSummonPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	IF:	All
@@ -5245,7 +5555,12 @@ STATE: {ListenForSummonPortal} ~~ {
 
 STATE: {UseSummonedPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	CallState {CleanUpHandleSummonPortal} {Idle}
 
 	~~ Disable all options
@@ -5276,7 +5591,12 @@ STATE: {UseSummonedPortal} ~~ {
 
 STATE: {CleanUpHandleSummonPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Clear all variables
@@ -5289,7 +5609,12 @@ STATE: {CleanUpHandleSummonPortal} ~~ {
 
 
 STATE: {HandleCount} ~~ {
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Display help for #count
@@ -5312,7 +5637,12 @@ STATE: {HandleCount} ~~ {
 
 STATE: {HandleLockpick} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -5382,7 +5712,12 @@ STATE: {HandleLockpick} ~~ {
 
 STATE: {LockpickItem} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -5469,7 +5804,12 @@ STATE: {LockpickItem} ~~ {
 
 STATE: {HandleSolve} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`capturegroup_solvetext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -5573,7 +5913,12 @@ STATE: {SolveStudy} ~~ {
 
 STATE: {HandleTimers} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Display help for #timer
@@ -5600,7 +5945,12 @@ STATE: {HandleTimers} ~~ {
 
 STATE: {HandlePeriodicCommands} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Display help for #periodic
@@ -5651,7 +6001,12 @@ STATE: {HandlePeriodicCommands} ~~ {
 
 STATE: {UseNPC} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Warn if commands are issued
@@ -5763,7 +6118,12 @@ STATE: {UseNPC} ~~ {
 
 STATE: {UseVendor} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
 	~~ Disable all options
@@ -5790,7 +6150,12 @@ STATE: {UseVendor} ~~ {
 
 STATE: {ReadContracts} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {clearvar[contractrx]}
 				SetState {Idle}

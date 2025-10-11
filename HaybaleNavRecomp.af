@@ -76,6 +76,16 @@ STATE: {Default} ~~ {
 
 STATE: {ToHaven} ~~ {
 
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
 
@@ -101,6 +111,16 @@ STATE: {ToHaven} ~~ {
 
 STATE: {ToMeiLing} ~~ {
 
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Mei Ling\`, $COLOR_INFO]`, `false`]}
 
@@ -119,6 +139,16 @@ STATE: {ToMeiLing} ~~ {
 
 
 STATE: {BuyFromMeiLing} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Buying from Mei Ling\`, $COLOR_INFO]`, `false`]}
@@ -139,6 +169,17 @@ STATE: {BuyFromMeiLing} ~~ {
 
 
 STATE: {ToZion} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Zion Blackcloak\`, $COLOR_INFO]`, `false`]}
 
@@ -154,6 +195,16 @@ STATE: {ToZion} ~~ {
 
 
 STATE: {BuyFromZion} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Buying from Zion Blackcloak\`, $COLOR_INFO]`, `false`]}

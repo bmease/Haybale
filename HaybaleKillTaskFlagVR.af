@@ -70,7 +70,12 @@ STATE: {Default} ~~ {
 	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
 		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Viridian Rise v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -101,8 +106,15 @@ STATE: {Default} ~~ {
 
 STATE: {VrRecall} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Idle}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Return to Idle if the spell isn't known
 	IF: Not Expr {getisspellknown[$VrRecallSpell]}
@@ -126,7 +138,12 @@ STATE: {VrRecall} ~~ {
 
 STATE: {ToInsideVR} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -137,11 +154,11 @@ STATE: {ToInsideVR} ~~ {
 	IF: All
 			NavEmpty
 			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Viridian Portal`]==false&&1}
-		DO: DoAll				
+		DO: DoAll
 				DoExpr {setvar[targetNPCType,$NPC]}
 				DoExpr {setvar[targetNPC,`Ancient Statue of the Viridian Rise`]}
 				CallState {UseNPC} {ToInsideVR}
-	
+
 	IF: All
 			Expr {wobjectfindnearestbynameandobjectclass[$NPC, `Viridian Portal`]!=false&&1}
 		DO:	DoAll
@@ -151,14 +168,19 @@ STATE: {ToInsideVR} ~~ {
 
 STATE: {UseVrPortal} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
 
 	IF:	All
 			Expr {isportaling[]==false}
-		DO:	DoAll				
+		DO:	DoAll
 				DoExpr {actiontryuseitem[wobjectfindnearestbynameandobjectclass[$NPC, `Viridian Portal`]]}
 				SetState {UseVrPortal}
 
@@ -171,7 +193,12 @@ STATE: {UseVrPortal} ~~ {
 
 STATE: {UseNPC} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -193,7 +220,12 @@ STATE: {UseNPC} ~~ {
 
 STATE: {ToShalrionMarker} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -202,7 +234,7 @@ STATE: {ToShalrionMarker} ~~ {
 		DO: EmbedNav ToShalrionMarker {ToShalrionMarker}
 
 	IF: NavEmpty
-		DO: DoAll				
+		DO: DoAll
 				DoExpr {setvar[targetNPCType,$NPC]}
 				DoExpr {setvar[targetNPC,`Shalrion's Marker`]}
 				CallState {UseNPC} {ToBrellegiasMarker}
@@ -212,7 +244,12 @@ STATE: {ToShalrionMarker} ~~ {
 
 STATE: {ToBrellegiasMarker} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -221,7 +258,7 @@ STATE: {ToBrellegiasMarker} ~~ {
 		DO: EmbedNav ToBrellegiasMarker {ToBrellegiasMarker}
 
 	IF: NavEmpty
-		DO: DoAll				
+		DO: DoAll
 				DoExpr {setvar[targetNPCType,$FOCI]}
 				DoExpr {setvar[targetNPC,`Brellegia's Marker`]}
 				CallState {UseNPC} {ToAangesilusMarker}
@@ -231,7 +268,12 @@ STATE: {ToBrellegiasMarker} ~~ {
 
 STATE: {ToAangesilusMarker} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -240,7 +282,7 @@ STATE: {ToAangesilusMarker} ~~ {
 		DO: EmbedNav ToAangesilusMarker {ToAangesilusMarker}
 
 	IF: NavEmpty
-		DO: DoAll				
+		DO: DoAll
 				DoExpr {setvar[targetNPCType,$NPC]}
 				DoExpr {setvar[targetNPC,`Aangesilus' Marker`]}
 				CallState {UseNPC} {ToSwiftsMarker}
@@ -250,7 +292,12 @@ STATE: {ToAangesilusMarker} ~~ {
 
 STATE: {ToSwiftsMarker}
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -259,7 +306,7 @@ STATE: {ToSwiftsMarker}
 		DO: EmbedNav ToSwiftsMarker {ToSwiftsMarker}
 
 	IF: NavEmpty
-		DO: DoAll				
+		DO: DoAll
 				DoExpr {setvar[targetNPCType,$NPC]}
 				DoExpr {setvar[targetNPC,`Swift's Marker`]}
 				CallState {UseNPC} {Finished}

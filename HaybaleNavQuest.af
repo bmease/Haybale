@@ -40,7 +40,12 @@
 
 STATE: {Default} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -68,7 +73,12 @@ STATE: {Default} ~~ {
 
 STATE: {ParseArguments} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -108,7 +118,12 @@ STATE: {ParseArguments} ~~ {
 
 STATE: {Dispatch} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -180,7 +195,12 @@ STATE: {CallMeta} ~~ {
 
 STATE: {HandleRecall} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -208,7 +228,12 @@ STATE: {HandleRecall} ~~ {
 
 STATE: {UseItem} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -258,7 +283,12 @@ STATE: {UseItem} ~~ {
 
 STATE: {InitMoufP} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -281,7 +311,12 @@ STATE: {InitMoufP} ~~ {
 
 STATE: {InitLiberationUziz} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -304,7 +339,12 @@ STATE: {InitLiberationUziz} ~~ {
 
 STATE: {InitPurgingCorruption} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -327,7 +367,12 @@ STATE: {InitPurgingCorruption} ~~ {
 
 STATE: {InitDreamReaver} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -350,7 +395,12 @@ STATE: {InitDreamReaver} ~~ {
 
 STATE: {InitSerpentBurialGrounds} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -373,7 +423,12 @@ STATE: {InitSerpentBurialGrounds} ~~ {
 
 STATE: {InitHaltDericost} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -400,7 +455,12 @@ STATE: {InitHaltDericost} ~~ {
 
 STATE: {InitFirstSister} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -420,7 +480,12 @@ STATE: {InitFirstSister} ~~ {
 
 STATE: {InitMhoireCastle} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -440,7 +505,12 @@ STATE: {InitMhoireCastle} ~~ {
 
 STATE: {InitNanjouStockade} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -463,7 +533,12 @@ STATE: {InitNanjouStockade} ~~ {
 
 STATE: {InitLostLore} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -484,7 +559,12 @@ STATE: {InitLostLore} ~~ {
 
 STATE: {InitGerainesStudy} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -507,7 +587,12 @@ STATE: {InitGerainesStudy} ~~ {
 
 STATE: {InitCountPhainor} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -534,7 +619,12 @@ STATE: {InitCountPhainor} ~~ {
 
 STATE: {InitIzexi} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -554,7 +644,12 @@ STATE: {InitIzexi} ~~ {
 
 STATE: {InitSaveKarul} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -577,7 +672,12 @@ STATE: {InitSaveKarul} ~~ {
 
 STATE: {InitDeewains} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -604,7 +704,12 @@ STATE: {InitDeewains} ~~ {
 
 STATE: {InitReleasingLight} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -624,7 +729,12 @@ STATE: {InitReleasingLight} ~~ {
 
 STATE: {InitFourCorners} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -644,7 +754,12 @@ STATE: {InitFourCorners} ~~ {
 
 STATE: {ToFrigidGrotto} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -666,7 +781,12 @@ STATE: {ToFrigidGrotto} ~~ {
 
 STATE: {ToVirindiEdifice} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -688,7 +808,12 @@ STATE: {ToVirindiEdifice} ~~ {
 
 STATE: {ToCuratorOfTormentsStudy} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -710,7 +835,12 @@ STATE: {ToCuratorOfTormentsStudy} ~~ {
 
 STATE: {ToMaskedPreface} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -732,7 +862,12 @@ STATE: {ToMaskedPreface} ~~ {
 
 STATE: {ToKraytussNallah} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -754,7 +889,12 @@ STATE: {ToKraytussNallah} ~~ {
 
 STATE: {ToSerpentBurialGrounds} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -776,7 +916,12 @@ STATE: {ToSerpentBurialGrounds} ~~ {
 
 STATE: {ToLadyDaenerah} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -798,7 +943,12 @@ STATE: {ToLadyDaenerah} ~~ {
 
 STATE: {ToMenhirRings} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -826,7 +976,12 @@ STATE: {ToMenhirRings} ~~ {
 
 STATE: {ToKaltus} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -848,7 +1003,12 @@ STATE: {ToKaltus} ~~ {
 
 STATE: {ToTempleOfMornings} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -868,7 +1028,12 @@ STATE: {ToTempleOfMornings} ~~ {
 
 STATE: {ToGuardianStatue} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -890,7 +1055,12 @@ STATE: {ToGuardianStatue} ~~ {
 
 STATE: {UseMhoireCourtyard} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -912,7 +1082,12 @@ STATE: {UseMhoireCourtyard} ~~ {
 
 STATE: {ToMhoireCastleNortheast} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -934,7 +1109,12 @@ STATE: {ToMhoireCastleNortheast} ~~ {
 
 STATE: {ToShorikan} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -956,7 +1136,12 @@ STATE: {ToShorikan} ~~ {
 
 STATE: {ToLostRuins} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -976,7 +1161,12 @@ STATE: {ToLostRuins} ~~ {
 
 STATE: {ToGerainesStudy} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -996,7 +1186,12 @@ STATE: {ToGerainesStudy} ~~ {
 
 STATE: {ToGrularrWaydo} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1018,7 +1213,12 @@ STATE: {ToGrularrWaydo} ~~ {
 
 STATE: {ToCountPhainorsTomb} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1050,7 +1250,12 @@ STATE: {ToCountPhainorsTomb} ~~ {
 
 STATE: {ToFahneph} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1072,7 +1277,12 @@ STATE: {ToFahneph} ~~ {
 
 STATE: {ToFoundryofIzexi} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1092,7 +1302,12 @@ STATE: {ToFoundryofIzexi} ~~ {
 
 STATE: {ToLtRoothe} ~~{
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1114,7 +1329,12 @@ STATE: {ToLtRoothe} ~~{
 
 STATE: {ToSamuraiHausu} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1134,7 +1354,12 @@ STATE: {ToSamuraiHausu} ~~ {
 
 STATE: {ToSnowyValley} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1154,7 +1379,12 @@ STATE: {ToSnowyValley} ~~ {
 
 STATE: {ToDarkCavern} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1177,7 +1407,12 @@ STATE: {ToDarkCavern} ~~ {
 
 STATE: {ToShahHi} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1199,7 +1434,12 @@ STATE: {ToShahHi} ~~ {
 
 STATE: {ToSanctuaryRecluse} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
@@ -1219,7 +1459,12 @@ STATE: {ToSanctuaryRecluse} ~~ {
 
 STATE: {ToBlessedCave} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}

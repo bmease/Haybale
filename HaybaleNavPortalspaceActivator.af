@@ -40,8 +40,15 @@
 
 STATE: {Default} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO: DoAll
@@ -62,8 +69,15 @@ STATE: {Default} ~~ {
 
 STATE: {ParseArguments} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	~~ Warn if arguments are not defined
 	IF: Expr {testvar[HBArguments]==false}
@@ -100,8 +114,15 @@ STATE: {ParseArguments} ~~ {
 
 STATE: {NavToDestination} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO: DoAll
@@ -142,8 +163,15 @@ STATE: {NavToDestination} ~~ {
 
 STATE: {ToHaven} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Haven\`, $COLOR_INFO]`, `false`]}
@@ -171,8 +199,15 @@ STATE: {ToHaven} ~~ {
 
 STATE: {ToEmpyreanPortalspaceActivator} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Always
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Navigating to Empyrean Portalspace Activator\`, $COLOR_INFO]`, `false`]}
@@ -195,8 +230,15 @@ STATE: {ToEmpyreanPortalspaceActivator} ~~ {
 
 STATE: {UseEmpyreanPortalspaceActivator} ~~ {
 
-	IF:	ChatMatch {![Rr]eset}
-		DO:	SetState {Finished}
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
 
 	IF: Expr {testvar[using]==false}
 		DO:	DoAll
