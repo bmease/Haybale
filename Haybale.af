@@ -1349,6 +1349,15 @@ STATE: {Idle} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {HandleSolve}
 
+	~~ Handle Vitals
+	IF:	All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#vitals (?<vitaltext>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {HandleVitals}
+
 	~~ Handle Version
 	IF: ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#version\"$} {}
 		DO: DoAll
@@ -3043,7 +3052,7 @@ STATE: {MetaLoad} ~~ {
 
 	~~ Turn on vitals if they are off
 	IF: Expr {@HBVitals==false}
-		DO: CallState {ToggleVitals} {MetaLoad}
+		DO: CallState {VitalsOn} {MetaLoad}
 
 	~~ load nicknamed meta(s)
 	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]!=-1}
@@ -3154,7 +3163,7 @@ STATE: {ProfileLoad} ~~ {
 
 	~~ Turn on vitals if they are off
 	IF: Expr {@HBVitals==false}
-		DO: CallState {ToggleVitals} {ProfileLoad}
+		DO: CallState {VitalsOn} {ProfileLoad}
 
 	~~ load profile
 	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]!=-1}
@@ -5911,6 +5920,72 @@ STATE: {SolveStudy} ~~ {
 ~~ }
 
 
+STATE: {HandleVitals} ~~{
+
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Display help for #vitals
+	IF: Expr {(help)#getvar[capturegroup_vitaltext]}
+		DO: DoAll
+				DoExpr {echo[`#vitals help: Display Help for vitals command.`, $COLOR_INFO]}
+				DoExpr {echo[`#vitals on: Turn on combat, buffing, and health.`, $COLOR_INFO]}
+				DoExpr {echo[`#vitals off: Turn off combat, buffing, and health.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Turn on vitals if they are off
+	IF: All
+			Expr {(on)#getvar[capturegroup_vitaltext]}
+			Expr {@HBVitals==false}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I have turned on my vitals.\`]`, `false`]}
+				CallState {VitalsOn} {Idle}
+
+	~~ Warn if turning on vitals and they are already on
+	IF: All
+			Expr {(on)#getvar[capturegroup_vitaltext]}
+			Expr {@HBVitals==true}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, My vitals are already on!\`]`, `false`]}
+				SetState {Idle}
+
+	~~ Turn off vitals if they are on
+	IF: All
+			Expr {(off)#getvar[capturegroup_vitaltext]}
+			Expr {@HBVitals==true}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I have turned off my vitals.\`]`, `false`]}
+				CallState {VitalsOff} {Idle}
+
+	~~ Warn if turning off vitals and they are already off
+	IF: All
+			Expr {(off)#getvar[capturegroup_vitaltext]}
+			Expr {@HBVitals==false}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, My vitals are already off!\`]`, `false`]}
+				SetState {Idle}
+
+	~~ Handle no match for vitaltext
+	IF: Expr {$LEVEL_WARN>=@HBDebug}
+		DO: DoAll
+				DoExpr {echo[`[WARN] No matching action for #vitals`, $COLOR_WARN]}
+				SetState {Idle}
+
+~~ }
+
+
 STATE: {HandleTimers} ~~ {
 
 	IF: All
@@ -6987,11 +7062,44 @@ STATE: {ChatCommand} ~~ {
 
 ~~ ~~ }
 
-STATE: {ToggleVitals} ~~ {
 
+STATE: {VitalsOn} ~~ {
+
+	~~ Do nothing if vitals are already on
 	IF: Expr {@HBVitals==true}
+		DO: Return
+
+	~~ Turn on Combat/Healing/Buffing
+	IF: Always
 		DO: DoAll
-				DoExpr {@HBVitals=false} ~~ Toggle vitals
+				DoExpr {@HBVitals=true}
+				DoExpr {vtsetsetting[EnableBuffing, @HBOriginalVitalsEnableBuffing]}
+				DoExpr {vtsetsetting[EnableCombat, @HBOriginalVitalsEnableCombat]}
+				DoExpr {vtsetsetting[EnableLooting, @HBOriginalVitalsEnableLooting]}
+				DoExpr {vtsetsetting[Recharge-Norm-HitP, @HBOriginalVitalsRechargeNormHitP]}
+				DoExpr {vtsetsetting[Recharge-Norm-Stam, @HBOriginalVitalsRechargeNormStam]}
+				DoExpr {vtsetsetting[Recharge-Norm-Mana, @HBOriginalVitalsRechargeNormMana]}
+				DoExpr {vtsetsetting[Recharge-NoTarg-HitP, @HBOriginalVitalsRechargeNoTargHitP]}
+				DoExpr {vtsetsetting[Recharge-NoTarg-Stam, @HBOriginalVitalsRechargeNoTargStam]}
+				DoExpr {vtsetsetting[Recharge-NoTarg-Mana, @HBOriginalVitalsRechargeNoTargMana]}
+				DoExpr {vtsetsetting[Recharge-Helper-HitP, @HBOriginalVitalsRechargeHelperHitP]}
+				DoExpr {vtsetsetting[Recharge-Helper-Stam, @HBOriginalVitalsRechargeHelperStam]}
+				DoExpr {vtsetsetting[Recharge-Helper-Mana, @HBOriginalVitalsRechargeHelperMana]}
+				Return
+
+~~ }
+
+
+STATE: {VitalsOff} ~~ {
+
+	~~ Do nothing if vitals are already off
+	IF: Expr {@HBVitals==false}
+		DO: Return
+
+	~~ Turn off Combat/Healing/Buffing
+	IF: Always
+		DO: DoAll
+				DoExpr {@HBVitals=false}
 				DoExpr {setpvar[HBOriginalVitalsEnableBuffing, cstr[vtgetsetting[EnableBuffing]]]}
 				DoExpr {setpvar[HBOriginalVitalsEnableCombat, cstr[vtgetsetting[EnableCombat]]]}
 				DoExpr {setpvar[HBOriginalVitalsEnableLooting, cstr[vtgetsetting[EnableLooting]]]}
@@ -7018,23 +7126,6 @@ STATE: {ToggleVitals} ~~ {
 				DoExpr {vtsetsetting[Recharge-Helper-Mana, `0`]}
 				Return
 
-	IF: Expr {@HBVitals==false}
-		DO: DoAll
-				DoExpr {@HBVitals=true} ~~ Toggle vitals
-				DoExpr {vtsetsetting[EnableBuffing, @HBOriginalVitalsEnableBuffing]}
-				DoExpr {vtsetsetting[EnableCombat, @HBOriginalVitalsEnableCombat]}
-				DoExpr {vtsetsetting[EnableLooting, @HBOriginalVitalsEnableLooting]}
-				DoExpr {vtsetsetting[Recharge-Norm-HitP, @HBOriginalVitalsRechargeNormHitP]}
-				DoExpr {vtsetsetting[Recharge-Norm-Stam, @HBOriginalVitalsRechargeNormStam]}
-				DoExpr {vtsetsetting[Recharge-Norm-Mana, @HBOriginalVitalsRechargeNormMana]}
-				DoExpr {vtsetsetting[Recharge-NoTarg-HitP, @HBOriginalVitalsRechargeNoTargHitP]}
-				DoExpr {vtsetsetting[Recharge-NoTarg-Stam, @HBOriginalVitalsRechargeNoTargStam]}
-				DoExpr {vtsetsetting[Recharge-NoTarg-Mana, @HBOriginalVitalsRechargeNoTargMana]}
-				DoExpr {vtsetsetting[Recharge-Helper-HitP, @HBOriginalVitalsRechargeHelperHitP]}
-				DoExpr {vtsetsetting[Recharge-Helper-Stam, @HBOriginalVitalsRechargeHelperStam]}
-				DoExpr {vtsetsetting[Recharge-Helper-Mana, @HBOriginalVitalsRechargeHelperMana]}
-				Return
-
 ~~ }
 
 
@@ -7044,12 +7135,12 @@ STATE: {HotkeyToggleVitals} ~~ {
 	IF: Expr {@HBVitals==true}
 		DO: DoAll
 				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Turning off vitals\`, $COLOR_INFO]`, `false`]}
-				CallState {ToggleVitals} {Idle}
+				CallState {VitalsOff} {Idle}
 
 	IF: Expr {@HBVitals==false}
 		DO: DoAll
 				DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Turning on vitals\`, $COLOR_INFO]`, `false`]}
-				CallState {ToggleVitals} {Idle}
+				CallState {VitalsOn} {Idle}
 
 	IF: Always
 		DO: SetState {Idle}
