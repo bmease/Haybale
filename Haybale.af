@@ -235,6 +235,9 @@ STATE: {Default} ~~ {
 				~~ Whether to permit everyone in your $CharacterList when you die
 				DoExpr {setpvar[HBDeathPermit, ifthen[testpvar[HBDeathPermit], `@HBDeathPermit`, `true`]]}
 
+				~~ Whether to set the VTank option Attack Distance
+				DoExpr {setpvar[HBVTOptionAttackDistanceIgnore, ifthen[testpvar[HBVTOptionAttackDistanceIgnore], `@HBVTOptionAttackDistanceIgnore`, `false`]]}
+
 				~~ Whether the Actions view is open or closed
 				DoExpr {setpvar[HBViewsActions, ifthen[testpvar[HBViewsActions], `@HBViewsActions`, `false`]]}
 
@@ -1302,14 +1305,12 @@ STATE: {Idle} ~~ {
 
 	~~ Handle VTank Options
 	IF:	All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#vtoption (?<optiontext>.*)\"$} {}
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#vtoption (?<optionkey>.*) (?<optionvalue>.*)\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoAll
-				ChatExpr {`/vt opt set `+$capturegroup_optiontext}
-				SetState {Idle}
+		DO: SetState {HandleVTOptions}
 
 	~~ Handle Echo
 	IF:	All
@@ -1497,6 +1498,38 @@ STATE: {CallMeta} ~~ {
 				DoExpr {$meta=listpop[$MetaCallQueue, 0]}
 				DoExpr {$HBReturnMeta=`Haybale`}
 				ChatExpr {`/vt meta load `+$meta}
+
+~~ }
+
+
+STATE: {HandleVTOptions} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Ignore attackdistance if @HBVTOptionAttackDistanceIgnore is set
+	IF: All
+			Expr {$capturegroup_optionkey==`attackdistance`}
+			Expr {@HBVTOptionAttackDistanceIgnore==true}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Ignoring VTank option for attackdistance.\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	~~ Set the VTank option
+	IF: Always
+		DO: DoAll
+				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$capturegroup_optionvalue}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Set VTank option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
+				SetState {Idle}
 
 ~~ }
 
