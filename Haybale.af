@@ -1523,11 +1523,22 @@ STATE: {HandleVTOptions} ~~ {
 				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Convert VTank ranges to the native format
+	IF: Any
+			Expr {listcontains[listcreate[`attackdistance`, `approachdistance`, `navclosestoprange`], $capturegroup_optionkey]}
+			Expr {listcontains[listcreate[`AttackDistance`, `ApproachDistance`, `NavCloseStopRange`], $capturegroup_optionkey]}
+		DO: DoAll
+				DoExpr {setvar[value, cnumber[$capturegroup_optionvalue]/240]} ~~ Range divided by 240
+				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$value}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`, `value`], `clearvar[$1]`]}
+				SetState {Idle}
+
 	~~ Set the VTank option
 	IF: Always
 		DO: DoAll
 				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$capturegroup_optionvalue}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Set VTank option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
 				SetState {Idle}
 
