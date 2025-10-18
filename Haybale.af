@@ -1525,8 +1525,8 @@ STATE: {HandleVTOptions} ~~ {
 
 	~~ Convert VTank ranges to the native format
 	IF: Any
-			Expr {listcontains[listcreate[`attackdistance`, `approachdistance`, `navclosestoprange`], $capturegroup_optionkey]}
 			Expr {listcontains[listcreate[`AttackDistance`, `ApproachDistance`, `NavCloseStopRange`], $capturegroup_optionkey]}
+			Expr {listcontains[listcreate[`attackdistance`, `approachdistance`, `navclosestoprange`], $capturegroup_optionkey]}
 		DO: DoAll
 				DoExpr {setvar[value, cnumber[$capturegroup_optionvalue]/240]} ~~ Range divided by 240
 				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$value}
@@ -3173,6 +3173,12 @@ STATE: {ProfileAdd} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
+
+	~~ Warn if the profile nickname already exists
+	IF: Expr {listcontains[@HBProfileKeys, $capturegroup_profilename]}
+		DO: DoAll
+				DoExpr {echo[`Profile nickname already exists, ignoring!`, $COLOR_WARN]}
+				SetState {Idle}
 
 	~~ Add a profile
 	IF: Always
