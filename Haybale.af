@@ -999,6 +999,7 @@ STATE: {Idle} ~~ {
 				DoExpr {$HBTimerMsg=@HBTimerWeaponsMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:Haybale-Timer.xml}
+				DoExpr {echo[`[INFO] Starting a timer for Rynthid Weapons.`, $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Start a timer for VR Speed runs
@@ -1010,6 +1011,7 @@ STATE: {Idle} ~~ {
 				DoExpr {$HBTimerMsg=@HBTimerVRMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:Haybale-Timer.xml}
+				DoExpr {echo[`[INFO] Starting a timer for Viridian Rise Speedrun.`, $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Reset the timer for HMD if the Ward's appear
@@ -1024,6 +1026,7 @@ STATE: {Idle} ~~ {
 		DO: DoAll
 				DoExpr {listmap[listcreate[`HBTimer`, `HBTimerAmount`, `HBTimerMsg`], `clearvar[$1]`]}
 				DestroyView {Timer}
+				DoExpr {echo[`[WARN] Disabling timer for Hoshino Must Die!`, $COLOR_WARN]}
 				SetState {Idle}
 
 	~~ Start a timer for HMD
@@ -1039,6 +1042,7 @@ STATE: {Idle} ~~ {
 				DoExpr {$HBTimerMsg=@HBTimerHMDMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:Haybale-Timer.xml}
+				DoExpr {echo[`[INFO] Starting a timer for Hoshino Must Die.`, $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Handle timer message
