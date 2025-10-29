@@ -208,6 +208,12 @@ STATE: {Default} ~~ {
 				~~ Message to send at the end of automatic VR Speed Runs timer
 				DoExpr {setpvar[HBTimerVRMsg, ifthen[testpvar[HBTimerVRMsg], `@HBTimerVRMsg`, `false`]]}
 
+				~~ Automatically start a timer for HMD
+				DoExpr {setpvar[HBTimerHMD, ifthen[testpvar[HBTimerHMD], `@HBTimerHMD`, `true`]]}
+
+				~~ Message to send at the end of automatic HMD timer
+				DoExpr {setpvar[HBTimerHMDMsg, ifthen[testpvar[HBTimerHMDMsg], `@HBTimerHMDMsg`, `false`]]}
+
 				~~ Distance to use nearest trash npc
 				DoExpr {setpvar[HBTrashDistance, ifthen[testpvar[HBTrashDistance], `@HBTrashDistance`, `15`]]}
 
@@ -1002,6 +1008,35 @@ STATE: {Idle} ~~ {
 		DO: DoAll
 				DoExpr {$HBTimerAmount=60*30}
 				DoExpr {$HBTimerMsg=@HBTimerVRMsg}
+				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
+				CreateView {Timer} {:Haybale-Timer.xml}
+				SetState {Idle}
+
+	~~ Reset the timer for HMD if the Ward's appear
+	IF: All
+			BlockE 654D0000  ~~ Hoshino Kei's Fortress
+			Expr {@HBTimerHMD==true}
+			Expr {testvar[HBTimer]==true}
+			Any
+				Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Ward of Decay`]]==$TYPE_OBJECT}
+				Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Ward of Blight`]]==$TYPE_OBJECT}
+				Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Ward of Darkness`]]==$TYPE_OBJECT}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`HBTimer`, `HBTimerAmount`, `HBTimerMsg`], `clearvar[$1]`]}
+				DestroyView {Timer}
+				SetState {Idle}
+
+	~~ Start a timer for HMD
+	IF: All
+			BlockE 654D0000  ~~ Hoshino Kei's Fortress
+			Expr {@HBTimerHMD==true}
+			Expr {testvar[HBTimer]==false}
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Spirit of Khira'thi`]]==$TYPE_OBJECT}
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Spirit of Rhia'ni`]]==$TYPE_OBJECT}
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Spirit of Dana'lith`]]==$TYPE_OBJECT}
+		DO: DoAll
+				DoExpr {$HBTimerAmount=60*5}
+				DoExpr {$HBTimerMsg=@HBTimerHMDMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:Haybale-Timer.xml}
 				SetState {Idle}
