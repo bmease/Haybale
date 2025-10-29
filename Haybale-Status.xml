@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<view width="310" height="85" title="Status">
+    <control type="layout">
+
+        <control type="button" name="Progress-0" left="5" top="5" width="25" height="25" text="!" />
+        <control type="button" name="State-0" left="30" top="5" width="125" height="25" text="Meta State" />
+        <control type="button" name="Name-0" left="155" top="5" width="150" height="25" text="Character Name" />
+
+        <control type="button" name="Progress-1" left="5" top="30" width="25" height="25" text="!" />
+        <control type="button" name="State-1" left="30" top="30" width="125" height="25" text="Meta State" />
+        <control type="button" name="Name-1" left="155" top="30" width="150" height="25" text="Character Name" />
+
+        <control type="button" name="Progress-2" left="5" top="55" width="25" height="25" text="!" />
+        <control type="button" name="State-2" left="30" top="55" width="125" height="25" text="Meta State" />
+        <control type="button" name="Name-2" left="155" top="55" width="150" height="25" text="Character Name" />
+
+    </control>
+</view>

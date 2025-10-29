@@ -25,6 +25,9 @@
         <control type="button" name="Buff On" left="6" top="153" width="75" height="15" text="Buff On" setstate="ChatCommand" actionexpr="setvar[command, `#vtoption enablebuffing true`]" />
         <control type="button" name="Buff Off" left="87" top="153" width="75" height="15" text="Buff Off" setstate="ChatCommand" actionexpr="setvar[command, `#vtoption enablebuffing false`]" />
 
+        <!-- <control type="button" name="ShowStatus" left="6" top="174" width="75" height="15" text="Status >>" setstate="ShowStatus" /> -->
+        <control type="button" name="ShowStatus" left="87" top="174" width="75" height="15" text="Status >>" setstate="ShowStatus" />
+
         <control type="button" name="ShowActions" left="6" top="195" width="75" height="15" text="Actions >>" setstate="ShowActions" />
         <control type="button" name="ShowSettings" left="6" top="216" width="75" height="15" text="Settings >>" setstate="ShowSettings" />
 

@@ -103,7 +103,7 @@ STATE: {Default} ~~ {
 	~~ Initialize HB variables
 	IF: Always
 		DO: DoAll
-				DoExpr {setvar[HBVersion, `2.4.0`]}
+				DoExpr {setvar[HBVersion, `2.5.0-alpha.3`]}
 
 				DoExpr {setpvar[HBDebug, ifthen[testpvar[HBDebug], `@HBDebug`, `$LEVEL_DEBUG`]]}
 				DoExpr {setpvar[HBConfirm, ifthen[testpvar[HBConfirm], `@HBConfirm`, `true`]]}
@@ -243,6 +243,9 @@ STATE: {Default} ~~ {
 
 				~~ Whether the Jump view is open or closed
 				DoExpr {setpvar[HBViewsJump, ifthen[testpvar[HBViewsJump], `@HBViewsJump`, `false`]]}
+
+				~~ Whether the Status view is open or closed
+				DoExpr {setpvar[HBViewsStatus, ifthen[testpvar[HBViewsStatus], `@HBViewsStatus`, `false`]]}
 
 				~~ Use Auto Timers
 				DoExpr {setpvar[HBAutoTimers, ifthen[testpvar[HBAutoTimers], `@HBAutoTimers`, `true`]]}
@@ -465,7 +468,7 @@ STATE: {Default} ~~ {
 		DO:	CreateView {Main} {:Haybale-Main.xml}
 
 	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
-		DO:	DoExpr {echo[`[DEBUG] Che Command v`+$HBVersion+` by Che de Pa of Sundering`, $COLOR_DEBUG]}
+		DO:	DoExpr {echo[`[DEBUG] Haybale v`+$HBVersion+` by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF: Always
 		DO: SetState {Init}
@@ -495,6 +498,42 @@ STATE: {Init} ~~ {
 	~~ Handle calling metas if there's some left in the queue
 	IF: Expr {listcount[$MetaCallQueue]>0}
 		DO: SetState {CallMeta}
+
+	~~ Create &HBStatus variables if they don't exist
+	IF: All
+			Expr {testgvar[HBStatusKeys]==false}
+			Expr {testgvar[HBStatusState]==false}
+			Expr {testgvar[HBStatusProgress]==false}
+		DO: DoAll
+				DoExpr {setgvar[HBStatusKeys, listcreate[$CHARACTER_NAME]]}
+				DoExpr {setgvar[HBStatusState, listcreate[vtgetmetastate[]]]}
+				DoExpr {setgvar[HBStatusProgress, listcreate[`X`]]}
+
+	~~ Add Character Name to &HBStatus variables if they are not present
+	IF: All
+			Expr {testgvar[HBStatusKeys]==true}
+			Expr {testgvar[HBStatusState]==true}
+			Expr {testgvar[HBStatusProgress]==true}
+			Expr {listindexof[&HBStatusKeys, $CHARACTER_NAME]==-1}
+		DO: DoAll
+				DoExpr {listadd[&HBStatusKeys, $CHARACTER_NAME]}
+				DoExpr {listadd[&HBStatusState, vtgetmetastate[]]}
+				DoExpr {listadd[&HBStatusProgress, `X`]}
+
+	~~ Set $HBStatusId to the index of the Character Name
+	IF: All
+			Expr {testgvar[HBStatusKeys]==true}
+			Expr {testgvar[HBStatusState]==true}
+			Expr {testgvar[HBStatusProgress]==true}
+		DO: DoExpr {setvar[HBStatusId, listindexof[&HBStatusKeys, $CHARACTER_NAME]]}
+
+	~~ Attempt to reset the HBStatus variables if they are corrupted
+	IF: Any
+			Expr {listcount[&HBStatusKeys]!=listcount[&HBStatusProgress]}
+			Expr {listcount[&HBStatusKeys]!=listcount[&HBStatusState]}
+		DO: DoAll
+				DoExpr {setgvar[HBStatusProgress, listmap[&HBStatusKeys, `E`]]}
+				DoExpr {setgvar[HBStatusState, listmap[&HBStatusKeys, `Error`]]}
 
 	IF: Always
 		DO: DoAll
@@ -742,6 +781,11 @@ STATE: {SetupPreviousPage} ~~ {
 
 
 STATE: {Idle} ~~ {
+
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}  ~~ UB does not handle updating a list in place so we remove it first and then add it back. We do it in the same DoExpr in hopes that it'll be atomic.
 
 	~~ Message leader on death
 	IF: All
@@ -1404,6 +1448,31 @@ STATE: {Idle} ~~ {
 			Expr {uiviewvisible[Timer]}
 			Expr {$total_seconds=$HBTimerAmount-stopwatchelapsedseconds[$HBTimer]}
 			Expr {uisetlabel[uigetcontrol[Timer, Timer], cstrf[floor[$total_seconds%3600/60], `00`]+`:`+cstrf[$total_seconds%3600%60, `00`]]}
+			Never
+		DO: None
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
 			Never
 		DO: None
 
@@ -3517,6 +3586,37 @@ STATE: {Jump} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {Jump}
@@ -3529,6 +3629,7 @@ STATE: {Jump} ~~ {
 	IF:	ChatMatch {^You think, "Jumper Success"}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished jumping\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Jump failure
@@ -3675,6 +3776,37 @@ STATE: {Pickup} ~~ {
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {Pickup}
@@ -3696,6 +3828,7 @@ STATE: {Pickup} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No \`+$item+\` nearby\`]`, `false`]}
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Stop picking up if your items are above the initial value or ChatMatch
@@ -3707,6 +3840,7 @@ STATE: {Pickup} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Picked up \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Pickup the item from the landscape
@@ -3842,6 +3976,37 @@ STATE: {Give} ~~ {
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Warn if commands are issued
 	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
@@ -3865,6 +4030,7 @@ STATE: {Give} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to give \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Successfully handed off item
@@ -3875,6 +4041,7 @@ STATE: {Give} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Handle $item being a list
@@ -3891,6 +4058,7 @@ STATE: {Give} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Give to nearest Player
@@ -3914,6 +4082,7 @@ STATE: {Give} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I can't find \`+$name]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
 ~~ }
@@ -4259,6 +4428,37 @@ STATE: {PassWait} ~~ {
 				DoExpr {listmap[listcreate[`item`, `hasItem`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Warn if commands are issued
 	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
@@ -4302,6 +4502,37 @@ STATE: {PassGive} ~~ {
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Warn if no item found
 	IF: All
 			Expr {testvar[giving]==false}
@@ -4309,6 +4540,7 @@ STATE: {PassGive} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Pass to next person in the @HBCharacterList
@@ -4328,6 +4560,7 @@ STATE: {PassGive} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
 
 ~~ }
@@ -4370,6 +4603,37 @@ STATE: {Use} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Check to see if item is on the landscape
 	IF: Expr {listcount[wobjectfindalllandscapebynamerx[`^`+$ItemName+`$`]]>0}
 		DO: DoExpr {setvar[Item, listpop[wobjectfindalllandscapebynamerx[$ItemName]]]}
@@ -4382,6 +4646,7 @@ STATE: {Use} ~~ {
 	IF: Expr {testvar[Item]==false}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to use not found!\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ If inventory item use it
@@ -4414,6 +4679,7 @@ STATE: {UseInventory} ~~ {
 		DO: DoAll
 				DoExpr {actiontryuseitem[$Item]}
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using \`+$ItemName]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				DoExpr {listmap[listcreate[`Item`, `ItemName`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4429,6 +4695,31 @@ STATE: {UseLandscape} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -4476,6 +4767,7 @@ STATE: {UseLandscape} ~~ {
 			IntoPortal
 		DO:	DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using \`+$ItemName]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				DoExpr {listmap[listcreate[`Item`, `ItemName`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
 
@@ -4630,6 +4922,37 @@ STATE: {Loot} ~~ {
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {Loot}
@@ -4655,6 +4978,7 @@ STATE: {Loot} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No corpses found with \`+$LootCorpseItem]`, `false`]}
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ OpenCorpse of first foundCorpse
@@ -4676,6 +5000,31 @@ STATE: {OpenCorpse} ~~ {
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -4713,6 +5062,31 @@ STATE: {LootCorpse} ~~ {
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -4765,6 +5139,7 @@ STATE: {LootCorpse} ~~ {
 				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
 				DoExpr {ifthen[uboptget[`Jumper.ThinkFail`]==false, `uboptset[\`Jumper.ThinkFail\`, true]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {CloseCorpse}
 
 	~~ Picked up an item since inventory has increased
@@ -4775,6 +5150,7 @@ STATE: {LootCorpse} ~~ {
 				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
 				DoExpr {ifthen[uboptget[`Jumper.ThinkFail`]==false, `uboptset[\`Jumper.ThinkFail\`, true]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {CloseCorpse}
 
 	~~ Warn if no items found on the corpse
@@ -4783,6 +5159,7 @@ STATE: {LootCorpse} ~~ {
 				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Did not find the item \`+$LootCorpseItem+\` on \`+$LootCorpseName, $COLOR_WARN]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listadd[$CorpseBlacklist, wobjectgetid[$Corpse]]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Loot}
 
 	~~ Pickup item from the corpse
@@ -4812,6 +5189,31 @@ STATE: {CloseCorpse} ~~ {
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
 
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Return to the original combat state
 	IF: Expr {testvar[OriginalCombatState]==true&&getcombatstate[]!=$OriginalCombatState}
 		DO: DoAll
@@ -4840,6 +5242,37 @@ STATE: {UsePortal} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
+
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -4874,6 +5307,7 @@ STATE: {UsePortal} ~~ {
 				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]<=@HBPortalThreshold} ~~ no NPC within threshold
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No portal within range!\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Warn if you can't interact with that portal.
@@ -4886,6 +5320,7 @@ STATE: {UsePortal} ~~ {
 				ChatMatch {Nothing happens}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to use portal!\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Use the Portal
@@ -4898,6 +5333,7 @@ STATE: {UsePortal} ~~ {
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using portal\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -4912,6 +5348,37 @@ STATE: {UsePortalNPC} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
+
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -4937,6 +5404,7 @@ STATE: {UsePortalNPC} ~~ {
 			Not Expr {istrue[wobjectgetstringprop[wobjectfindnearestbyobjectclass[$NPC], $STRING_PROP_DESCRIPTION]#portal]}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No portal within range!\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Use the NPC Portal
@@ -4952,6 +5420,7 @@ STATE: {UsePortalNPC} ~~ {
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using portal\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -4966,6 +5435,37 @@ STATE: {UseVRPortal} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
+
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -4990,6 +5490,7 @@ STATE: {UseVRPortal} ~~ {
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using VR portal\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -5376,6 +5877,37 @@ STATE: {HandleRecall} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Warn if commands are issued
 	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
@@ -5389,6 +5921,7 @@ STATE: {HandleRecall} ~~ {
 	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Disable all options
@@ -5411,6 +5944,7 @@ STATE: {HandleRecall} ~~ {
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 ~~}
@@ -5427,6 +5961,37 @@ STATE: {HandleCommandRecall} ~~{
 		DO:	DoAll
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
 				SetState {Idle}
+
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -5457,6 +6022,7 @@ STATE: {HandleCommandRecall} ~~{
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to recall!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Issue the recall command
@@ -5468,6 +6034,7 @@ STATE: {HandleCommandRecall} ~~{
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 ~~ }
@@ -5706,6 +6273,37 @@ STATE: {HandleLockpick} ~~ {
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Display help for #lockpick
 	IF: Expr {(help)#getvar[capturegroup_picktext]}
 		DO: DoAll
@@ -5719,6 +6317,7 @@ STATE: {HandleLockpick} ~~ {
 			Expr {getcharskill_buffed[$LOCKPICK_SKILL]<@HBLockpickSkill}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Warn if item is not on landscape
@@ -5726,6 +6325,7 @@ STATE: {HandleLockpick} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to lockpick not found on landscape!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Set $item to the nearest door with name
@@ -5745,6 +6345,7 @@ STATE: {HandleLockpick} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to lockpick is not a door or a container!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Request data for the item
@@ -5758,6 +6359,7 @@ STATE: {HandleLockpick} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item is already unlocked!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Distpatch to LockpickItem
@@ -5781,6 +6383,31 @@ STATE: {LockpickItem} ~~ {
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Warn if commands are issued
 	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
@@ -5801,6 +6428,7 @@ STATE: {LockpickItem} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I am out of lockpicks!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Find best lockpick to use
@@ -5826,6 +6454,7 @@ STATE: {LockpickItem} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to open in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Stop picking if item is a door and it's open
@@ -5835,6 +6464,7 @@ STATE: {LockpickItem} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking door in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Stop picking if item's lock property is false
@@ -5842,6 +6472,7 @@ STATE: {LockpickItem} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Stop picking if you have successfully picked the lock
@@ -5849,6 +6480,7 @@ STATE: {LockpickItem} ~~ {
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`], `clearvar[$1]`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
 
 	~~ Repeatedly pick the item
@@ -6143,6 +6775,37 @@ STATE: {UseNPC} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
 		DO: CallState {DisableOptions} {UseNPC}
@@ -6164,6 +6827,7 @@ STATE: {UseNPC} ~~ {
 				Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]>=@HBNPCThreshold} ~~ no NPC within threshold
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No NPC within range!\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Warn if you can't interact with that NPC.
@@ -6176,6 +6840,7 @@ STATE: {UseNPC} ~~ {
 				ChatMatch {[Nn]othing happens}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to use NPC!\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Stop using NPC if you receieve a response
@@ -6212,6 +6877,7 @@ STATE: {UseNPC} ~~ {
 		DO:	DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Talked to \`+$name]`, `false`]}
 				DoExpr {clearvar[equipped]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
 	~~ Use Brellegia's Marker if it's closer than an npc. Brellegia's Marker is an object class Foci instead of NPC
@@ -6285,6 +6951,37 @@ STATE: {ReadContracts} ~~ {
 				DoExpr {clearvar[contractrx]}
 				SetState {Idle}
 
+	~~ Update Status
+	IF: Always
+		DO: DoAll
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `-`, $HBStatusId]}
+				DoExpr {listremoveat[&HBStatusState, $HBStatusId];listinsert[&HBStatusState, vtgetmetastate[], $HBStatusId]}
+
+	~~ Update Status Panel (left hand side)
+	IF: All
+			Expr {uiviewvisible[Status]}
+			Expr {getfellowshipstatus[]==true} ~~ Must be in a fellowship
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusState]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {listcount[&HBStatusKeys]>=listcount[&HBStatusProgress]} ~~ Since we need to remove the element before adding it back we should ensure we're not halfway through that process
+			Expr {$fellows=listfilter[getfellownames[], `$CHARACTER_NAME!=$1`]} ~~ Get fellownames minus current character
+			Expr {$characters=listfilter[$fellows, `listcontains[@HBCharacterList, $1]`]} ~~ Filter by members of @HBCharacterList
+			Expr {$characterIds=listmap[$characters, `listindexof[&HBStatusKeys, $1]`]} ~~ Map to their index in &HBStatusKeys
+
+			Expr {uisetlabel[uigetcontrol[Status, `Progress-0`], listgetitem[&HBStatusProgress, $HBStatusId]]]}
+			Expr {uisetlabel[uigetcontrol[Status, `State-0`], listgetitem[&HBStatusState, $HBStatusId]]}
+			Expr {uisetlabel[uigetcontrol[Status, `Name-0`], listgetitem[&HBStatusKeys, $HBStatusId]]}
+
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`State-1\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`State-1\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=1, `uisetlabel[uigetcontrol[Status, \`Name-1\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 0]]]`, `uisetlabel[uigetcontrol[Status, \`Name-1\`], \`\`]`]}
+
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], listgetitem[&HBStatusProgress, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Progress-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`State-2\`], listgetitem[&HBStatusState, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`State-2\`], \`\`]`]}
+			Expr {ifthen[listcount[$characterIds]>=2, `uisetlabel[uigetcontrol[Status, \`Name-2\`], listgetitem[&HBStatusKeys, listgetitem[$characterIds, 1]]]`, `uisetlabel[uigetcontrol[Status, \`Name-2\`], \`\`]`]}
+
+			Never
+		DO: None
+
 	~~ Warn if commands are issued
 	IF:	All
 			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
@@ -6307,6 +7004,7 @@ STATE: {ReadContracts} ~~ {
 	IF: Expr {getitemcountininventorybynamerx[$contractrx]==0}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished reading contracts\`]`, `false`]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				DoExpr {clearvar[contractrx]}
 				SetState {Idle}
 
@@ -6821,6 +7519,12 @@ STATE: {SetupViews} ~~ {
 				CreateView {Jump} {:Haybale-Jump.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump <<`]}
 
+	~~ If status was previously open show it again
+	IF: Expr {@HBViewsStatus==true}
+		DO: DoAll
+				CreateView {Status} {:Haybale-Status.xml}
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowStatus], `Status <<`]}
+
 	~~ If timer is running open timer view
 	IF: Expr {testvar[HBTimer]==true}
 		DO: CreateView {Timer} {:Haybale-Timer.xml}
@@ -7032,6 +7736,27 @@ STATE: {ProfilePreviousPage} ~~ {
 		DO: DoAll
 				DoExpr {$ProfileOffset=$ProfileOffset-9}
 				SetState {SetProfiles}
+~~ }
+
+
+STATE: {ShowStatus} ~~ {
+
+	~~ Show the Status view
+	IF: Not Expr {uiviewvisible[Status]}
+		DO: DoAll
+				CreateView {Status} {:Haybale-Status.xml}
+				DoExpr {@HBViewsStatus=true}
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowStatus], `Status <<`]}
+				SetState {Idle}
+
+	~~ Close the Status view
+	IF: Expr {uiviewvisible[Status]}
+		DO: DoAll
+				DestroyView {Status}
+				DoExpr {@HBViewsStatus=false}
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowStatus], `Status >>`]}
+				SetState {Idle}
+
 ~~ }
 
 
