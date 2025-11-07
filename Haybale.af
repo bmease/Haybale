@@ -1038,7 +1038,7 @@ STATE: {Idle} ~~ {
 			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Spirit of Rhia'ni`]]==$TYPE_OBJECT}
 			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$MONSTER, `Spirit of Dana'lith`]]==$TYPE_OBJECT}
 		DO: DoAll
-				DoExpr {$HBTimerAmount=310}
+				DoExpr {$HBTimerAmount=330}
 				DoExpr {$HBTimerMsg=@HBTimerHMDMsg}
 				DoExpr {setvar[HBTimer, stopwatchstart[stopwatchcreate[]]]}
 				CreateView {Timer} {:Haybale-Timer.xml}
