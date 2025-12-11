@@ -4841,6 +4841,7 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {echo[`#check landcell: check what landcell each character is in.`, $COLOR_INFO]}
 				DoExpr {echo[`#check settings: check the settings (Toggle Vitals, Buff, Combat, Nav, Loot) of all characters.`, $COLOR_INFO]}
 				DoExpr {echo[`#check uptime: check the current amount of time all characters have been running.`, $COLOR_INFO]}
+				DoExpr {echo[`#check vitae: check the current amount of vitae on all characters.`, $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Handle `#check buffs`
@@ -4894,6 +4895,11 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {$seconds=$remaining_seconds%60}
 				ChatExpr {`/t `+@HBLeader+`, `+$hours+` hours `+$minutes+` minutes `+ceiling[$seconds]+` seconds`]}
 				DoExpr {listmap[listcreate[`total_seconds`, `hours`, `remaining_seconds`, `minutes`, `seconds`], `clearvar[$1]`]}
+				SetState {Idle}
+
+	IF: Expr {(vitae)#getvar[capturegroup_checktext]}
+		DO: DoAll
+				ChatExpr {`/t `+@HBLeader+`, Vitae: `+vitae[]+`%`}
 				SetState {Idle}
 
 
