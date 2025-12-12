@@ -77,7 +77,7 @@ STATE: {Default} ~~ {
 		DO:	SetState {NotFlagged}
 
 	IF:	All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#geraine (?<destination>.*)\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#geraine (?<destination>.*)\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}

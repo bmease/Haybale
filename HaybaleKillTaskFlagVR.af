@@ -71,7 +71,7 @@ STATE: {Default} ~~ {
 		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Viridian Rise v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -107,7 +107,7 @@ STATE: {Default} ~~ {
 STATE: {VrRecall} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -139,7 +139,7 @@ STATE: {VrRecall} ~~ {
 STATE: {ToInsideVR} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -169,7 +169,7 @@ STATE: {ToInsideVR} ~~ {
 STATE: {UseVrPortal} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -194,7 +194,7 @@ STATE: {UseVrPortal} ~~ {
 STATE: {UseNPC} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -221,7 +221,7 @@ STATE: {UseNPC} ~~ {
 STATE: {ToShalrionMarker} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -245,7 +245,7 @@ STATE: {ToShalrionMarker} ~~ {
 STATE: {ToBrellegiasMarker} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -269,7 +269,7 @@ STATE: {ToBrellegiasMarker} ~~ {
 STATE: {ToAangesilusMarker} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -293,7 +293,7 @@ STATE: {ToAangesilusMarker} ~~ {
 STATE: {ToSwiftsMarker}
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}

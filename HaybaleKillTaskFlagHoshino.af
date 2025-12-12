@@ -96,7 +96,7 @@ STATE: {Default} ~~ {
 STATE: {UseNPC} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -126,7 +126,7 @@ STATE: {UseNPC} ~~ {
 STATE: {ToFreng} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -149,7 +149,7 @@ STATE: {ToFreng} ~~ {
 STATE: {ToTrebuus} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -172,7 +172,7 @@ STATE: {ToTrebuus} ~~ {
 STATE: {ToKirtal} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -195,7 +195,7 @@ STATE: {ToKirtal} ~~ {
 STATE: {ToAurin}
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -215,7 +215,7 @@ STATE: {ToAurin}
 STATE: {ToTakamaki} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -238,7 +238,7 @@ STATE: {ToTakamaki} ~~ {
 STATE: {ToIrashi} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -258,7 +258,7 @@ STATE: {ToIrashi} ~~ {
 STATE: {ToEorlinde} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -281,7 +281,7 @@ STATE: {ToEorlinde} ~~ {
 STATE: {ToGriffon} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -301,7 +301,7 @@ STATE: {ToGriffon} ~~ {
 STATE: {ToAkiko} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -324,7 +324,7 @@ STATE: {ToAkiko} ~~ {
 STATE: {ToOutsideTent} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}

@@ -94,7 +94,7 @@ STATE: {Default} ~~ {
 STATE: {UseNPC} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -125,7 +125,7 @@ STATE: {UseNPC} ~~ {
 STATE: {ToRoyalGuard} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -148,7 +148,7 @@ STATE: {ToRoyalGuard} ~~ {
 STATE: {ToUmbralGuards} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -169,7 +169,7 @@ STATE: {ToUmbralGuards} ~~ {
 STATE: {TalkToUmbralGuard1} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -201,7 +201,7 @@ STATE: {TalkToUmbralGuard1} ~~ {
 STATE: {TalkToUmbralGuard2} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -233,7 +233,7 @@ STATE: {TalkToUmbralGuard2} ~~ {
 STATE: {ToRoyalGuards} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -254,7 +254,7 @@ STATE: {ToRoyalGuards} ~~ {
 STATE: {TalkToRoyalGuard2} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -287,7 +287,7 @@ STATE: {TalkToRoyalGuard2} ~~ {
 STATE: {TalkToRoyalGuard3} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -319,7 +319,7 @@ STATE: {TalkToRoyalGuard3} ~~ {
 STATE: {ToLastRoyalGuard} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
@@ -342,7 +342,7 @@ STATE: {ToLastRoyalGuard} ~~ {
 STATE: {TalkToLastRoyalGuard} ~~ {
 
 	IF: All
-			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
 			Any
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
