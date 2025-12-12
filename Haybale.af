@@ -1683,18 +1683,14 @@ STATE: {HandleActions} ~~ {
 		DO:	DoAll
 				EmbedNav Empty {[None]}
 				DoExpr {@HBStay=true}
+				ChatExpr {`/t `+@HBLeader+`, I am staying.`}
 				SetState {Idle}
 
 	~~ Handle `#action follow` for followers
 	IF:	All
 			Expr {(follow)#getvar[capturegroup_actiontext]}
 			Expr {$capturegroup_name!=false}
-		DO:	DoAll
-				SetOpt {NavPriorityBoost} {true}
-				ChatExpr {`/ub follow `+$capturegroup_name}
-				DoExpr {@HBLeader=$capturegroup_name}
-				DoExpr {@HBStay=false}
-				SetState {Idle}
+		DO:	SetState {Follow}
 
 	~~ Handle `#action follow` for person who issued command
 	IF:	All
@@ -1760,6 +1756,38 @@ STATE: {HandleActions} ~~ {
 	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching action for #action`, $COLOR_WARN]}
+				SetState {Idle}
+
+~~ }
+
+
+STATE: {Follow} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	SetState {Idle}
+
+	~~ Set the leader
+	IF: Always
+		DO: DoExpr {@HBLeader=$capturegroup_name}
+
+	~~ Warn if unable to see the leader
+	IF: Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]!=$TYPE_OBJECT}
+		DO: DoAll
+				ChatExpr {`/t `+@HBLeader+`, I am unable to follow because I do not see the leader!`}
+				SetState {Idle}
+
+	~~ Try following
+	IF: Always
+		DO: DoAll
+				SetOpt {NavPriorityBoost} {true}
+				ChatExpr {`/ub follow `+@HBLeader}
+				DoExpr {@HBStay=false}
+				ChatExpr {`/t `+@HBLeader+`, Following `+@HBLeader+`.`}
 				SetState {Idle}
 
 ~~ }
