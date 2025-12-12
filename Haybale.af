@@ -4842,6 +4842,7 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {echo[`#check settings: check the settings (Toggle Vitals, Buff, Combat, Nav, Loot) of all characters.`, $COLOR_INFO]}
 				DoExpr {echo[`#check uptime: check the current amount of time all characters have been running.`, $COLOR_INFO]}
 				DoExpr {echo[`#check vitae: check the current amount of vitae on all characters.`, $COLOR_INFO]}
+				DoExpr {echo[`#check visible: check to see if netclient members of the fellow are visible to all characters.`, $COLOR_INFO]}
 				SetState {Idle}
 
 	~~ Handle `#check buffs`
@@ -4901,6 +4902,16 @@ STATE: {HandleCheck} ~~ {
 		DO: DoAll
 				ChatExpr {`/t `+@HBLeader+`, Vitae: `+vitae[]+`%`}
 				SetState {Idle}
+
+	IF: Expr {(visible)#getvar[capturegroup_checktext]}
+		DO: DoAll
+				DoExpr {$netclientsFellow=listfilter[netclients[], `listcontains[getfellowids[], $1{{PlayerId}}]`]}
+				DoExpr {$netclientsFellowNearby=listfilter[$netclientsFellow, `coordinatedistancewithz[$1{{Position}}, getplayercoordinates[]]<=100`]}
+				DoExpr {$visible=listfilter[$netclientsFellowNearby, `getobjectinternaltype[wobjectfindbyid[$1{{PlayerId}}]]==$TYPE_OBJECT`]}
+				ChatExpr {`/t `+@HBLeader+`, Characters visible: `+listsort[listmap[$visible, `$1{{Name}}`]]}
+				DoExpr {listmap[listcreate[`netclientsFellow`, `netclientsFellowNearby`, `visible`], `clearvar[$1]`]}
+				SetState {Idle}
+
 
 
 	~~ Handle no match for checktext
