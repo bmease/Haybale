@@ -110,7 +110,15 @@ STATE: {ParseArguments} ~~ {
 	IF: Always
 		DO: DoExpr {$destination=dictgetitem[$arguments, `destination`]}
 
-	~~ Navigate to destination
+	~~ Navigate to Town Network portal if in Aphus Lassel
+	IF: BlockE F6820000
+		DO: SetState {ToTownNetwork}
+
+	~~ Navigate to wing if in Town Network Drop
+	IF: CellE 00070145
+		DO: SetState {ToWing}
+
+	~~ Navigate to Aphus Lassel
 	IF: Always
 		DO: SetState {ToAphusLassel}
 
