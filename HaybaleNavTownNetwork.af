@@ -110,6 +110,12 @@ STATE: {ParseArguments} ~~ {
 	IF: Always
 		DO: DoExpr {$destination=dictgetitem[$arguments, `destination`]}
 
+	~~ Set EnableNav to navigate
+	IF: Always
+		DO: DoAll
+				SetOpt {EnableNav} {True}
+				SetOpt {NavCloseStopRange} {0.0083333}
+
 	~~ Navigate to Town Network portal if in Aphus Lassel
 	IF: BlockE F6820000
 		DO: SetState {ToTownNetwork}
@@ -167,12 +173,6 @@ STATE: {ToTownNetwork} ~~ {
 		DO:	DoAll
 				DoExpr {$HBReset=true}
 				SetState {Finished}
-
-	~~ Set EnableNav to navigate
-	IF: Always
-		DO: DoAll
-				SetOpt {EnableNav} {True}
-				SetOpt {NavCloseStopRange} {0.0083333}
 
 	~~ Navigate into the Town Network portal
 	IF: Always
