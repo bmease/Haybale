@@ -4186,7 +4186,9 @@ STATE: {GiveAll} ~~ {
 				CallState {EnableOptions} {Idle}
 
 	~~ Warn if unable to give
-	IF: ChatMatch {doesn't know what to do with that.$}
+	IF: Any
+			ChatMatch {doesn't know what to do with that.$}
+			ChatMatch {^You think, "ItemGiver bail, Timeout expired"}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to give \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
