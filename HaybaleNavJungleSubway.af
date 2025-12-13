@@ -136,7 +136,7 @@ STATE: {ToAphusLassel} ~~ {
 	~~ Warn if Aphus Lassel Recall is not known
 	IF: Not Expr {getisspellknown[$AphusLasselRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know the Aphus Lassel Recall\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not know the Aphus Lassel Recall\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
@@ -531,7 +531,7 @@ STATE: {ToPortal} ~~ {
 
 	IF: ChatMatch {You must complete a quest to interact with that portal.}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I need to complete a quest to use the portal to \`+$destination]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I need to complete a quest to use the portal to \`+$destination]`, `false`]}
 				SetState {Finished}
 
 	~~ Finished navigating
@@ -543,7 +543,7 @@ STATE: {ToPortal} ~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to \`+$destination]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished navigating to \`+$destination]`, `false`]}
 
 	~~ Reset all options to what they originally were
 	IF: Always

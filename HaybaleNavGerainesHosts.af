@@ -620,7 +620,7 @@ STATE: {NotFlagged}	~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to Geraine's Host\`]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished navigating to Geraine's Host\`]`, `false`]}
 
 	~~ Return all vt settings to the original values
 	~~ IF: Always

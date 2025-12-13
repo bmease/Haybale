@@ -119,7 +119,7 @@ STATE: {VrRecall} ~~ {
 	~~ Return to Idle if the spell isn't known
 	IF: Not Expr {getisspellknown[$VrRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not know this recall spell\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
@@ -131,7 +131,7 @@ STATE: {VrRecall} ~~ {
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished recalling\`]`, `false`]}
 				SetState {ToInsideVR}
 
 ~~}

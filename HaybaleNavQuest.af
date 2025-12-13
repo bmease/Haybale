@@ -208,7 +208,7 @@ STATE: {HandleRecall} ~~ {
 	~~ Return to Finished if the spell isn't known
 	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not know this recall spell\`]`, `false`]}
 				SetState {Finished}
 
 	~~ Cast the recall spell
@@ -220,7 +220,7 @@ STATE: {HandleRecall} ~~ {
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished recalling\`]`, `false`]}
 				Return
 
 ~~}
@@ -1485,7 +1485,7 @@ STATE: {ToBlessedCave} ~~ {
 STATE: {Finished} ~~ {
 
 	IF: Always
-		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to \`+$destination]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished navigating to \`+$destination]`, `false`]}
 
 	~~ Return all vt settings to the original values
 	IF: Always

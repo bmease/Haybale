@@ -226,7 +226,7 @@ STATE: {BuyFromZion} ~~ {
 
 STATE: {Finished} ~~ {
 	IF: Always
-		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recomping\`]`, `false`]}
+		DO:	DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished recomping\`]`, `false`]}
 
 	IF: Always
 		DO: ChatExpr {`/vt meta load `+$HBReturnMeta}

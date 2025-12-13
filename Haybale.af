@@ -798,7 +798,7 @@ STATE: {Idle} ~~ {
 			Expr {@HBDeathMessage==true}
 			Death
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, I have died!`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] I have died!`}
 				SetState {Idle}
 
 	~~ Permit on death
@@ -820,7 +820,7 @@ STATE: {Idle} ~~ {
 			Expr {$finalDistance>=@HBStuckDistanceThreshold} ~~ The distance to the leader is greater than the threshold
 			Not Expr {$finalDistance>1000} ~~ The leader hasn't portaled away
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, I am stuck and you are `+floor[$finalDistance]+` meters away!`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] I am stuck and you are `+floor[$finalDistance]+` meters away!`}
 				~~ ChatExpr {`/f InitialDistance: `+floor[$finalDistance]}
 				~~ ChatExpr {`/f finalDistance: `+floor[$finalDistance]}
 				DoExpr {ifthen[@HBAttemptHandleStuck, `vtsetmetastate[HandleStuck]`, `vtsetmetastate[Idle]`]}
@@ -850,7 +850,7 @@ STATE: {Idle} ~~ {
 		DO: DoAll
 				~~ Utility Belt returns coordinates with Z so we truncate the string to only show cardinal directions
 				DoExpr {$coords=coordinatetostring[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$NPC, `Fiery Remains`]]]{{0:-7}}}
-				DoExpr {ifthen[getfellowshipisleader[]==true, `chatbox[\`Found Blue at \`+$coords]`, `chatbox[\`/t \`+@HBLeader+\`, Found Blue at \`+$coords]`]}
+				DoExpr {ifthen[getfellowshipisleader[]==true, `chatbox[\`Found Blue at \`+$coords]`, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Found Blue at \`+$coords]`]}
 
 				~~ Update GoArrow Coordinates
 				DoExpr {ifthen[@HBAutoUpdateGoArrow==true, `chatbox[\`/goarrow to \`+$coords]`, `false`]}
@@ -964,7 +964,7 @@ STATE: {Idle} ~~ {
 			Expr {testvar[PreventAnnounceBuffs]==false}
 			Expr {getspellexpirationbyname[@HBCheckBuffsSpell]<=@HBWarnBuffsDuration}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, My buffs are low!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] My buffs are low!\`]`, `false`]}
 				DoExpr {setvar[PreventAnnounceBuffs, stopwatchstart[stopwatchcreate[]]]}
 				SetState {Idle}
 
@@ -981,13 +981,13 @@ STATE: {Idle} ~~ {
 			ChatMatch {^You've earned ([\d,]+) Luminance.$}
 			Expr {getcharquadprop[6]>=@HBWarnLuminance}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I am near my luminance cap!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I am near my luminance cap!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Display message if receiving a Chorizite Threaded Pack Token
 	IF: ChatMatch {^(?:Lord Kresovus|Neelic|Raksaa|Sergeant Trebuus) gives you Chorizite Threaded Pack Token}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I received a Chorizite Threaded Pack Token!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I received a Chorizite Threaded Pack Token!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Start a timer for Rynthid Weapons wave one
@@ -1538,7 +1538,7 @@ STATE: {HandleStuck} ~~ {
 			Expr {testvar[moving]==false}
 			Expr {$StuckCount%2==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Attempting to get unstuck by moving left.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Attempting to get unstuck by moving left.\`]`, `false`]}
 				DoExpr {setmotion[`Backward`, true]}
 				DoExpr {setmotion[`StrafeLeft`, true]}
 				DoExpr {$StuckCount=$StuckCount+1}
@@ -1550,7 +1550,7 @@ STATE: {HandleStuck} ~~ {
 			Expr {testvar[moving]==false}
 			Expr {$StuckCount%2==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Attempting to get unstuck by moving right.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Attempting to get unstuck by moving right.\`]`, `false`]}
 				DoExpr {setmotion[`Backward`, true]}
 				DoExpr {setmotion[`StrafeRight`, true]}
 				DoExpr {$StuckCount=$StuckCount+1}
@@ -1627,7 +1627,7 @@ STATE: {HandleVTOptions} ~~ {
 			Expr {$capturegroup_optionkey==`attackdistance`}
 			Expr {@HBVTOptionAttackDistanceIgnore==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Ignoring VTank option for attackdistance.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Ignoring VTank option for attackdistance.\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -1638,7 +1638,7 @@ STATE: {HandleVTOptions} ~~ {
 		DO: DoAll
 				DoExpr {setvar[value, cnumber[$capturegroup_optionvalue]/240]} ~~ Range divided by 240
 				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$value}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`, `value`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -1646,7 +1646,7 @@ STATE: {HandleVTOptions} ~~ {
 	IF: Always
 		DO: DoAll
 				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$capturegroup_optionvalue}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -1683,7 +1683,7 @@ STATE: {HandleActions} ~~ {
 		DO:	DoAll
 				EmbedNav Empty {[None]}
 				DoExpr {@HBStay=true}
-				ChatExpr {`/t `+@HBLeader+`, I am staying.`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] I am staying.`}
 				SetState {Idle}
 
 	~~ Handle `#action follow` for followers
@@ -1778,7 +1778,7 @@ STATE: {Follow} ~~ {
 	~~ Warn if unable to see the leader
 	IF: Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]!=$TYPE_OBJECT}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, I am unable to follow because I do not see the leader!`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] I am unable to follow because I do not see the leader!`}
 				SetState {Idle}
 
 	~~ Try following
@@ -1787,7 +1787,7 @@ STATE: {Follow} ~~ {
 				SetOpt {NavPriorityBoost} {true}
 				ChatExpr {`/ub follow `+@HBLeader}
 				DoExpr {@HBStay=false}
-				ChatExpr {`/t `+@HBLeader+`, Following `+@HBLeader+`.`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Following `+@HBLeader+`.`}
 				SetState {Idle}
 
 ~~ }
@@ -3099,7 +3099,7 @@ STATE: {HandleRoute} ~~ {
 	~~ Route found, load route and start navigation
 	IF: Expr {listcount[listfilter[dictkeys[$HBRoutes], `cstrf[getplayerlandcell[], \`X8\`]==$1`]]>0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loading route: \`+dictgetitem[$HBRoutes, cstrf[getplayerlandcell[], \`X8\`]]]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Loading route: \`+dictgetitem[$HBRoutes, cstrf[getplayerlandcell[], \`X8\`]]]`, `false`]}
 				ChatExpr {`/vt nav load `+dictgetitem[$HBRoutes, cstrf[getplayerlandcell[], `X8`]]}
 				DoExpr {@HBStay=true}
 				DoExpr {uisetlabel[uigetcontrol[Main, Follow], `Follow`]}
@@ -3239,7 +3239,7 @@ STATE: {MetaLoad} ~~ {
 		DO: DoAll
 				DoExpr {$id=listindexof[@HBMetaKeys, $capturegroup_nickname]}
 				DoExpr {$MetaCallQueue=listcopy[listgetitem[@HBMetaValues, $id]]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loading meta(s) \`+listgetitem[@HBMetaValues, $id]]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Loading meta(s) \`+listgetitem[@HBMetaValues, $id]]`, `false`]}
 				DoExpr {listmap[listcreate[`id`, `capturegroup_nickname`, `capturegroup_metafilename`], `clearvar[$1]`]}
 				SetState {CallMeta}
 
@@ -3356,7 +3356,7 @@ STATE: {ProfileLoad} ~~ {
 		DO: DoAll
 				DoExpr {$id=listindexof[@HBProfileKeys, $capturegroup_profilename]}
 				ChatExpr {`/vt settings loadchar `+listgetitem[@HBProfileValues, $id]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loaded profile \`+listgetitem[@HBProfileValues, $id]]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Loaded profile \`+listgetitem[@HBProfileValues, $id]]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -3406,7 +3406,7 @@ STATE: {AutoloadProfile} ~~ {
 				DoExpr {$nickname=listgetitem[@HBProfileLandcellValues, $id]}
 				DoExpr {$nid=listindexof[@HBProfileKeys, $nickname]}
 				ChatExpr {`/vt settings loadchar `+listgetitem[@HBProfileValues, $nid]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Loaded profile \`+listgetitem[@HBProfileValues, $nid]]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Loaded profile \`+listgetitem[@HBProfileValues, $nid]]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -3593,7 +3593,7 @@ STATE: {Face} ~~ {
 
 	IF:	ChatMatch {^You think, "Turning Success"}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished turning\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished turning\`]`, `false`]}
 				DoExpr {clearvar[direction]}
 				CallState {EnableOptions} {Idle}
 
@@ -3695,7 +3695,7 @@ STATE: {Jump} ~~ {
 	~~ Jump success
 	IF:	ChatMatch {^You think, "Jumper Success"}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished jumping\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished jumping\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
 
@@ -3770,7 +3770,7 @@ STATE: {HandleJumpTo} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {listmap[listcreate[`jumpSkill`, `runSkill`, `maxJumpHeight`, `runSpeed`, `shiftJumpSpeed`, `target`, `heading`, `distance`, `height`, `shiftPower`, `power`, `maxPower`, `shiftMaxHeight`, `maxHeight`, `capturegroup_jumptext`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to perform the jump\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to perform the jump\`]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -3806,7 +3806,7 @@ STATE: {JumpStack} ~~ {
 				DoExpr {vtsetsetting[NavPriorityBoost, cstrf[$OriginalNavPriorityBoost, `N0`]]}
 				EmbedNav Empty {[None]}
 				DoExpr {ifthen[@HBStay==false, `chatbox[\`/ub follow \`+@HBLeader]`, `false`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating on top of \`+$capturegroup_name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished navigating on top of \`+$capturegroup_name]`, `false`]}
 				DoExpr {listmap[listcreate[`OriginalNavClosestOpRange`, `OriginalNavPriorityBoost`, `capturegroup_name`, `capturegroup_jumptext`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -3893,7 +3893,7 @@ STATE: {Pickup} ~~ {
 			Expr {testvar[hasNearbyItem]==false]}
 			Expr {listcount[wobjectfindalllandscapebynamerx[$item]]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No \`+$item+\` nearby\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No \`+$item+\` nearby\`]`, `false`]}
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
@@ -3905,7 +3905,7 @@ STATE: {Pickup} ~~ {
 			ChatMatch {You cannot pick up more than}
 			ChatMatch {You must wait}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Picked up \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Picked up \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`itemCount`, `item`, `hasNearbyItem`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
@@ -4017,7 +4017,7 @@ STATE: {AutoGive} ~~ {
 	~~ No NPC nearby with the Autogive name
 	IF: Not Expr {dicthaskey[$AUTOGIVE_PROFILE, wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No autogive profile for \`+wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No autogive profile for \`+wobjectgetname[wobjectfindnearestbyobjectclass[$NPC]]]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4081,7 +4081,7 @@ STATE: {Give} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -4095,7 +4095,7 @@ STATE: {Give} ~~ {
 	~~ Warn if unable to give
 	IF: ChatMatch {doesn't know what to do with that.$}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to give \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to give \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
@@ -4106,7 +4106,7 @@ STATE: {Give} ~~ {
 			ChatMatch {^You hand over}
 			ChatMatch {^You allow}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
@@ -4123,7 +4123,7 @@ STATE: {Give} ~~ {
 			SecsInStateGE 1
 			Expr {wobjectfindininventorybynamerx[`^`+$item+`$`]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
@@ -4147,7 +4147,7 @@ STATE: {Give} ~~ {
 	~~ Handle no player or NPC with that name nearby
 	IF: Expr {wobjectfindnearestbynameandobjectclass[$PLAYER, $name]==false&&wobjectfindnearestbynameandobjectclass[$NPC, $name]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I can't find \`+$name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I can't find \`+$name]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				CallState {EnableOptions} {Idle}
@@ -4181,21 +4181,21 @@ STATE: {GiveAll} ~~ {
 			Expr {wobjectfindininventorybynamerx[`^`+$item+`$`]==false}
 			Not Expr {$giving==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Warn if unable to give
 	IF: ChatMatch {doesn't know what to do with that.$}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to give \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to give \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
 	~~ Finish if given a success message from Utility Belt
 	IF:	ChatMatch {^You think, "ItemGiver finished:}
 		DO:	DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `name`, `giving`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
@@ -4230,7 +4230,7 @@ STATE: {AutoCombine} ~~ {
 			Expr {listcount[$hasSources]==0}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Nothing to combine!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Of all the sources find the items that have targets. If the source and target are the same wcid ensure there are greater than 2 of that item in inventory
@@ -4245,7 +4245,7 @@ STATE: {AutoCombine} ~~ {
 			Expr {listcount[$hasSourcesAndTargets]==0}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Nothing to combine!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Nothing to combine!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Dispatch the first source and target to Combine state
@@ -4260,7 +4260,7 @@ STATE: {AutoCombine} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {listmap[listcreate[`hasSources`, `hasSourcesAndTargets`, `source`, `target`, `hasCombined`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished combining items.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished combining items.\`]`, `false`]}
 				SetState {Idle}
 
 ~~ }
@@ -4291,7 +4291,7 @@ STATE: {Combine} ~~ {
 			Expr {$source==$target}
 			Expr {listcount[wobjectfindallinventorybytemplatetype[$target]]<2}
 		DO: DoAll
-				~~ DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Warn] Not enough in inventory!\`]`, `false`]}
+				~~ DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] [Warn] Not enough in inventory!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`wosource`, `wotarget`, `success`], `clearvar[$1]`]}
 				Return
 
@@ -4344,7 +4344,7 @@ STATE: {HandleTrash} ~~ {
 			Expr {testvar[capturegroup_trashtext]==true}
 			Expr {wobjectfindininventorybyname[$capturegroup_trashtext]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$capturegroup_trashtext]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not have \`+$capturegroup_trashtext]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_trashtext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4376,7 +4376,7 @@ STATE: {AutoTrash} ~~ {
 	~~ Abort if no trash items
 	IF: Expr {listcount[$items]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I have no trash!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I have no trash!\`]`, `false`]}
 				DoExpr {clearvar[items]}
 				SetState {Idle}
 
@@ -4416,7 +4416,7 @@ STATE: {GiveTrash} ~~ {
 	~~ Warn if no Town Criers or Garbage Barrels nearby
 	IF: Expr {testvar[trashNPC]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, There are no Town Criers or Garbage Barrels nearby!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] There are no Town Criers or Garbage Barrels nearby!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `items`, `giving`, `trashNPC`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4430,7 +4430,7 @@ STATE: {GiveTrash} ~~ {
 			Expr {listcount[$items]==0}
 			Expr {getitemcountininventorybyname[$item]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I gave all my trash!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I gave all my trash!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `items`, `giving`, `trashNPC`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4533,7 +4533,7 @@ STATE: {PassWait} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Finished using item
 	IF: All
@@ -4605,7 +4605,7 @@ STATE: {PassGive} ~~ {
 			Expr {testvar[giving]==false}
 			Expr {listcount[wobjectfindallinventorybynamerx[$item]]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not have \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not have \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
@@ -4625,7 +4625,7 @@ STATE: {PassGive} ~~ {
 	~~ Handed off item
 	IF: ChatMatch {^You give}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Gave \`+$item]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Gave \`+$item]`, `false`]}
 				DoExpr {listmap[listcreate[`onlineCharacters`, `sortedCharacters`, `currentPos`, `nextPos`, `nextCharacter`, `giving`, `item`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
@@ -4712,7 +4712,7 @@ STATE: {Use} ~~ {
 	~~ Warn if no item found
 	IF: Expr {testvar[Item]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to use not found!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Item to use not found!\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
@@ -4745,7 +4745,7 @@ STATE: {UseInventory} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {actiontryuseitem[$Item]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using \`+$ItemName]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished using \`+$ItemName]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				DoExpr {listmap[listcreate[`Item`, `ItemName`], `clearvar[$1]`]}
 				SetState {Idle}
@@ -4795,7 +4795,7 @@ STATE: {UseLandscape} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -4833,7 +4833,7 @@ STATE: {UseLandscape} ~~ {
 			ChatMatch {^You have killed} ~~ Slain Protectorate
 			IntoPortal
 		DO:	DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using \`+$ItemName]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished using \`+$ItemName]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				DoExpr {listmap[listcreate[`Item`, `ItemName`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
@@ -4881,37 +4881,37 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {$remaining_seconds=$total_seconds%3600}
 				DoExpr {$minutes=floor[$remaining_seconds/60]}
 				DoExpr {$seconds=$remaining_seconds%60}
-				ChatExpr {`/t `+@HBLeader+`, Buffs: `+$hours+` hours, `+$minutes+` minutes, `+$seconds+` seconds`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Buffs: `+$hours+` hours, `+$minutes+` minutes, `+$seconds+` seconds`}
 				SetState {Idle}
 
 	~~ Handle `#check luminance`
 	IF: Expr {(luminance)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, Luminance: `+cstrf[getcharquadprop[6], `N0`]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Luminance: `+cstrf[getcharquadprop[6], `N0`]}
 				SetState {Idle}
 
 	~~ Handle `#check level`
 	IF: Expr {(level)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, Level: `+getcharintprop[25]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Level: `+getcharintprop[25]}
 				SetState {Idle}
 
 	~~ Handle `#check landblock`
 	IF: Expr {(landblock)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, Landblock: `+hexstr[getplayerlandblock[]]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Landblock: `+hexstr[getplayerlandblock[]]}
 				SetState {Idle}
 
 	~~ Handle `#check landcell`
 	IF: Expr {(landcell)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, Landblock: `+hexstr[getplayerlandcell[]]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Landblock: `+hexstr[getplayerlandcell[]]}
 				SetState {Idle}
 
 	~~ Handle `#check settings`
 	IF: Expr {(settings)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, Toggle Vitals: `+ifthen[@HBVitals, `On`, `Off`]+`, Buff: `+ifthen[vtgetsetting[EnableBuffing], `On`, `Off`]+`, Combat: `+ifthen[vtgetsetting[EnableCombat], `On`, `Off`]+`, Nav: `+ifthen[vtgetsetting[EnableNav], `On`, `Off`]+`, Loot: `+ifthen[vtgetsetting[EnableLooting], `On`, `Off`]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Toggle Vitals: `+ifthen[@HBVitals, `On`, `Off`]+`, Buff: `+ifthen[vtgetsetting[EnableBuffing], `On`, `Off`]+`, Combat: `+ifthen[vtgetsetting[EnableCombat], `On`, `Off`]+`, Nav: `+ifthen[vtgetsetting[EnableNav], `On`, `Off`]+`, Loot: `+ifthen[vtgetsetting[EnableLooting], `On`, `Off`]}
 				SetState {Idle}
 
 	~~ Handle `#check uptime`
@@ -4922,13 +4922,13 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {$remaining_seconds=$total_seconds%3600}
 				DoExpr {$minutes=floor[$remaining_seconds/60]}
 				DoExpr {$seconds=$remaining_seconds%60}
-				ChatExpr {`/t `+@HBLeader+`, `+$hours+` hours `+$minutes+` minutes `+ceiling[$seconds]+` seconds`]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] `+$hours+` hours `+$minutes+` minutes `+ceiling[$seconds]+` seconds`]}
 				DoExpr {listmap[listcreate[`total_seconds`, `hours`, `remaining_seconds`, `minutes`, `seconds`], `clearvar[$1]`]}
 				SetState {Idle}
 
 	IF: Expr {(vitae)#getvar[capturegroup_checktext]}
 		DO: DoAll
-				ChatExpr {`/t `+@HBLeader+`, Vitae: `+vitae[]+`%`}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Vitae: `+vitae[]+`%`}
 				SetState {Idle}
 
 	IF: Expr {(visible)#getvar[capturegroup_checktext]}
@@ -4936,7 +4936,7 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {$netclientsFellow=listfilter[netclients[], `listcontains[getfellowids[], $1{{PlayerId}}]`]}
 				DoExpr {$netclientsFellowNearby=listfilter[$netclientsFellow, `coordinatedistancewithz[$1{{Position}}, getplayercoordinates[]]<=100`]}
 				DoExpr {$visible=listfilter[$netclientsFellowNearby, `getobjectinternaltype[wobjectfindbyid[$1{{PlayerId}}]]==$TYPE_OBJECT`]}
-				ChatExpr {`/t `+@HBLeader+`, Characters visible: `+listsort[listmap[$visible, `$1{{Name}}`]]}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] Characters visible: `+listsort[listmap[$visible, `$1{{Name}}`]]}
 				DoExpr {listmap[listcreate[`netclientsFellow`, `netclientsFellowNearby`, `visible`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -4977,7 +4977,7 @@ STATE: {AutoLoot} ~~ {
 			Expr {listcount[wobjectfindalllandscapebyobjectclass[$CORPSE]]>0}
 			Expr {listcount[$foundCorpses]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No auto loot corpses found!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No auto loot corpses found!\`]`, `false`]}
 				DoExpr {clearvar[foundCorpses]}
 				SetState {Idle}
 
@@ -5060,7 +5060,7 @@ STATE: {Loot} ~~ {
 	~~ Out of corpses
 	IF: Expr {listcount[$foundCorpses]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No corpses found with \`+$LootCorpseItem]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No corpses found with \`+$LootCorpseItem]`, `false`]}
 				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
@@ -5117,7 +5117,7 @@ STATE: {OpenCorpse} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Has an open corpse
 	IF: Expr {getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT}
@@ -5179,7 +5179,7 @@ STATE: {LootCorpse} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ IF: Always
 	~~ 	DO: DoAll
@@ -5218,7 +5218,7 @@ STATE: {LootCorpse} ~~ {
 			ChatMatch {You cannot pick up more than}
 			ChatMatch {You must wait}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to loot \`+$LootCorpseItem]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to loot \`+$LootCorpseItem]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
@@ -5229,7 +5229,7 @@ STATE: {LootCorpse} ~~ {
 	~~ Picked up an item since inventory has increased
 	IF: Expr {getitemcountininventorybynamerx[$LootCorpseItem]>$ItemCount}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Looted \`+$LootCorpseItem]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Looted \`+$LootCorpseItem]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
@@ -5365,7 +5365,7 @@ STATE: {UsePortal} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -5390,7 +5390,7 @@ STATE: {UsePortal} ~~ {
 				Expr {wobjectfindnearestbyobjectclass[$NPC]==false} ~~ no NPC detected
 				Not Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]<=@HBPortalThreshold} ~~ no NPC within threshold
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No portal within range!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No portal within range!\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -5403,7 +5403,7 @@ STATE: {UsePortal} ~~ {
 				ChatMatch {You must be a member of the}
 				ChatMatch {Nothing happens}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to use portal!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to use portal!\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -5416,7 +5416,7 @@ STATE: {UsePortal} ~~ {
 	~~ Finished using portal; reset options to what they originally were
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished using portal\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -5471,7 +5471,7 @@ STATE: {UsePortalNPC} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ The NPC does not have data, we need to query for it
 	IF: All
@@ -5487,7 +5487,7 @@ STATE: {UsePortalNPC} ~~ {
 			Expr {wobjecthasdata[wobjectfindnearestbyobjectclass[$NPC]]==true}
 			Not Expr {istrue[wobjectgetstringprop[wobjectfindnearestbyobjectclass[$NPC], $STRING_PROP_DESCRIPTION]#portal]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No portal within range!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No portal within range!\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -5503,7 +5503,7 @@ STATE: {UsePortalNPC} ~~ {
 	~~ Finished using portal; go to LeaderCheck
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished using portal\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -5558,7 +5558,7 @@ STATE: {UseVRPortal} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -5573,7 +5573,7 @@ STATE: {UseVRPortal} ~~ {
 	~~ Finished using portal; go to LeaderCheck
 	IF:	Expr {isportaling[]==true}
 		DO:	DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished using VR portal\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished using VR portal\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -5597,7 +5597,7 @@ STATE: {LeaderCheck} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options if other states haven't
 	IF: Expr {testvar[OptionsSet]==false}
@@ -5629,12 +5629,12 @@ STATE: {LeaderCheck} ~~ {
 
 	~~ Warn if in the check too long
 	IF:	SecsInStateGE 15
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Waiting for nearby leader for 15 seconds!\`]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Waiting for nearby leader for 15 seconds!\`]`, `false`]}
 
 	~~ Disable waiting if longer than the timeout
 	IF: SecsInStateGE 30
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Timeout reached waiting for leader! Staying but listening for commands.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Timeout reached waiting for leader! Staying but listening for commands.\`]`, `false`]}
 				EmbedNav Empty {[None]}
 				DoExpr {@HBStay=true}
 				CallState {EnableOptions} {Idle}
@@ -5999,12 +5999,12 @@ STATE: {HandleRecall} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Return to Idle if the spell isn't known
 	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this recall spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not know this recall spell\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
 
@@ -6027,7 +6027,7 @@ STATE: {HandleRecall} ~~ {
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished recalling\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -6084,7 +6084,7 @@ STATE: {HandleCommandRecall} ~~{
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Disable all options
 	IF: Expr {testvar[OptionsSet]==false}
@@ -6104,7 +6104,7 @@ STATE: {HandleCommandRecall} ~~{
 				ChatMatch {Only Player Killer Lite characters may use this command}  ~~ FIXME: Not matching this text?
 				SecsInStateGE 20
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to recall!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to recall!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
@@ -6116,7 +6116,7 @@ STATE: {HandleCommandRecall} ~~{
 	~~ Finished recalling; go to LeaderCheck
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished recalling\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished recalling\`]`, `false`]}
 				DoExpr {listmap[listcreate[`HBRecallCommand`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
@@ -6136,7 +6136,7 @@ STATE: {HandleSummonPortal} ~~ {
 	~~ Return to Idle if the spell isn't known
 	IF: Not Expr {getisspellknown[$HBRecallSpell]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I do not know this spell\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I do not know this spell\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Disable all options
@@ -6179,7 +6179,7 @@ STATE: {TrycastSummonPortal} ~~ {
 
 	IF: Expr {getvar[currentAttemptCount]>=getvar[maxCastAttempts]} ~~ Maximum number of cast attempts reached
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Failed to cast the spell after `+getvar[currentAttemptCount]+` attempts\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Failed to cast the spell after `+getvar[currentAttemptCount]+` attempts\`]`, `false`]}
 				ChatExpr {`/`+@HBChatCommand+` #portal cancel`}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 
@@ -6228,7 +6228,7 @@ STATE: {LocateSummonedPortal} ~~ {
 			Expr {listcount[getvar[gatewayList]]==0} ~~ No gateways found
 			Expr {getvar[foundGatewayId]==false} ~~ Gateway not found
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No gateway found!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No gateway found!\`]`, `false`]}
 				ChatExpr {`/`+@HBChatCommand+` #portal cancel`}
 				CallState {CleanUpHandleSummonPortal} {LeaderCheck}
 ~~ }
@@ -6338,7 +6338,7 @@ STATE: {HandleCount} ~~ {
 	IF: Always
 		DO: DoAll
 				DoExpr {$count=getitemcountininventorybynamerx[$capturegroup_counttext]}
-				ChatExpr {`/t `+@HBLeader+`, `+$capturegroup_counttext+`: `+$count}
+				ChatExpr {`/t `+@HBLeader+`, [Haybale] `+$capturegroup_counttext+`: `+$count}
 				DoExpr {listmap[listcreate[`capturegroup_counttext`, `capturegroup_name`, `capturegroup_saythink`, `count`], `clearvar[$1]`]}
 				SetState {Idle}
 
@@ -6407,7 +6407,7 @@ STATE: {HandleLockpick} ~~ {
 	~~ Warn if item is not on landscape
 	IF: Expr {listcount[wobjectfindalllandscapebynamerx[$capturegroup_picktext]]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to lockpick not found on landscape!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Item to lockpick not found on landscape!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
@@ -6427,7 +6427,7 @@ STATE: {HandleLockpick} ~~ {
 	~~ Warn if item is not a door or container
 	IF: Expr {testvar[item]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item to lockpick is not a door or a container!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Item to lockpick is not a door or a container!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
@@ -6441,7 +6441,7 @@ STATE: {HandleLockpick} ~~ {
 			Expr {wobjecthasdata[$item]}
 			Expr {wobjectgetboolprop[$item, $BOOL_PROP_LOCKED]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Item is already unlocked!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Item is already unlocked!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`capturegroup_picktext`, `capturegroup_name`, `capturegroup_saythink`, `item`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
@@ -6499,7 +6499,7 @@ STATE: {LockpickItem} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Find all available lockpicks
 	IF: Always
@@ -6510,7 +6510,7 @@ STATE: {LockpickItem} ~~ {
 	~~ Warn if out of available lockpicks
 	IF: Expr {listcount[$hasLockpicks]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I am out of lockpicks!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I am out of lockpicks!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
@@ -6536,7 +6536,7 @@ STATE: {LockpickItem} ~~ {
 	~~ Stop picking if you exceed the lockpicking try limit
 	IF: Expr {$count>=@HBLockpickLimit}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to open in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to open in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Idle}
@@ -6546,7 +6546,7 @@ STATE: {LockpickItem} ~~ {
 			Expr {wobjectgetobjectclass[$item]==$DOOR}
 			Expr {wobjectgetisdooropen[$item]}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking door in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished lockpicking door in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
@@ -6554,7 +6554,7 @@ STATE: {LockpickItem} ~~ {
 	~~ Stop picking if item's lock property is false
 	IF: Expr {wobjectgetboolprop[$item, $BOOL_PROP_LOCKED]==false}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`, `allLockpicks`, `hasLockpicks`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
@@ -6562,7 +6562,7 @@ STATE: {LockpickItem} ~~ {
 	~~ Stop picking if you have successfully picked the lock
 	IF: ChatMatch {^You have successfully picked the lock}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished lockpicking in \`+$count+\` tries!\`]`, `false`]}
 				DoExpr {listmap[listcreate[`item`, `lockpick`, `count`], `clearvar[$1]`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {Idle}
@@ -6713,7 +6713,7 @@ STATE: {HandleVitals} ~~{
 			Expr {@HBVitals==false}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I have turned on my vitals.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I have turned on my vitals.\`]`, `false`]}
 				CallState {VitalsOn} {Idle}
 
 	~~ Warn if turning on vitals and they are already on
@@ -6722,7 +6722,7 @@ STATE: {HandleVitals} ~~{
 			Expr {@HBVitals==true}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, My vitals are already on!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] My vitals are already on!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Turn off vitals if they are on
@@ -6731,7 +6731,7 @@ STATE: {HandleVitals} ~~{
 			Expr {@HBVitals==true}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I have turned off my vitals.\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I have turned off my vitals.\`]`, `false`]}
 				CallState {VitalsOff} {Idle}
 
 	~~ Warn if turning off vitals and they are already off
@@ -6740,7 +6740,7 @@ STATE: {HandleVitals} ~~{
 			Expr {@HBVitals==false}
 		DO: DoAll
 				DoExpr {listmap[listcreate[`capturegroup_vitaltext`, `capturegroup_name`, `capturegroup_saythink`], `clearvar[$1]`]}
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, My vitals are already off!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] My vitals are already off!\`]`, `false`]}
 				SetState {Idle}
 
 	~~ Handle no match for vitaltext
@@ -6857,7 +6857,7 @@ STATE: {UseNPC} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	~~ Update Status
 	IF: Always
@@ -6910,7 +6910,7 @@ STATE: {UseNPC} ~~ {
 				Expr {wobjectfindnearestbyobjectclass[$NPC]==false}
 				Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbyobjectclass[$NPC]], getplayercoordinates[]]>=@HBNPCThreshold} ~~ no NPC within threshold
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, No NPC within range!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] No NPC within range!\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -6923,7 +6923,7 @@ STATE: {UseNPC} ~~ {
 				ChatMatch {You must be a member of the}
 				ChatMatch {[Nn]othing happens}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Unable to use NPC!\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to use NPC!\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {LeaderCheck}
 
@@ -6959,7 +6959,7 @@ STATE: {UseNPC} ~~ {
 			ChatMatch {^You have killed} ~~ Slain Protectorate
 			IntoPortal
 		DO:	DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Talked to \`+$name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Talked to \`+$name]`, `false`]}
 				DoExpr {clearvar[equipped]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				SetState {LeaderCheck}
@@ -7008,7 +7008,7 @@ STATE: {UseVendor} ~~ {
 	~~ Autovendor finished
 	IF:	ChatMatch {^You think, "AutoVendor finished}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished vending with \`+$name]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished vending with \`+$name]`, `false`]}
 				DoExpr {actiontryuseitem[wobjectfindnearestbyobjectclass[$VENDOR]]} ~~ Close the vendor window
 				DoExpr {clearvar[open]}
 				SetState {LeaderCheck}
@@ -7073,7 +7073,7 @@ STATE: {ReadContracts} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
 
 	IF: Always
 		DO: DoExpr {setvar[contractrx, `(Hunting\: Lost City of Neftet)|(Investigating the Bloodstones)|(Nalicana\'s Test)|(Contract for)`]}
@@ -7087,7 +7087,7 @@ STATE: {ReadContracts} ~~ {
 	~~ No contracts left return to Idle
 	IF: Expr {getitemcountininventorybynamerx[$contractrx]==0}
 		DO: DoAll
-				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished reading contracts\`]`, `false`]}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished reading contracts\`]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
 				DoExpr {clearvar[contractrx]}
 				SetState {Idle}

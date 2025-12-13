@@ -283,7 +283,7 @@ STATE: {Finished} ~~ {
 		DO:	DoExpr {ifthen[$LEVEL_INFO>=@HBDebug, `echo[\`[INFO] Finished navigating to destination\`, $COLOR_INFO]`, `false`]}
 
 	IF: Always
-		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, Finished navigating to \`+dictgetitem[$DESTINATION_NAME, $destination]]`, `false`]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished navigating to \`+dictgetitem[$DESTINATION_NAME, $destination]]`, `false`]}
 
 	~~ Reset all options to what they originally were
 	IF: Always
