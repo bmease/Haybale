@@ -112,6 +112,9 @@ STATE: {Default} ~~ {
 
 				DoExpr {setpvar[HBChatCommand, ifthen[testpvar[HBChatCommand], `@HBChatCommand`, `Say`]]}
 
+				~~ If set to true will prevent the main panel from opening
+				DoExpr {setpvar[HBHeadless, ifthen[testpvar[HBHeadless], `@HBHeadless`, `false`]]}
+
 				~~ Amount of seconds between checking stuck
 				DoExpr {setpvar[HBStuckAnnounceDelay, ifthen[testpvar[HBStuckAnnounceDelay], `@HBStuckAnnounceDelay`, `5`]]}
 
@@ -470,7 +473,7 @@ STATE: {Default} ~~ {
 				DoExpr {dictadditem[$AUTO_COMBINE_ITEMS, `6058`, `6058`]} ~~ Dark Shard with Dark Shard
 
 	~~ Open Remote view
-	IF: Always
+	IF: Expr {@HBHeadless==false}
 		DO:	CreateView {Main} {:Haybale-Main.xml}
 
 	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
@@ -7588,25 +7591,31 @@ STATE: {ShowSettings} ~~ {
 
 STATE: {SetupViews} ~~ {
 
-	IF: Always
+	IF: Expr {@HBHeadless==false}
 		DO: DoAll
 				DoExpr {uisetlabel[uigetcontrol[Main, Follow], ifthen[@HBStay, `Follow`, `Stay`]]}
 				~~ DoExpr {uisetlabel[uigetcontrol[Main, Combat], ifthen[testpvar[HBOriginalVitalsEnableCombat], `ifthen[@HBOriginalVitalsEnableCombat, \`Combat Off\`, \`Combat On\`]`, `ifthen[vtgetsetting[EnableCombat], \`Combat Off\`, \`Combat On\`]`]]}
 
 	~~ If actions was previously open show it again
-	IF: Expr {@HBViewsActions==true}
+	IF: All
+			Expr {@HBHeadless==false}
+			Expr {@HBViewsActions==true}
 		DO: DoAll
 				CreateView {Actions} {:Haybale-Actions.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowActions], `Actions <<`]}
 
 	~~ If jump was previously open show it again
-	IF: Expr {@HBViewsJump==true}
+	IF: All
+			Expr {@HBHeadless==false}
+			Expr {@HBViewsJump==true}
 		DO: DoAll
 				CreateView {Jump} {:Haybale-Jump.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowJump], `Jump <<`]}
 
 	~~ If status was previously open show it again
-	IF: Expr {@HBViewsStatus==true}
+	IF: All
+			Expr {@HBHeadless==false}
+			Expr {@HBViewsStatus==true}
 		DO: DoAll
 				CreateView {Status} {:Haybale-Status.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowStatus], `Status <<`]}
