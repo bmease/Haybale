@@ -417,7 +417,7 @@ STATE: {Default} ~~ {
 				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Battle Lord Gregor`, `Battle Lord Gregor's Mnemosyne`]} ~~ Luminance Flagging
 				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Shadow Kresovus`, `Sigil of Linvak Tukal`]} ~~ Aerbax's Prodigal Lugian
 				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Holcha`, `Holcha's Head`]} ~~ Holcha
-				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Tremb'Orh`, `Helm of Tremb'Orh`]} ~~ Tremb'Orh
+				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Tremb\'Orh`, `Helm of Tremb'Orh`]} ~~ Tremb'Orh
 				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Gromnus Champion`, `Gromnus Eye`]} ~~ Gromnus Champion
 				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of Zerzelikyr`, `Essence of Zerzelikyr`]} ~~ VR Boss
 				DoExpr {dictadditem[$AUTO_LOOT_CORPSES, `Corpse of NightBrier`, `Essence of NightBrier`]} ~~ VR Boss
