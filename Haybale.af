@@ -5679,7 +5679,7 @@ STATE: {LeaderCheck} ~~ {
 	~~ Warn if still unable to see the leader but netclients reports them as nearby
 	IF: All
 			Expr {testvar[netclientsWait]==true}  ~~ timer for netclients waiting is created
-			Expr {stopwatchelapsedseconds[$netclientsWait]>=1}  ~~ timer for netclients waiting is greater than the timeout
+			Expr {stopwatchelapsedseconds[$netclientsWait]>=3}  ~~ timer for netclients waiting is greater than the timeout
 			Expr {@HBLeaderId!=false}  ~~ Has a valid leader id
 			Expr {$ncLeaders=listfilter[netclients[], `dictgetitem[$1, PlayerId]==@HBLeaderId`]}  ~~ Filter netclients for the leader
 			Expr {listcount[$ncLeaders]>0}  ~~ Verify we found at least one result
