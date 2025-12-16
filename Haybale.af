@@ -7935,7 +7935,6 @@ STATE: {ShowStatus} ~~ {
 
 STATE: {ShowFellow} ~~ {
 
-
 	~~ Show the Fellow view
 	IF: Not Expr {uiviewvisible[Fellow]}
 		DO: DoAll
@@ -7949,6 +7948,26 @@ STATE: {ShowFellow} ~~ {
 		DO: DoAll
 				DestroyView {Fellow}
 				SetState {Idle}
+
+~~ }
+
+
+STATE: {ShowCheck} ~~ {
+
+	~~ Show the Check view
+	IF: Not Expr {uiviewvisible[Check]}
+		DO: DoAll
+				CreateView {Check} {:Haybale-Check.xml}
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowSettings], `Settings >>`]}
+				DestroyView {Settings}
+				SetState {Idle}
+
+	~~ Close the Check view
+	IF: Expr {uiviewvisible[Check]}
+		DO: DoAll
+				DestroyView {Check}
+				SetState {Idle}
+
 
 ~~ }
 
@@ -7999,6 +8018,7 @@ STATE: {ChatCommand} ~~ {
 	~~ Always close certain views that can't easily close themselves
 	IF: Always
 		DO: DoAll
+				DestroyView {Check}
 				DestroyView {Fellow}
 
 	~~ If the variable $force is set override the @HBChatCommand
@@ -8032,6 +8052,7 @@ STATE: {ChatPasteCommand} ~~ {
 	~~ Always close certain views that can't easily close themselves
 	IF: Always
 		DO: DoAll
+				DestroyView {Check}
 				DestroyView {Fellow}
 
 	~~ Send Command

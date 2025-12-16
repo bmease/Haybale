@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<view width="110" height="255" title="Meta - Fellow">
+    <control type="layout">
+
+        <control type="button" name="Buffs" left="5" top="5" width="100" height="20" text="Buffs" setstate="ChatCommand" actionexpr="setvar[command, \#check buffs]" />
+        <control type="button" name="Luminance" left="5" top="30" width="100" height="20" text="Luminance" setstate="ChatCommand" actionexpr="setvar[command, \#check luminance]" />
+        <control type="button" name="Level" left="5" top="55" width="100" height="20" text="Level" setstate="ChatCommand" actionexpr="setvar[command, \#check level]" />
+        <control type="button" name="Landblock" left="5" top="80" width="100" height="20" text="Landblock" setstate="ChatCommand" actionexpr="setvar[command, \#check landblock]" />
+        <control type="button" name="Landcell" left="5" top="105" width="100" height="20" text="Landcell" setstate="ChatCommand" actionexpr="setvar[command, \#check landcell]" />
+        <control type="button" name="Settings" left="5" top="130" width="100" height="20" text="Settings" setstate="ChatCommand" actionexpr="setvar[command, \#check settings]" />
+        <control type="button" name="Suit" left="5" top="155" width="100" height="20" text="Suit" setstate="ChatCommand" actionexpr="setvar[command, \#check suit]" />
+        <control type="button" name="Uptime" left="5" top="180" width="100" height="20" text="Uptime" setstate="ChatCommand" actionexpr="setvar[command, \#check uptime]" />
+        <control type="button" name="Vitae" left="5" top="205" width="100" height="20" text="Vitae" setstate="ChatCommand" actionexpr="setvar[command, \#check vitae]" />
+        <control type="button" name="Visible" left="5" top="230" width="100" height="20" text="Visible" setstate="ChatCommand" actionexpr="setvar[command, \#check visible]" />
+
+    </control>
+</view>
