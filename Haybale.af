@@ -130,6 +130,9 @@ STATE: {Default} ~~ {
 				~~ Leader to announce things to. Defaults to first character in @HBCharacterList and will update when follow commands are issued
 				DoExpr {setpvar[HBLeader, ifthen[testpvar[HBLeader], `@HBLeader`, `ifthen[listcount[@HBCharacterList]>0, \`listgetitem[@HBCharacterList, 0]\`, \`false\`]`]]}
 
+				~~ Leaders Id
+				DoExpr {setpvar[HBLeaderId, ifthen[testpvar[HBLeaderId], `@HBLeaderId`, `false`]]}
+
 				~~ Distance to use the nearest Portal
 				DoExpr {setpvar[HBPortalThreshold, ifthen[testpvar[HBPortalThreshold], `@HBPortalThreshold`, `30`]]}
 
@@ -1777,7 +1780,9 @@ STATE: {Follow} ~~ {
 
 	~~ Set the leader
 	IF: Always
-		DO: DoExpr {@HBLeader=$capturegroup_name}
+		DO: DoAll
+				DoExpr {@HBLeader=$capturegroup_name}
+				DoExpr {@HBLeaderId=wobjectgetid[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]}
 
 	~~ Warn if unable to see the leader
 	IF: Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]!=$TYPE_OBJECT}
@@ -5594,7 +5599,9 @@ STATE: {LeaderCheck} ~~ {
 				Expr {$capturegroup_saythink==`say`}
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
-		DO:	SetState {Idle}
+		DO:	DoAll
+				DoExpr {listmap[listcreate[`ncLeaders`, `ncLeader`, `netclientsWait`], `clearvar[$1]`]}
+				SetState {Idle}
 
 	~~ Warn if commands are issued
 	IF:	All
@@ -5617,6 +5624,33 @@ STATE: {LeaderCheck} ~~ {
 	IF: Expr {@HBStay==true}
 		DO: CallState {EnableOptions} {Idle}
 
+	~~ Start a timer if netclients shows the leader is nearby but the client cannot see the leader
+	~~ Netclients updates faster than AC sees the world object of the leader. We start a timer and wait for everything to sync so we don't get false positives.
+	IF: All
+			Expr {testvar[netclientsWait]==false}  ~~ timer for netclients waiting hasn't been set
+			Expr {@HBLeaderId!=false}  ~~ Has a valid leader id
+			Expr {$ncLeaders=listfilter[netclients[], `dictgetitem[$1, PlayerId]==@HBLeaderId`]}  ~~ Filter netclients for the leader
+			Expr {listcount[$ncLeaders]>0}  ~~ Verify we found at least one result
+			Expr {$ncLeader=listpop[$ncLeaders, 0]}  ~~ Grab the first result
+			Expr {coordinatedistanceflat[dictgetitem[$ncLeader, `Position`], wobjectgetphysicscoordinates[wobjectgetplayer[]]]<=@HBLeaderCheckDistance}  ~~ Verify the netclients leader position is within range to detect
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]!=$TYPE_OBJECT}  ~~ world object for the leader doesn't exist
+		DO: DoExpr {setvar[netclientsWait, stopwatchstart[stopwatchcreate[]]]}
+
+	~~ Warn if still unable to see the leader but netclients reports them as nearby
+	IF: All
+			Expr {testvar[netclientsWait]==true}  ~~ timer for netclients waiting is created
+			Expr {stopwatchelapsedseconds[$netclientsWait]>=1}  ~~ timer for netclients waiting is greater than the timeout
+			Expr {@HBLeaderId!=false}  ~~ Has a valid leader id
+			Expr {$ncLeaders=listfilter[netclients[], `dictgetitem[$1, PlayerId]==@HBLeaderId`]}  ~~ Filter netclients for the leader
+			Expr {listcount[$ncLeaders]>0}  ~~ Verify we found at least one result
+			Expr {$ncLeader=listpop[$ncLeaders, 0]}  ~~ Grab the first result
+			Expr {coordinatedistanceflat[dictgetitem[$ncLeader, `Position`], wobjectgetphysicscoordinates[wobjectgetplayer[]]]<=@HBLeaderCheckDistance}  ~~ Verify the netclients leader position is within range to detect
+			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]!=$TYPE_OBJECT}  ~~ If the world object for the leader doesn't exist warn!
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Leader should be nearby but unable to see them!\`]`, `false`]}
+				DoExpr {listmap[listcreate[`ncLeaders`, `ncLeader`, `netclientsWait`], `clearvar[$1]`]}
+				CallState {EnableOptions} {Idle}
+
 	~~ If following re-enable follow when leader is nearby
 	IF: All
 			Expr {@HBStay==false}
@@ -5631,7 +5665,9 @@ STATE: {LeaderCheck} ~~ {
 	IF: All
 			Expr {getobjectinternaltype[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]]==$TYPE_OBJECT}  ~~ HBLeader WObject exists
 			Expr {coordinatedistancewithz[wobjectgetphysicscoordinates[wobjectfindnearestbynameandobjectclass[$PLAYER, @HBLeader]], getplayercoordinates[]]<=@HBLeaderCheckDistance}  ~~ HBLeader is nearby
-		DO: CallState {EnableOptions} {Idle}
+		DO: DoAll
+				DoExpr {listmap[listcreate[`ncLeaders`, `ncLeader`, `netclientsWait`], `clearvar[$1]`]}
+				CallState {EnableOptions} {Idle}
 
 	~~ Warn if in the check too long
 	IF:	SecsInStateGE 15
@@ -5643,6 +5679,7 @@ STATE: {LeaderCheck} ~~ {
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Timeout reached waiting for leader! Staying but listening for commands.\`]`, `false`]}
 				EmbedNav Empty {[None]}
 				DoExpr {@HBStay=true}
+				DoExpr {listmap[listcreate[`ncLeaders`, `ncLeader`, `netclientsWait`], `clearvar[$1]`]}
 				CallState {EnableOptions} {Idle}
 
 ~~ }
