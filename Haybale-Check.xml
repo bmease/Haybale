@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<view width="110" height="255" title="Meta - Fellow">
+<view width="110" height="255" title="Meta - Check">
     <control type="layout">
 
         <control type="button" name="Buffs" left="5" top="5" width="100" height="20" text="Buffs" setstate="ChatCommand" actionexpr="setvar[command, \#check buffs]" />
