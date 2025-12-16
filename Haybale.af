@@ -4879,6 +4879,7 @@ STATE: {HandleCheck} ~~ {
 				DoExpr {echo[`#check landblock: check what landblock each character is in.`, $COLOR_INFO]}
 				DoExpr {echo[`#check landcell: check what landcell each character is in.`, $COLOR_INFO]}
 				DoExpr {echo[`#check settings: check the settings (Toggle Vitals, Buff, Combat, Nav, Loot) of all characters.`, $COLOR_INFO]}
+				DoExpr {echo[`#check suit: check how if your suit is active on all characters.`, $COLOR_INFO]}
 				DoExpr {echo[`#check uptime: check the current amount of time all characters have been running.`, $COLOR_INFO]}
 				DoExpr {echo[`#check vitae: check the current amount of vitae on all characters.`, $COLOR_INFO]}
 				DoExpr {echo[`#check visible: check to see if netclient members of the fellow are visible to all characters.`, $COLOR_INFO]}
@@ -4925,6 +4926,10 @@ STATE: {HandleCheck} ~~ {
 				ChatExpr {`/t `+@HBLeader+`, [Haybale] Toggle Vitals: `+ifthen[@HBVitals, `On`, `Off`]+`, Buff: `+ifthen[vtgetsetting[EnableBuffing], `On`, `Off`]+`, Combat: `+ifthen[vtgetsetting[EnableCombat], `On`, `Off`]+`, Nav: `+ifthen[vtgetsetting[EnableNav], `On`, `Off`]+`, Loot: `+ifthen[vtgetsetting[EnableLooting], `On`, `Off`]}
 				SetState {Idle}
 
+	~~ Handle `#check suit`
+	IF: Expr {(suit)#getvar[capturegroup_checktext]}
+		DO: SetState {CheckSuit}
+
 	~~ Handle `#check uptime`
 	IF: Expr {(uptime)#getvar[capturegroup_checktext]}
 		DO: DoAll
@@ -4952,11 +4957,46 @@ STATE: {HandleCheck} ~~ {
 				SetState {Idle}
 
 
-
 	~~ Handle no match for checktext
 	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll
 				DoExpr {echo[`[WARN] No matching action for #check`, $COLOR_WARN]}
+				SetState {Idle}
+
+~~ }
+
+
+STATE: {CheckSuit} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	SetState {Idle}
+
+	~~ Warn if commands are issued
+	IF:	All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#(?<command>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] I cannot listen to commands! I am currently in the state \`+vtgetmetastate[]]`, `false`]}
+
+	~~ Issue the /suit active command
+	IF: Always
+		DO: ChatExpr {`/suit active`}
+
+	IF: ChatCapture {Your suit is NOT active} {}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Suit is NOT active!\`]`, `false`]}
+				SetState {Idle}
+
+	IF: ChatCapture {Your suit is active} {}
+		DO: DoAll
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Suit is active.\`]`, `false`]}
 				SetState {Idle}
 
 ~~ }
