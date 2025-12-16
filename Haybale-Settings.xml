@@ -50,7 +50,7 @@
         <control type="button" name="ChatCommand" left="5" top="380" width="155" height="20" text="ChatCommand" setstate="ToggleChatCommand" />
         <control type="button" name="Profiles" left="170" top="380" width="155" height="20" text="Profiles >>" setstate="ShowProfiles" />
 
-        <!-- <control type="button" name="ChatCommand" left="5" top="405" width="155" height="20" text="ChatCommand" setstate="ToggleChatCommand" /> -->
+        <control type="button" name="Fellow" left="5" top="405" width="155" height="20" text="Fellow >>" setstate="ShowFellow" />
         <control type="button" name="Profiles" left="170" top="405" width="155" height="20" text="Metas >>" setstate="ShowMetas" />
 
         <control type="button" name="Pass Eternally Burning Coal" left="5" top="455" width="320" height="20" text="Pass Eternally Burning Coal" setstate="ChatCommand" actionexpr="setvar[command, `#pass Eternally Burning Coal`]" />

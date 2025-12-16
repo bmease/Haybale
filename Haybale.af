@@ -7933,6 +7933,27 @@ STATE: {ShowStatus} ~~ {
 ~~ }
 
 
+STATE: {ShowFellow} ~~ {
+
+
+	~~ Show the Fellow view
+	IF: Not Expr {uiviewvisible[Fellow]}
+		DO: DoAll
+				CreateView {Fellow} {:Haybale-Fellow.xml}
+				DoExpr {uisetlabel[uigetcontrol[Main, ShowSettings], `Settings >>`]}
+				DestroyView {Settings}
+				SetState {Idle}
+
+	~~ Close the Fellow view
+	IF: Expr {uiviewvisible[Fellow]}
+		DO: DoAll
+				DestroyView {Fellow}
+				SetState {Idle}
+
+~~ }
+
+
+
 STATE: {ToggleStay} ~~ {
 
 	IF: Expr {@HBStay==true}
@@ -7975,12 +7996,25 @@ STATE: {ToggleChatCommand} ~~ {
 
 STATE: {ChatCommand} ~~ {
 
+	~~ Always close certain views that can't easily close themselves
+	IF: Always
+		DO: DoAll
+				DestroyView {Fellow}
+
+	~~ If the variable $force is set override the @HBChatCommand
+	IF: Expr {testvar[Force]==true}
+		DO: DoAll
+				ChatExpr {`/`+$Force+` `+$command}
+				DoExpr {listmap[listcreate[`Force`, `command`], `clearvar[$1]`]}
+				SetState {Idle}
+
 	~~ Warn if sending chat commands to Fellow and not in a fellow
 	IF: All
 			Expr {@HBChatCommand==`Fellow`}
 			Expr {getfellowshipstatus[]!=true}
 		DO: DoAll
 				DoExpr {echo[`[WARN] Not in fellow but sending commands to fellow!`, $COLOR_WARN]}
+				DoExpr {clearvar[command]}
 				SetState {Idle}
 
 	~~ Send chat command
@@ -7990,6 +8024,22 @@ STATE: {ChatCommand} ~~ {
 				DoExpr {clearvar[command]}
 				SetState {Idle}
 
+~~ }
+
+
+STATE: {ChatPasteCommand} ~~ {
+
+	~~ Always close certain views that can't easily close themselves
+	IF: Always
+		DO: DoAll
+				DestroyView {Fellow}
+
+	~~ Send Command
+	IF: Always
+		DO: DoAll
+				DoExpr {chatboxpaste[$command]}
+				DoExpr {clearvar[command]}
+				SetState {Idle}
 
 ~~ }
 
