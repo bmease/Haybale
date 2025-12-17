@@ -1859,6 +1859,10 @@ STATE: {HandleNavigation} ~~ {
 				DoExpr {echo[`#navto lifestone recall: Navigate to Lifestone Recall (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto primary: Navigate to Primary Portal Recall (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`#navto portal recall: Navigate to Portal Recall (requires spell)`, $COLOR_INFO]}
+				DoExpr {echo[`Society:`, $COLOR_INFO]}
+				DoExpr {echo[`#navto radiant blood: Navigate to the Radiant Blood Stronghold (requires spell)`, $COLOR_INFO]}
+				DoExpr {echo[`#navto eldrytch web: Navigate to the Eldrytch Web Stronghold (requires spell)`, $COLOR_INFO]}
+				DoExpr {echo[`#navto celestial hand: Navigate to the Celestial Hand Stronghold (requires spell)`, $COLOR_INFO]}
 				DoExpr {echo[`Town Network (Annex):`, $COLOR_INFO]}
 				DoExpr {echo[`#navto ahurenga: Navigate to Ahurenga`, $COLOR_INFO]}
 				DoExpr {echo[`#navto bluespire: Navigate to Bluespire`, $COLOR_INFO]}
@@ -2110,6 +2114,25 @@ STATE: {HandleNavigation} ~~ {
 				DoExpr {$HBRecallSpell=2648} ~~ Secondary Summon Portal
 				SetState {HandleSummonPortal}
 
+	~~ Society
+
+	~~ Handle `#navto radiant blood`
+	IF: Expr {(radiant blood)#getvar[capturegroup_navdestination]}
+		DO:	DoAll
+				DoExpr {$HBRecallSpell=6327} ~~ Radiant Blood Stronghold Recall
+				SetState {HandleSummonPortal}
+
+	~~ Handle `#navto eldrytch web`
+	IF: Expr {(eldrytch web)#getvar[capturegroup_navdestination]}
+		DO:	DoAll
+				DoExpr {$HBRecallSpell=6326} ~~ Eldrytch Web Stronghold Recall
+				SetState {HandleSummonPortal}
+
+	~~ Handle `#navto celestial hand`
+	IF: Expr {(celestial hand)#getvar[capturegroup_navdestination]}
+		DO:	DoAll
+				DoExpr {$HBRecallSpell=6325} ~~ Celestial Hand Stronghold Recall
+				SetState {HandleSummonPortal}
 
 	~~ Annex
 
@@ -7341,6 +7364,7 @@ STATE: {ShowNavto} ~~ {
 			Not Expr {uiviewvisible[Subway]}
 			Not Expr {uiviewvisible[JungleSubway]}
 			Not Expr {uiviewvisible[Quests]}
+			Not Expr {uiviewvisible[Society]}
 		DO: DoAll
 				CreateView {Navto} {:Haybale-TownNetwork.xml}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto <<`]}
@@ -7354,6 +7378,7 @@ STATE: {ShowNavto} ~~ {
 			Expr {uiviewvisible[Subway]}
 			Expr {uiviewvisible[JungleSubway]}
 			Expr {uiviewvisible[Quests]}
+			Expr {uiviewvisible[Society]}
 		DO: DoAll
 				DestroyView {Navto}
 				DestroyView {Recalls}
@@ -7361,6 +7386,7 @@ STATE: {ShowNavto} ~~ {
 				DestroyView {Subway}
 				DestroyView {JungleSubway}
 				DestroyView {Quests}
+				DestroyView {Society}
 				DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto >>`]}
 				SetState {Idle}
 
@@ -7375,14 +7401,12 @@ STATE: {ShowRecalls} ~~ {
 		DO: DoAll
 				DestroyView {Navto}
 				CreateView {Recalls} {:Haybale-Recalls.xml}
-				~~ DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto <<`]}
 				SetState {Idle}
 
 	~~ Close Recalls view
 	IF: Expr {uiviewvisible[Recalls]}
 		DO: DoAll
 				DestroyView {Recalls}
-				~~ DoExpr {uisetlabel[uigetcontrol[Main, ShowNavto], `Navto >>`]}
 				SetState {Idle}
 
 ~~ }
@@ -7983,6 +8007,24 @@ STATE: {ShowCheck} ~~ {
 ~~ }
 
 
+STATE: {ShowSociety} ~~ {
+
+	~~ Show the Society view
+	IF: Not Expr {uiviewvisible[Society]}
+		DO: DoAll
+				CreateView {Society} {:Haybale-Society.xml}
+				DestroyView {Recalls}
+				SetState {Idle}
+
+	~~ Close the Society view
+	IF: Expr {uiviewvisible[Society]}
+		DO: DoAll
+				DestroyView {Society}
+				SetState {Idle}
+
+~~ }
+
+
 
 STATE: {ToggleStay} ~~ {
 
@@ -8031,6 +8073,7 @@ STATE: {ChatCommand} ~~ {
 		DO: DoAll
 				DestroyView {Check}
 				DestroyView {Fellow}
+				DestroyView {Society}
 
 	~~ If the variable $force is set override the @HBChatCommand
 	IF: Expr {testvar[Force]==true}

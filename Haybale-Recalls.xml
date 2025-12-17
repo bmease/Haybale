@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<view width="441" height="210" title="Meta - Recalls">
+<view width="441" height="235" title="Meta - Recalls">
     <control type="layout">
 
         <!-- Column 1 -->
@@ -10,8 +10,10 @@
         <control type="button" name="Secondary" left="5" top="105" width="100" height="20" text="Secondary" setstate="ChatCommand" actionexpr="setvar[command, `#navto secondary`]" />
         <control type="button" name="Primary Summon" left="5" top="130" width="100" height="20" text="Primary Summon" setstate="ChatCommand" actionexpr="setvar[command, `#navto primary summon`]" />
         <control type="button" name="Secondary Summon" left="5" top="155" width="100" height="20" text="Secondary Summon" setstate="ChatCommand" actionexpr="setvar[command, `#navto secondary summon`]" />
-        j
+
         <control type="button" name="Allegiance Hometown" left="5" top="185" width="100" height="20" text="Hometown" setstate="ChatCommand" actionexpr="setvar[command, `#navto allegiance hometown`]" />
+
+        <control type="button" name="Society" left="5" top="210" width="100" height="20" text="Society >>" setstate="ShowSociety" />
 
         <!-- Column 2 -->
         <control type="button" name="Facility Hub" left="115" top="5" width="100" height="20" text="Facility Hub" setstate="ChatCommand" actionexpr="setvar[command, `#navto facility hub`]" />

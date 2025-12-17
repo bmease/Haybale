@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<view width="330" height="30" title="Meta - Society Recalls">
+    <control type="layout">
+
+        <!-- Column 1 -->
+        <control type="button" name="Radiant Blood" left="5" top="5" width="100" height="20" text="Radiant Blood" setstate="ChatCommand" actionexpr="setvar[command, `#navto radiant blood`]" />
+
+        <!-- Column 2 -->
+        <control type="button" name="Eldrytch Web" left="115" top="5" width="100" height="20" text="Eldrytch Web" setstate="ChatCommand" actionexpr="setvar[command, `#navto eldrytch web`]" />
+
+        <!-- Column 3 -->
+        <control type="button" name="Celestial Hand" left="225" top="5" width="100" height="20" text="Celestial Hand" setstate="ChatCommand" actionexpr="setvar[command, `#navto celestial hand`]" />
+
+    </control>
+</view>
