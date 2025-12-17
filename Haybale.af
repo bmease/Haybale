@@ -1649,6 +1649,17 @@ STATE: {HandleVTOptions} ~~ {
 				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`, `value`], `clearvar[$1]`]}
 				SetState {Idle}
 
+	~~ Disable loot only rare corpses if setting loot all
+	IF: All
+			Expr {$capturegroup_optionkey==`enablelooting`}
+			Expr {listcontains[listcreate[`True`, `true`], $capturegroup_optionvalue]}
+		DO: DoAll
+				ChatExpr {`/vt opt set `+$capturegroup_optionkey+` `+$capturegroup_optionvalue}
+				ChatExpr {`/vt opt set lootonlyrarecorpses false`}
+				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Set VTank Option \`+$capturegroup_optionkey+\`.\`]`, `false`]}
+				DoExpr {listmap[listcreate[`capturegroup_optionkey`, `capturegroup_optionvalue`], `clearvar[$1]`]}
+				SetState {Idle}
+
 	~~ Set the VTank option
 	IF: Always
 		DO: DoAll
