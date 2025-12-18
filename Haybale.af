@@ -3520,6 +3520,12 @@ STATE: {HandleKilltask} ~~ {
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagGraveyard`]}
 				SetState {CallMeta}
 
+	~~ Handle `#killtask leviathan hold`
+	IF: Expr {(leviathan hold)#getvar[capturegroup_flagaction]}
+		DO:	DoAll
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagLeviathanHold`]}
+				SetState {CallMeta}
+
 	~~ Handle no match for flagaction
 	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll

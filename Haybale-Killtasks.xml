@@ -14,7 +14,7 @@
         <control type="button" name="VR" left="115" top="55" width="100" height="20" text="VR" setstate="ChatCommand" actionexpr="setvar[command, `#killtask vr`]" />
 
         <!-- Column 3 -->
-        <!-- <control type="button" name="Leviathan Hold" left="225" top="5" width="100" height="20" text="Leviathan Hold" setstate="ChatCommand" actionexpr="setvar[command, `#killtask leviathan hold`]" /> -->
+        <control type="button" name="Leviathan Hold" left="225" top="5" width="100" height="20" text="Leviathan Hold" setstate="ChatCommand" actionexpr="setvar[command, `#killtask leviathan hold`]" />
         <!-- <control type="button" name="Inner Sea Gearknights" left="225" top="30" width="100" height="20" text="Inner Sea GK" setstate="ChatCommand" actionexpr="setvar[command, `#killtask inner sea gearknights`]" /> -->
 
     </control>
