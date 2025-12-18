@@ -68,7 +68,7 @@ STATE: {Default} ~~ {
 				DoExpr {setvar[OriginalNavCloseStopRange, vtgetsetting[NavCloseStopRange]]}
 
 	IF:	Expr {$LEVEL_DEBUG>=@HBDebug}
-		DO:	DoExpr {echo[`[DEBUG] Che Kill Task Flag Viridian Rise v0.0.1 by Che de Pa of Sundering`, $COLOR_DEBUG]}
+		DO:	DoExpr {echo[`[DEBUG] Haybale Kill Task Flag Viridian Rise v1.0.0 by Che de Pa of Sundering`, $COLOR_DEBUG]}
 
 	IF: All
 			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
@@ -85,6 +85,15 @@ STATE: {Default} ~~ {
 				SetOpt {EnableNav} {True}
 				SetOpt {NavCloseStopRange} {0.00625}
 
+	~~ If at VR Tree begin the turn in
+	IF: Any
+			BlockE B44A0000 ~~ VR Tree drop
+			BlockE B54A0000 ~~ Near Zervakarix
+		DO: DoAll
+				DoExpr {echo[`[INFO] At VR Tree. Turning in!`, $COLOR_INFO]}
+				SetState {ToBrellegia}
+
+	~~ If at VR drop use the portal
 	IF: CellE B3490013
 		DO:	DoAll
 				DoExpr {echo[`[INFO] At VR drop. Navigating inside!`, $COLOR_INFO]}
@@ -128,7 +137,7 @@ STATE: {VrRecall} ~~ {
 				DoExpr {actiontrycastbyid[$VrRecallSpell]}
 				SetState {VrRecall}
 
-	~~ Finished recalling; go to LeaderCheck
+	~~ Finished recalling
 	IF: Expr {isportaling[]==true}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Finished recalling\`]`, `false`]}
@@ -204,6 +213,9 @@ STATE: {UseNPC} ~~ {
 				SetState {Finished}
 
 	IF:	Any
+			All  ~~ The NPC tells you text
+				ChatCapture {^(?<tellname>.*?) tells you, \"(?<npctext>.*)\"$} {}
+				Expr {$capturegroup_tellname==$targetNPC}
 			ChatMatch {The mark of the Viridian Guardians briefly burns with blue flame}
 			ChatMatch {A plaque on this statue reads}
 			ChatMatch {You may complete this quest again in}
@@ -290,7 +302,7 @@ STATE: {ToAangesilusMarker} ~~ {
 ~~ }
 
 
-STATE: {ToSwiftsMarker}
+STATE: {ToSwiftsMarker} ~~ {
 
 	IF: All
 			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
@@ -312,6 +324,103 @@ STATE: {ToSwiftsMarker}
 				CallState {UseNPC} {Finished}
 
 ~~ }
+
+
+STATE: {ToBrellegia} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToBrellegia {ToBrellegia}
+
+	IF: NavEmpty
+		DO: DoAll
+				DoExpr {setvar[targetNPCType, $NPC]}
+				DoExpr {setvar[targetNPC,`Brellegia`]}
+				CallState {UseNPC} {ToShalrion}
+
+~~ }
+
+
+STATE: {ToShalrion} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToShalrion {ToShalrion}
+
+	IF: NavEmpty
+		DO: DoAll
+				DoExpr {setvar[targetNPCType, $NPC]}
+				DoExpr {setvar[targetNPC,`Shalrion`]}
+				CallState {UseNPC} {ToAangesilus}
+
+~~ }
+
+
+STATE: {ToAangesilus} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToAangesilus {ToAangesilus}
+
+	IF: NavEmpty
+		DO: DoAll
+				DoExpr {setvar[targetNPCType, $NPC]}
+				DoExpr {setvar[targetNPC, `Aangesilus`]}
+				CallState {UseNPC} {ToSwift}
+
+~~ }
+
+
+STATE: {ToSwift} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	DoAll
+				DoExpr {$HBReset=true}
+				SetState {Finished}
+
+	IF: Always
+		DO: EmbedNav ToSwift {ToSwift}
+
+	IF: NavEmpty
+		DO: DoAll
+				DoExpr {setvar[targetNPCType, $NPC]}
+				DoExpr {setvar[targetNPC, `Swift`]}
+				CallState {UseNPC} {Finished}
+
+~~ }
+
 
 STATE: {Finished} ~~ {
 
@@ -359,4 +468,36 @@ NAV: ToAangesilusMarker once ~~ {
 NAV: ToSwiftsMarker once ~~ {
 	pnt 41.9102724075317 -43.0500065485636 0.466687520345052
 	pnt 41.9054677963257 -43.0185555458069 0.471928246815999
+~~ }
+
+~~ VR Tree Routes
+
+NAV: ToBrellegia once ~~ {
+	pnt 42.977326798439 -42.5526830991109 0.491687520345052
+	pnt 42.9782973051071 -42.4894712766012 0.491687520345052
+	pnt 42.9792922258377 -42.4323004086812 0.491687520345052
+	pnt 42.9801850716273 -42.3777035077413 0.491687520345052
+~~ }
+
+NAV: ToShalrion once ~~ {
+	pnt 42.9801850716273 -42.3777035077413 0.491687520345052
+	pnt 43.0128923416138 -42.3786007563273 0.491687520345052
+	pnt 43.0571464379628 -42.381205368042 0.491687520345052
+	pnt 43.0707735697428 -42.3609866460164 0.491687520345052
+	pnt 43.1108440558116 -42.3027999242147 0.491687520345052
+~~ }
+
+NAV: ToAangesilus once ~~ {
+	pnt 43.1108440558116 -42.3027999242147 0.491687520345052
+	pnt 43.1639253616333 -42.3324310302734 0.491687520345052
+	pnt 43.2502481778463 -42.3731485684713 0.491687520345052
+~~ }
+
+NAV: ToSwift once ~~ {
+	pnt 43.2502481778463 -42.3731485684713 0.491687520345052
+	pnt 43.2957284927368 -42.3607583363851 0.491687520345052
+	pnt 43.338327217102 -42.3497175852458 0.491663996378581
+	pnt 43.3854831695557 -42.3374956766764 0.490645503997803
+	pnt 43.4205275217692 -42.3284130732218 0.489888604482015
+	pnt 43.4679056167603 -42.3364130973816 0.491687520345052
 ~~ }
