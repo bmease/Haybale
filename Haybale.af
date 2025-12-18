@@ -3514,6 +3514,12 @@ STATE: {HandleKilltask} ~~ {
 				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagTouTou`]}
 				SetState {CallMeta}
 
+	~~ Handle `#killtask graveyard`
+	IF: Expr {(graveyard)#getvar[capturegroup_flagaction]}
+		DO:	DoAll
+				DoExpr {listadd[$MetaCallQueue, `HaybaleKillTaskFlagGraveyard`]}
+				SetState {CallMeta}
+
 	~~ Handle no match for flagaction
 	IF: Expr {$LEVEL_WARN>=@HBDebug}
 		DO: DoAll

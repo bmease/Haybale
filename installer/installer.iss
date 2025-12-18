@@ -60,6 +60,7 @@ Source: "C:\Games\VirindiPlugins\VirindiTank\HB-Deewains 7E03087B.nav"; DestDir:
 Source: "C:\Games\VirindiPlugins\VirindiTank\Haybale.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleHandoffSort.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagFrozenValley.met"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagGraveyard.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagNeftet.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagRynthid.met"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Games\VirindiPlugins\VirindiTank\HaybaleKillTaskFlagVR.met"; DestDir: "{app}"; Flags: ignoreversion
