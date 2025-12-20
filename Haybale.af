@@ -5304,8 +5304,17 @@ STATE: {LootCorpse} ~~ {
 		DO: DoAll
 				DoExpr {$CorpseItemNames=listmap[wobjectfindallbycontainer[wobjectgetopencontainer[]], `wobjectgetstringprop[$1, $STRING_PROP_NAME]`]}  ~~ Get the name of all items on the corpse
 				DoExpr {$PotentialItems=listfilter[$LootCorpseItem, `listcontains[$CorpseItemNames, $1]`]}  ~~ Filter $LootCorpseItem for only items that are on the corpse
-				DoExpr {$LootCorpseItem=listpop[listcopy[$PotentialItems], 0]} ~~ Select the first one
+				DoExpr {ifthen[listcount[$PotentialItems]>0, `setvar[LootCorpseItem, listpop[$PotentialItems, 0]]`, `setvar[LootCorpseItem, false]`]}  ~~ Select the first item or set to false if no potential items
 				DoExpr {listmap[listcreate[`CorpseItemNames`, `PotentialItems`], `clearvar[$1]`]}
+
+	~~ Warn if no potential items found
+	IF: Expr {$LootCorpseItem==false}
+		DO: DoAll
+				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Did not find any potential items on \`+$LootCorpseName, $COLOR_WARN]`, `false`]}
+				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
+				DoExpr {listadd[$CorpseBlacklist, wobjectgetid[$Corpse]]}
+				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
+				SetState {AutoLoot}  ~~ Return to AutoLoot to determine $LootCorpseItem again
 
 	~~ Count how many of the item is in inventory
 	IF: Expr {testvar[ItemCount]==false}
