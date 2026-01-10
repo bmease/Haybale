@@ -5241,7 +5241,7 @@ STATE: {LootCorpse} ~~ {
 				Expr {$capturegroup_saythink==`think`}
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO:	DoAll
-				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
+				DoExpr {listmap[listcreate[`CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`, `CurrentItemPosition`], `clearvar[$1]`]}
 				SetState {LeaderCheck}
 
 	~~ Update Status Panel (left hand side)
@@ -5328,12 +5328,16 @@ STATE: {LootCorpse} ~~ {
 				DoExpr {$CorpseItems=wobjectfindallbycontainer[wobjectgetopencontainer[]]}
 				DoExpr {$CorpseItemsWanted=listfilter[$CorpseItems, `wobjectgetstringprop[$1, $STRING_PROP_NAME]==$LootCorpseItem`]}
 
+	~~ Initialize $CurrentItemPosition for tracking which item we're looting from the corpse
+	IF: Expr {testvar[CurrentItemPosition]==false}
+		DO: DoExpr {setvar[CurrentItemPosition, 0]}
+
 	~~ Picked up an item since inventory has increased
 	IF: Expr {getitemcountininventorybyname[$LootCorpseItem]>$ItemCount}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Looted \`+$LootCorpseItem]`, `false`]}
-				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
-				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
+				~~ DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
+				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`, `CurrentItemPosition`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
 				DoExpr {ifthen[uboptget[`Jumper.ThinkFail`]==false, `uboptset[\`Jumper.ThinkFail\`, true]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `X`, $HBStatusId]}
@@ -5346,8 +5350,8 @@ STATE: {LootCorpse} ~~ {
 			ChatMatch {You must wait}
 		DO: DoAll
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Unable to loot \`+$LootCorpseItem]`, `false`]}
-				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
-				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`], `clearvar[$1]`]}
+				~~ DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
+				DoExpr {listmap[listcreate[`jumped`, `CorpseBlacklist`, `ItemCount`, `CorpseItemsWanted`, `Corpse`, `item`, `LootCorpseItem`, `LootCorpseName`, `allCorpses`, `foundCorpses`, `nearbyCorpses`, `CurrentItemPosition`], `clearvar[$1]`]}
 				DoExpr {ifthen[uboptget[`Jumper.ThinkComplete`]==false, `uboptset[\`Jumper.ThinkComplete\`, true]`, `false`]} ~~ Reset jumping confirmation if turned on
 				DoExpr {ifthen[uboptget[`Jumper.ThinkFail`]==false, `uboptset[\`Jumper.ThinkFail\`, true]`, `false`]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
@@ -5359,15 +5363,17 @@ STATE: {LootCorpse} ~~ {
 				DoExpr {ifthen[$LEVEL_WARN>=@HBDebug, `echo[\`[WARN] Did not find the item \`+$LootCorpseItem+\` on \`+$LootCorpseName, $COLOR_WARN]`, `false`]}
 				DoExpr {ifthen[getobjectinternaltype[wobjectgetopencontainer[]]==$TYPE_OBJECT, `actiontryuseitem[wobjectgetopencontainer[]]`, `false`]}  ~~ Close the container
 				DoExpr {listadd[$CorpseBlacklist, wobjectgetid[$Corpse]]}
+				DoExpr {clearvar[CurrentItemPosition]}
 				DoExpr {listremoveat[&HBStatusProgress, $HBStatusId];listinsert[&HBStatusProgress, `!`, $HBStatusId]}
 				SetState {Loot}
 
-	~~ Pickup item from the corpse
+	~~ Pickup item from the corpse, cycling through different ones if there are multiples to pickup
 	IF: Expr {listcount[$CorpseItemsWanted]>0}
 		DO: DoAll
 				DoExpr {ifthen[@HBJumpLoot&&$jumped==false, `chatbox[\`/ub jump\`]`, `false`]}  ~~ Try jumping once to break animation and loot faster
 				DoExpr {setvar[jumped, true]}
-				DoExpr {$item=listpop[$CorpseItemsWanted, 0]}
+				DoExpr {$item=listgetitem[$CorpseItemsWanted, $CurrentItemPosition%listcount[$CorpseItemsWanted]]}
+				DoExpr {$CurrentItemPosition=$CurrentItemPosition+1}
 				DoExpr {actiontryuseitem[$item]}
 				SetState {LootCorpse}
 
