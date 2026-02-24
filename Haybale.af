@@ -871,6 +871,7 @@ STATE: {Idle} ~~ {
 			Expr {@HBAutoUpdateGoArrow==true}
 			ChatCapture {(?<coordinates>[0-9]{{1,3}}(?:\.[0-9]{{1,3}})?[NS],[ ]*[0-9]{{1,3}}(?:\.[0-9]{{1,3}})?[EW])} {}
 		DO: DoAll
+				DoExpr {echo[`[INFO] Updating GoArrow coordinates.`, $COLOR_INFO]}
 				ChatExpr {`/goarrow to `+$capturegroup_coordinates}
 				DoExpr {clearvar[capturegroup_coordinates]}
 				SetState {Idle}
