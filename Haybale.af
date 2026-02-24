@@ -2121,19 +2121,19 @@ STATE: {HandleNavigation} ~~ {
 	IF: Expr {(radiant blood)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {$HBRecallSpell=6327} ~~ Radiant Blood Stronghold Recall
-				SetState {HandleSummonPortal}
+				SetState {HandleRecall}
 
 	~~ Handle `#navto eldrytch web`
 	IF: Expr {(eldrytch web)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {$HBRecallSpell=6326} ~~ Eldrytch Web Stronghold Recall
-				SetState {HandleSummonPortal}
+				SetState {HandleRecall}
 
 	~~ Handle `#navto celestial hand`
 	IF: Expr {(celestial hand)#getvar[capturegroup_navdestination]}
 		DO:	DoAll
 				DoExpr {$HBRecallSpell=6325} ~~ Celestial Hand Stronghold Recall
-				SetState {HandleSummonPortal}
+				SetState {HandleRecall}
 
 	~~ Annex
 
