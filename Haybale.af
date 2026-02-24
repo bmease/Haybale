@@ -1186,6 +1186,24 @@ STATE: {Idle} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {ProfileLoad}
 
+	~~ Handle `#profile moveup`
+	IF:	All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#profile moveup (?<profilename>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {ProfileMoveUp}
+
+	~~ Handle `#profile movedown`
+	IF:	All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#profile movedown (?<profilename>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {ProfileMoveDown}
+
 	~~ Handle Profiles
 	IF:	All
 			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#profile (?<profiletext>.*)\"$} {}
@@ -3191,8 +3209,8 @@ STATE: {HandleMetas} ~~ {
 				~~ DoExpr {echo[`#meta landcell: Shows the current profile for the landcell`, $COLOR_INFO]}
 				DoExpr {echo[`#meta list: Lists all saved metas`, $COLOR_INFO]}
 				DoExpr {echo[`#meta load <nickname>: Loads the nicknamed meta on all characters`, $COLOR_INFO]}
-				DoExpr {echo[`#meta movedown <nickname>: Moves the nicked meta down one position in the list on all characters`, $COLOR_INFO]}
-				DoExpr {echo[`#meta moveup <nickname>: Moves the nicked meta up one position in the list on all characters`, $COLOR_INFO]}
+				DoExpr {echo[`#meta movedown <nickname>: Moves the nickednamed meta down one position in the list on all characters`, $COLOR_INFO]}
+				DoExpr {echo[`#meta moveup <nickname>: Moves the nickednamed meta up one position in the list on all characters`, $COLOR_INFO]}
 				DoExpr {echo[`#meta remove <nickname>: Removes the nicknamed meta on all characters`, $COLOR_INFO]}
 				SetState {Idle}
 
@@ -3407,6 +3425,8 @@ STATE: {HandleProfile} ~~ {
 				DoExpr {echo[`#profile addlandcell <Profile Name>: Adds the profile with the current landcell to the auto load profile list`, $COLOR_INFO]}
 				DoExpr {echo[`#profile landcell: Shows the current profile for the landcell`, $COLOR_INFO]}
 				DoExpr {echo[`#profile list: Lists all saved profiles`, $COLOR_INFO]}
+				DoExpr {echo[`#profile movedown <Profile Nickname>: Moves the nickednamed profile down one position in the list on all characters`, $COLOR_INFO]}
+				DoExpr {echo[`#profile moveup <Profile Nickname>: Moves the nickednamed profile up one position in the list on all characters`, $COLOR_INFO]}
 				DoExpr {echo[`#profile load <Profile Nickname>: Loads the profile on all characters`, $COLOR_INFO]}
 				SetState {Idle}
 
@@ -3464,7 +3484,7 @@ STATE: {ProfileAdd} ~~ {
 				DoExpr {listadd[@HBProfileKeys, $capturegroup_profilename]}
 				DoExpr {listadd[@HBProfileValues, $capturegroup_profilevalue]}
 				DoExpr {echo[`Added `+$capturegroup_profilename+` => `+$capturegroup_profilevalue, $COLOR_INFO]}
-				SetState {Idle}
+				SetState {SetProfiles}
 
 ~~ }
 
@@ -3550,6 +3570,84 @@ STATE: {AutoloadProfile} ~~ {
 				ChatExpr {`/vt settings loadchar `+listgetitem[@HBProfileValues, $nid]}
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Loaded profile \`+listgetitem[@HBProfileValues, $nid]]`, `false`]}
 				SetState {Idle}
+
+~~ }
+
+
+STATE: {ProfileMoveUp} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	SetState {Idle}
+
+	~~ Warn if nicknamed profile is not found
+	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]==-1}
+		DO: DoAll
+				DoExpr {echo[`[WARN] No profile found!`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_profilename]}
+				SetState {Idle}
+
+	~~ Warn if already at the top of the list
+	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]==0}
+		DO: DoAll
+				DoExpr {echo[`[WARN] Profile already at the top of the list!`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_profilename]}
+				SetState {Idle}
+
+	~~ Move the profile one postion up
+	IF: Always
+		DO: DoAll
+				DoExpr {$index=listindexof[@HBProfileKeys, $capturegroup_profilename]}
+				DoExpr {$nickname=listpop[@HBProfileKeys, $index]}
+				DoExpr {$profiles=listpop[@HBProfileValues, $index]}
+				DoExpr {listinsert[@HBProfileKeys, $nickname, $index-1]}
+				DoExpr {listinsert[@HBProfileValues, $profiles, $index-1]}
+				DoExpr {echo[`[INFO] Moved profile up one position.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_profilename`, `index`, `nickname`, `profiles`], `clearvar[$1]`]}
+				SetState {SetProfiles}
+
+~~ }
+
+
+STATE: {ProfileMoveDown} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	SetState {Idle}
+
+	~~ Warn if nicknamed profile is not found
+	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]==-1}
+		DO: DoAll
+				DoExpr {echo[`[WARN] No profile found!`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_profilename]}
+				SetState {Idle}
+
+	~~ Warn if already at the bottom of the list
+	IF: Expr {listindexof[@HBProfileKeys, $capturegroup_profilename]==listcount[@HBProfileKeys]-1}
+		DO: DoAll
+				DoExpr {echo[`[WARN] Profile already at the bottom of the list!`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_profilename]}
+				SetState {Idle}
+
+	~~ Move the profile one postion down
+	IF: Always
+		DO: DoAll
+				DoExpr {$index=listindexof[@HBProfileKeys, $capturegroup_profilename]}
+				DoExpr {$nickname=listpop[@HBProfileKeys, $index]}
+				DoExpr {$profiles=listpop[@HBProfileValues, $index]}
+				DoExpr {listinsert[@HBProfileKeys, $nickname, $index+1]}
+				DoExpr {listinsert[@HBProfileValues, $profiles, $index+1]}
+				DoExpr {echo[`[INFO] Moved profile down one position.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_profilename`, `index`, `nickname`, `profiles`], `clearvar[$1]`]}
+				SetState {SetProfiles}
 
 ~~ }
 
@@ -8054,6 +8152,26 @@ STATE: {SetProfiles} ~~ {
 				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile8], 1]}
 				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile9], 1]}
 
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile1up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile2up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile3up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile4up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile5up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile6up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile7up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile8up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile9up], 1]}
+
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile1down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile2down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile3down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile4down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile5down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile6down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile7down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile8down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Profiles, btnProfile9down], 1]}
+
 				DoExpr {uisetvisible[uigetcontrol[Profiles, btnNext], 1]}
 				DoExpr {uisetvisible[uigetcontrol[Profiles, btnPrevious], 1]}
 
@@ -8082,6 +8200,26 @@ STATE: {SetProfiles} ~~ {
 				DoExpr {ifthen[listcount[@HBProfileKeys]>=7+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile7], 0]`]}
 				DoExpr {ifthen[listcount[@HBProfileKeys]>=8+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile8], 0]`]}
 				DoExpr {ifthen[listcount[@HBProfileKeys]>=9+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile9], 0]`]}
+
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=1+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile1up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=2+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile2up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=3+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile3up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=4+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile4up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=5+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile5up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=6+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile6up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=7+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile7up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=8+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile8up], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=9+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile9up], 0]`]}
+
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=1+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile1down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=2+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile2down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=3+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile3down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=4+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile4down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=5+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile5down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=6+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile6down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=7+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile7down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=8+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile8down], 0]`]}
+				DoExpr {ifthen[listcount[@HBProfileKeys]>=9+$ProfileOffset, `false`, `uisetvisible[uigetcontrol[Profiles, btnProfile9down], 0]`]}
 
 	~~ Hide the Previous button if you can't go back
 	IF: Expr {$ProfileOffset<=0}
