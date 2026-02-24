@@ -1222,6 +1222,24 @@ STATE: {Idle} ~~ {
 				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
 		DO: SetState {MetaAdd}
 
+	~~ Handle `#meta moveup`
+	IF:	All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#meta moveup (?<nickname>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {MetaMoveUp}
+
+	~~ Handle `#meta movedown`
+	IF:	All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#meta movedown (?<nickname>.*)\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO: SetState {MetaMoveDown}
+
 	~~ Handle Metas
 	IF:	All
 			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"#meta (?<metatext>.*)\"$} {}
@@ -3173,6 +3191,8 @@ STATE: {HandleMetas} ~~ {
 				~~ DoExpr {echo[`#meta landcell: Shows the current profile for the landcell`, $COLOR_INFO]}
 				DoExpr {echo[`#meta list: Lists all saved metas`, $COLOR_INFO]}
 				DoExpr {echo[`#meta load <nickname>: Loads the nicknamed meta on all characters`, $COLOR_INFO]}
+				DoExpr {echo[`#meta movedown <nickname>: Moves the nicked meta down one position in the list on all characters`, $COLOR_INFO]}
+				DoExpr {echo[`#meta moveup <nickname>: Moves the nicked meta up one position in the list on all characters`, $COLOR_INFO]}
 				DoExpr {echo[`#meta remove <nickname>: Removes the nicknamed meta on all characters`, $COLOR_INFO]}
 				SetState {Idle}
 
@@ -3222,7 +3242,7 @@ STATE: {MetaAdd} ~~ {
 				DoExpr {listadd[@HBMetaValues, listcreate[$capturegroup_metafilename]]}
 				DoExpr {echo[`Added `+$capturegroup_nickname+` => `+listgetitem[@HBMetaValues, listindexof[@HBMetaKeys, $capturegroup_nickname]], $COLOR_INFO]}
 				DoExpr {listmap[listcreate[`capturegroup_nickname`, `capturegroup_metafilename`], `clearvar[$1]`]}
-				SetState {Idle}
+				SetState {SetMetas}
 
 ~~ }
 
@@ -3252,7 +3272,7 @@ STATE: {MetaRemove} ~~ {
 				DoExpr {listremoveat[@HBMetaKeys, $id]}
 				DoExpr {listremoveat[@HBMetaValues, $id]}
 				DoExpr {clearvar[capturegroup_nickname]}
-				SetState {Idle}
+				SetState {SetMetas}
 
 ~~ }
 
@@ -3286,6 +3306,84 @@ STATE: {MetaLoad} ~~ {
 				DoExpr {ifthen[@HBConfirm==true, `chatbox[\`/t \`+@HBLeader+\`, [Haybale] Loading meta(s) \`+listgetitem[@HBMetaValues, $id]]`, `false`]}
 				DoExpr {listmap[listcreate[`id`, `capturegroup_nickname`, `capturegroup_metafilename`], `clearvar[$1]`]}
 				SetState {CallMeta}
+
+~~ }
+
+
+STATE: {MetaMoveUp} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	SetState {Idle}
+
+	~~ Warn if nicknamed meta is not found
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==-1}
+		DO: DoAll
+				DoExpr {echo[`[WARN] No meta found`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_nickname]}
+				SetState {Idle}
+
+	~~ Warn if already at the top of the list
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==0}
+		DO: DoAll
+				DoExpr {echo[`[WARN] Meta already at the top of the list!`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_nickname]}
+				SetState {Idle}
+
+	~~ Move the meta one postion up
+	IF: Always
+		DO: DoAll
+				DoExpr {$index=listindexof[@HBMetaKeys, $capturegroup_nickname]}
+				DoExpr {$nickname=listpop[@HBMetaKeys, $index]}
+				DoExpr {$metas=listpop[@HBMetaValues, $index]}
+				DoExpr {listinsert[@HBMetaKeys, $nickname, $index-1]}
+				DoExpr {listinsert[@HBMetaValues, $metas, $index-1]}
+				DoExpr {echo[`[INFO] Moved meta up one position.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_nickname`, `index`, `nickname`, `metas`], `clearvar[$1]`]}
+				SetState {SetMetas}
+
+~~ }
+
+
+STATE: {MetaMoveDown} ~~ {
+
+	IF: All
+			ChatCapture {(^(\[[A-z\-]+?\] |)You|.*\<Tell:IIDString:.+:(?<name>[^\<]*)\>.+\<\\Tell\>) (?<saythink>.*), \"(!|#)reset\"$} {}
+			Any
+				Expr {$capturegroup_saythink==`say`}
+				Expr {$capturegroup_saythink==`think`}
+				Expr {listcontains[@HBCharacterList, $capturegroup_name]}
+		DO:	SetState {Idle}
+
+	~~ Warn if nicknamed meta is not found
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==-1}
+		DO: DoAll
+				DoExpr {echo[`[WARN] No meta found`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_nickname]}
+				SetState {Idle}
+
+	~~ Warn if already at the bottom of the list
+	IF: Expr {listindexof[@HBMetaKeys, $capturegroup_nickname]==listcount[@HBMetaKeys]-1}
+		DO: DoAll
+				DoExpr {echo[`[WARN] Meta already at the bottom of the list!`, $COLOR_WARN]}
+				DoExpr {clearvar[capturegroup_nickname]}
+				SetState {Idle}
+
+	~~ Move the meta one postion down
+	IF: Always
+		DO: DoAll
+				DoExpr {$index=listindexof[@HBMetaKeys, $capturegroup_nickname]}
+				DoExpr {$nickname=listpop[@HBMetaKeys, $index]}
+				DoExpr {$metas=listpop[@HBMetaValues, $index]}
+				DoExpr {listinsert[@HBMetaKeys, $nickname, $index+1]}
+				DoExpr {listinsert[@HBMetaValues, $metas, $index+1]}
+				DoExpr {echo[`[INFO] Moved meta down one position.`, $COLOR_INFO]}
+				DoExpr {listmap[listcreate[`capturegroup_nickname`, `index`, `nickname`, `metas`], `clearvar[$1]`]}
+				SetState {SetMetas}
 
 ~~ }
 
@@ -7814,6 +7912,26 @@ STATE: {SetMetas} ~~ {
 				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta8], 1]}
 				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta9], 1]}
 
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta1up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta2up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta3up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta4up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta5up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta6up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta7up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta8up], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta9up], 1]}
+
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta1down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta2down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta3down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta4down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta5down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta6down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta7down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta8down], 1]}
+				DoExpr {uisetvisible[uigetcontrol[Metas, btnMeta9down], 1]}
+
 				DoExpr {uisetvisible[uigetcontrol[Metas, btnNext], 1]}
 				DoExpr {uisetvisible[uigetcontrol[Metas, btnPrevious], 1]}
 
@@ -7842,6 +7960,26 @@ STATE: {SetMetas} ~~ {
 				DoExpr {ifthen[listcount[@HBMetaKeys]>=7+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta7], 0]`]}
 				DoExpr {ifthen[listcount[@HBMetaKeys]>=8+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta8], 0]`]}
 				DoExpr {ifthen[listcount[@HBMetaKeys]>=9+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta9], 0]`]}
+
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=1+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta1up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=2+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta2up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=3+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta3up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=4+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta4up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=5+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta5up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=6+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta6up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=7+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta7up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=8+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta8up], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=9+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta9up], 0]`]}
+
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=1+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta1down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=2+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta2down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=3+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta3down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=4+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta4down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=5+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta5down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=6+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta6down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=7+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta7down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=8+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta8down], 0]`]}
+				DoExpr {ifthen[listcount[@HBMetaKeys]>=9+$MetaOffset, `false`, `uisetvisible[uigetcontrol[Metas, btnMeta9down], 0]`]}
 
 	~~ Hide the Previous button if you can't go back
 	IF: Expr {$MetaOffset<=0}
